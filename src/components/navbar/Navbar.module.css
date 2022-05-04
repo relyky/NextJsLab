@@ -1,0 +1,9 @@
+ul.navbar {
+  padding: .5em;
+  background-color:lightgray;
+}
+
+ul.navbar > li {
+  display: inline-block;
+  margin-right: 2em;
+}
