@@ -1,11 +1,11 @@
 # React.v17 with Next.js, Redux 練習
 
-* React.v17 with Hooks,TypeScript   
+* React.v17 with Hooks,TypeScript,CSS Module   
 * Next.js   
-* Redux   
+* Redux       v7.2
+* Material UI v5.8
 
-1. Material UI   
-2. ReactDnD
+1. ReactDnD & ReactDndHtml5Backend
 
 ## Command
 Inside that directory, you can run several commands:   

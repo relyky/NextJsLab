@@ -10,6 +10,11 @@ function Navbar() {
         </Link>
       </li>
       <li>
+        <Link href="/main">
+          <a>Main</a>
+        </Link>
+      </li>
+      <li>
         <Link href="/demo/dm0001">
           <a>DEMO 0001</a>
         </Link>

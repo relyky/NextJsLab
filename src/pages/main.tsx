@@ -1,6 +1,6 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
-
+import { Button } from '@mui/material'
 import Counter from 'components/counter/Counter'
 import styles from 'styles/Home.module.css'
 
@@ -13,6 +13,9 @@ const MainPage: NextPage = () => {
       </Head>
       <h1>Hello World</h1>
       <h2>哈囉 世界好</h2>
+      <Button variant="contained" color="primary">
+        Hello World
+      </Button>
       <Counter />
     </div>
   )
