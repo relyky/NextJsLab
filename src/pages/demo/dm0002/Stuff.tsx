@@ -17,7 +17,7 @@ export default ({ title }) => {
             {/* This is optional. The dragPreview will be attached to the dragSource by default */}
             {/* The drag ref marks this node as being the "pick-up" node */}
             <div role="Handle" ref={drag} style={{ width: 160, height: 90, verticalAlign: 'middle' }}>
-                Drag Source:{title}
+                Drag Source: {title}
             </div>
         </div>
     )

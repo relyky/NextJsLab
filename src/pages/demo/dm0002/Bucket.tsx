@@ -22,18 +22,19 @@ export default (props) => {
     setItemList(itemList => [...itemList, item])
   }
 
-  console.log('Bucket',{ canDrop, isOver })
+  console.log('Bucket', { canDrop, isOver })
   return (
     <div
       className={styles.bucket}
       ref={drop}
       role={'Dustbin'}
-      style={{ backgroundColor: isOver ? 'red' : 'lightgrey' }}
+      style={{ backgroundColor: isOver ? 'greenyellow' : 'lightgrey' }}
     >
+      {canDrop && <span style={{ float: 'right' }}>{`[canDrop]`}</span>}
+      {isOver && <span style={{ float: 'right' }}>{`[isOver]`}</span>}
+      <h4>Drop Target</h4>
       <div>
         {canDrop ? 'Release to drop' : 'Drag a box here'}
-        {canDrop && <span>{`[canDrop]`}</span>}
-        {isOver && <span>{`[isOver]`}</span>}
       </div>
       <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}>
         {itemList.map((c, idx) =>
