@@ -20,7 +20,7 @@ function Banner() {
             Demo 001
           </Button>
           <Button href="/demo/dm0002" color="inherit" sx={{ ml: 1 }}>
-            Demo 002
+            Reade DnD Basic
           </Button>
           <Button href="/demo/dm0003" color="inherit" sx={{ ml: 1 }}>
             Demo 003

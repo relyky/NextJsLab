@@ -12,13 +12,21 @@ export default ({ title }) => {
         })
     }))
 
+    // // 官方制式 Dragging 表示法
+    // return isDragging ? (
+    //     <div className={styles.box} ref={dragPreview} style={{ opacity: 0.5 }}>
+    //         Dragging: {title} X
+    //     </div>
+    // ) : (
+    //     <div className={styles.box} ref={drag} style={{ opacity: 1 }}>
+    //         Drag Source: {title} 
+    //     </div>
+    // )
+
+    //## 一般來說不需要 dragPreview，可以簡化
     return (
-        <div className={styles.box} ref={dragPreview} style={{ opacity: isDragging ? 0.5 : 1 }}>
-            {/* This is optional. The dragPreview will be attached to the dragSource by default */}
-            {/* The drag ref marks this node as being the "pick-up" node */}
-            <div role="Handle" ref={drag} style={{ width: 160, height: 90, verticalAlign: 'middle' }}>
-                Drag Source: {title}
-            </div>
+        <div className={styles.box} ref={drag} style={{ opacity: isDragging ? 0.5 : 1 }}>
+            Drag Source: {title}
         </div>
     )
 }

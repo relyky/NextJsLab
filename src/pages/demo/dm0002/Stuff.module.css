@@ -1,4 +1,5 @@
 .box {
     border: solid 1px blue;
     background-color: aqua;
+    padding: 2em 1em;
 }
