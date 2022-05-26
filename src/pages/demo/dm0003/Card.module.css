@@ -1,0 +1,7 @@
+.card {
+    border: dashed thin gray;
+    padding: .5em 1em;
+    margin-bottom: .5em;
+    background-color: lightgray;
+    cursor: move;
+}

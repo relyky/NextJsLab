@@ -3,15 +3,8 @@ import type { FC } from 'react'
 import { useRef } from 'react'
 import { useDrag, useDrop } from 'react-dnd'
 
-import { ItemTypes } from './ItemTypes'
-
-const style = {
-    border: '1px dashed gray',
-    padding: '0.5rem 1rem',
-    marginBottom: '.5rem',
-    backgroundColor: 'white',
-    cursor: 'move',
-}
+import ItemTypes from './ItemTypes'
+import styles from './Card.module.css'
 
 export interface CardProps {
     id: any
@@ -26,38 +19,46 @@ interface DragItem {
     type: string
 }
 
+interface DropCollectedProps {
+    handlerId: Identifier | null
+    isOver: boolean
+    canDrop: boolean
+}
+
 export const Card: FC<CardProps> = ({ id, text, index, moveCard }) => {
     const ref = useRef<HTMLDivElement>(null)
 
-    const [{ handlerId }, drop] = useDrop<
+    const [{ handlerId, isOver, canDrop }, drop] = useDrop<
         DragItem,
         void,
-        { handlerId: Identifier | null }
+        DropCollectedProps
     >({
         accept: ItemTypes.CARD,
-        collect: (monitor) => {
-            return {
-                handlerId: monitor.getHandlerId(),
-            }
-        },
-        hover: (item: DragItem, monitor) => {
+        collect: (monitor) => ({
+            handlerId: monitor.getHandlerId(),
+            isOver: monitor.isOver(),
+            canDrop: monitor.canDrop()
+        }),
+        hover: (item, monitor) => {
             if (!ref.current) {
-                return
+                //console.log('useDrop', 'nil');
+                return;
             }
+
             const dragIndex = item.index
             const hoverIndex = index
 
             // Don't replace items with themselves
             if (dragIndex === hoverIndex) {
-                return
+                //console.log('useDrop', 'none', { dragIndex, hoverIndex });
+                return;
             }
 
             // Determine rectangle on screen
             const hoverBoundingRect = ref.current?.getBoundingClientRect()
 
             // Get vertical middle
-            const hoverMiddleY =
-                (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2
+            const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2
 
             // Determine mouse position
             const clientOffset = monitor.getClientOffset()
@@ -71,12 +72,14 @@ export const Card: FC<CardProps> = ({ id, text, index, moveCard }) => {
 
             // Dragging downwards
             if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
-                return
+                //console.log('useDrop', '↓', { dragIndex, hoverIndex });
+                return;
             }
 
             // Dragging upwards
             if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
-                return
+                //console.log('useDrop', '↑', { dragIndex, hoverIndex });
+                return;
             }
 
             // Time to actually perform the action
@@ -92,19 +95,21 @@ export const Card: FC<CardProps> = ({ id, text, index, moveCard }) => {
 
     const [{ isDragging }, drag] = useDrag({
         type: ItemTypes.CARD,
-        item: () => {
-            return { id, index }
-        },
-        collect: (monitor: any) => ({
+        item: { id, index },
+        collect: (monitor) => ({
             isDragging: monitor.isDragging(),
         }),
     })
 
-    const opacity = isDragging ? 0 : 1
-    drag(drop(ref))
+    drag(drop(ref)) //※ 尚不懂含義為何。
 
     return (
-        <div ref={ref} style={{ ...style, opacity }} data-handler-id={handlerId}>
+        <div className={styles.card} ref={ref} style={{ opacity: isDragging ? 0 : 1 }} data-handler-id={handlerId}>
+            <span>{handlerId}</span>
+            {isDragging && <span>{'[isDragging]'}</span>}
+            {canDrop && <span>{'[canDrop]'}</span>}
+            {isOver && <span>{'[isOver]'}</span>}
+            <br/>
             {text}
         </div>
     )

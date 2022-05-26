@@ -51,6 +51,16 @@ export const Container: FC = () => {
         ])
 
         const moveCard = useCallback((dragIndex: number, hoverIndex: number) => {
+
+            // Dragging downwards
+            if (dragIndex < hoverIndex) {
+                console.log('move↓', { dragIndex, hoverIndex });
+            } 
+            // Dragging upwards            
+            else if (dragIndex > hoverIndex) {
+                console.log('move↑', { dragIndex, hoverIndex });
+            }
+
             setCards((prevCards: Item[]) =>
                 update(prevCards, {
                     $splice: [
