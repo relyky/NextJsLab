@@ -3,6 +3,7 @@ import Head from 'next/head'
 
 import Counter from 'components/counter/Counter'
 import styles from 'styles/Home.module.css'
+//import 'styles/globals.css'
 
 const IndexPage: NextPage = () => {
   return (
