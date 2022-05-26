@@ -104,7 +104,7 @@ export const Card: FC<CardProps> = ({ id, text, index, moveCard }) => {
     drag(drop(ref)) //※ 尚不懂含義為何。
 
     return (
-        <div className={styles.card} ref={ref} style={{ opacity: isDragging ? 0 : 1 }} data-handler-id={handlerId}>
+        <div className={styles.card} ref={ref} style={{ opacity: isDragging ? .5 : 1 }} data-handler-id={handlerId}>
             <span>{handlerId}</span>
             {isDragging && <span>{'[isDragging]'}</span>}
             {canDrop && <span>{'[canDrop]'}</span>}
