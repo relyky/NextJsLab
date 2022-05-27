@@ -6,17 +6,13 @@ import { useDrag, useDrop } from 'react-dnd'
 import ItemTypes from './ItemTypes'
 import styles from './Card.module.css'
 
-export interface CardProps {
-    id: any
-    text: string
-    index: number
-    moveCard: (dragIndex: number, hoverIndex: number) => void
-}
-
 interface DragItem {
     index: number
     id: string
-    type: string
+}
+
+interface DragCollectedProps {
+    isDragging: boolean
 }
 
 interface DropCollectedProps {
@@ -25,7 +21,15 @@ interface DropCollectedProps {
     canDrop: boolean
 }
 
-export const Card: FC<CardProps> = ({ id, text, index, moveCard }) => {
+export interface CardProps {
+    id: any
+    text: string
+    index: number
+    moveCard: (dragIndex: number, hoverIndex: number) => void
+}
+
+// { id, text, index, moveCard }
+export const Card: FC<CardProps> = (props) => {
     const ref = useRef<HTMLDivElement>(null)
 
     const [{ handlerId, isOver, canDrop }, drop] = useDrop<
@@ -46,7 +50,7 @@ export const Card: FC<CardProps> = ({ id, text, index, moveCard }) => {
             }
 
             const dragIndex = item.index
-            const hoverIndex = index
+            const hoverIndex = props.index
 
             // Don't replace items with themselves
             if (dragIndex === hoverIndex) {
@@ -83,7 +87,7 @@ export const Card: FC<CardProps> = ({ id, text, index, moveCard }) => {
             }
 
             // Time to actually perform the action
-            moveCard(dragIndex, hoverIndex)
+            props.moveCard(dragIndex, hoverIndex)
 
             // Note: we're mutating the monitor item here!
             // Generally it's better to avoid mutations,
@@ -93,9 +97,13 @@ export const Card: FC<CardProps> = ({ id, text, index, moveCard }) => {
         },
     })
 
-    const [{ isDragging }, drag] = useDrag({
+    const [{ isDragging }, drag] = useDrag<
+        DragItem,
+        void,
+        DragCollectedProps  
+    >({
         type: ItemTypes.CARD,
-        item: { id, index },
+        item: { id: props.id, index: props.index },
         collect: (monitor) => ({
             isDragging: monitor.isDragging(),
         }),
@@ -110,7 +118,7 @@ export const Card: FC<CardProps> = ({ id, text, index, moveCard }) => {
             {canDrop && <span>{'[canDrop]'}</span>}
             {isOver && <span>{'[isOver]'}</span>}
             <br/>
-            {text}
+            {props.text}
         </div>
     )
 }
