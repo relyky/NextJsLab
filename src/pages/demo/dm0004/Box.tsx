@@ -3,7 +3,7 @@ import { memo } from 'react'
 
 const styles: CSSProperties = {
     border: '1px dashed gray',
-    padding: '0.5rem 1rem',
+    padding: '0.5em 1em',
     cursor: 'move',
 }
 

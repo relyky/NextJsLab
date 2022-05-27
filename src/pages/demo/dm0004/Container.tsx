@@ -3,9 +3,9 @@ import type { CSSProperties, FC } from 'react'
 import { useCallback, useState } from 'react'
 import { useDrop } from 'react-dnd'
 
-import { DraggableBox } from './DraggableBox'
+import { BoxDraggable } from './BoxDraggable'
 import type { DragItem } from './interfaces'
-import { ItemTypes } from './ItemTypes'
+import ItemTypes from './ItemTypes'
 import { snapToGrid as doSnapToGrid } from './snapToGrid'
 
 const styles: CSSProperties = {
@@ -67,7 +67,7 @@ export const Container: FC<ContainerProps> = ({ snapToGrid }) => {
   return (
     <div ref={drop} style={styles}>
       {Object.keys(boxes).map((key) => (
-        <DraggableBox
+        <BoxDraggable
           key={key}
           id={key}
           {...(boxes[key] as { top: number; left: number; title: string })}

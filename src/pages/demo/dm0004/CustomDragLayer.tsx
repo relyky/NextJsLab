@@ -3,7 +3,7 @@ import type { XYCoord } from 'react-dnd'
 import { useDragLayer } from 'react-dnd'
 
 import { BoxDragPreview } from './BoxDragPreview'
-import { ItemTypes } from './ItemTypes'
+import ItemTypes from './ItemTypes'
 import { snapToGrid } from './snapToGrid'
 
 const layerStyles: CSSProperties = {
@@ -14,6 +14,9 @@ const layerStyles: CSSProperties = {
   top: 0,
   width: '100%',
   height: '100%',
+  outline: 'solid 2px pink',
+  background: 'pink',
+  opacity: .5
 }
 
 function getItemStyles(
@@ -31,8 +34,8 @@ function getItemStyles(
 
   if (isSnapToGrid) {
     x -= initialOffset.x
-    y -= initialOffset.y
-    ;[x, y] = snapToGrid(x, y)
+    y -= initialOffset.y;
+    [x, y] = snapToGrid(x, y)
     x += initialOffset.x
     y += initialOffset.y
   }
@@ -70,6 +73,7 @@ export const CustomDragLayer: FC<CustomDragLayerProps> = (props) => {
   if (!isDragging) {
     return null
   }
+
   return (
     <div style={layerStyles}>
       <div
