@@ -25,6 +25,9 @@ function Banner() {
           <Button href="/demo/dm0003" color="inherit" sx={{ ml: 1 }}>
             Demo 003
           </Button>
+          <Button href="/demo/dm0004" color="inherit" sx={{ ml: 1 }}>
+            Demo 004
+          </Button>
         </Box>
         <Button color="inherit" sx={{ ml: 1 }}>
           Login
