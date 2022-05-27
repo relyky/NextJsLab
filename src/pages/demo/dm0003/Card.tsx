@@ -1,7 +1,8 @@
-import type { Identifier, XYCoord } from 'dnd-core'
 import type { FC } from 'react'
-import { useRef } from 'react'
+import type { Identifier, XYCoord } from 'dnd-core'
+import { useRef, useEffect } from 'react'
 import { useDrag, useDrop } from 'react-dnd'
+import { getEmptyImage } from 'react-dnd-html5-backend'
 
 import ItemTypes from './ItemTypes'
 import styles from './Card.module.css'
@@ -97,10 +98,10 @@ export const Card: FC<CardProps> = (props) => {
         },
     })
 
-    const [{ isDragging }, drag] = useDrag<
+    const [{ isDragging }, drag, dragPreview] = useDrag<
         DragItem,
         void,
-        DragCollectedProps  
+        DragCollectedProps
     >({
         type: ItemTypes.CARD,
         item: { id: props.id, index: props.index },
@@ -108,6 +109,11 @@ export const Card: FC<CardProps> = (props) => {
             isDragging: monitor.isDragging(),
         }),
     })
+
+    useEffect(() => {
+        // 效果：等同把預設 preview 移除，之後再用 BoxDragPreview 物件補上。
+        dragPreview(getEmptyImage(), { captureDraggingState: true })
+    }, [])
 
     drag(drop(ref)) //※ 尚不懂含義為何。
 
@@ -117,7 +123,7 @@ export const Card: FC<CardProps> = (props) => {
             {isDragging && <span>{'[isDragging]'}</span>}
             {canDrop && <span>{'[canDrop]'}</span>}
             {isOver && <span>{'[isOver]'}</span>}
-            <br/>
+            <br />
             {props.text}
         </div>
     )

@@ -55,7 +55,7 @@ export const Container: FC = () => {
             // Dragging downwards
             if (dragIndex < hoverIndex) {
                 console.log('move↓', { dragIndex, hoverIndex });
-            } 
+            }
             // Dragging upwards            
             else if (dragIndex > hoverIndex) {
                 console.log('move↑', { dragIndex, hoverIndex });
@@ -69,11 +69,11 @@ export const Container: FC = () => {
                     ],
                 }),
             )
-        }, [])
+        }, []);
 
-        const renderCard = useCallback(
-            (card: { id: number; text: string }, index: number) => {
-                return (
+        return (
+            <div style={style}>
+                {cards.map((card, index) => (
                     <Card
                         key={card.id}
                         index={index}
@@ -81,15 +81,8 @@ export const Container: FC = () => {
                         text={card.text}
                         moveCard={moveCard}
                     />
-                )
-            },
-            [],
-        )
-
-        return (
-            <>
-                <div style={style}>{cards.map((card, i) => renderCard(card, i))}</div>
-            </>
+                ))}
+            </div>
         )
     }
 }
