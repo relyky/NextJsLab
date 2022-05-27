@@ -21,7 +21,7 @@ export const CardPreview: FC<DragItem> = memo((props) => {
       className={clsx(ss.card, ss.preview)}
       style={{ backgroundColor: tickTock ? 'yellow' : 'lightgrey' }}
     >
-      <span>Preivew:{props.index}:{props.id}</span>
+      <span>Preivew:{props.originalIndex}:{props.id}</span>
       <br />
       {props.text}
     </div>

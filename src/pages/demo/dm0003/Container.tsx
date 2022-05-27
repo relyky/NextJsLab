@@ -1,88 +1,109 @@
 import update from 'immutability-helper'
-import type { FC } from 'react'
-import { useCallback, useState } from 'react'
+import type { FC, CSSProperties } from 'react'
+import { memo, useCallback, useState } from 'react'
+import { useDrop } from 'react-dnd'
 
 import { Card } from './Card'
+import ItemTypes from './ItemTypes'
 
-const style = {
-    width: 400,
+const style: CSSProperties = {
+  width: 400,
 }
 
-export interface Item {
-    id: number
-    text: string
+interface Item {
+  id: number
+  text: string
 }
 
 export interface ContainerState {
-    cards: Item[]
+  cards: Item[]
 }
 
-export const Container: FC = () => {
-    {
-        const [cards, setCards] = useState([
-            {
-                id: 1,
-                text: 'Write a cool JS library',
-            },
-            {
-                id: 2,
-                text: 'Make it generic enough',
-            },
-            {
-                id: 3,
-                text: 'Write README',
-            },
-            {
-                id: 4,
-                text: 'Create some examples',
-            },
-            {
-                id: 5,
-                text: 'Spam in Twitter and IRC to promote it (note that this element is taller than the others)',
-            },
-            {
-                id: 6,
-                text: '???',
-            },
-            {
-                id: 7,
-                text: 'PROFIT',
-            },
-        ])
+const ITEMS = [
+  {
+    id: 201,
+    text: 'Write a cool JS library',
+  },
+  {
+    id: 202,
+    text: 'Make it generic enough',
+  },
+  {
+    id: 203,
+    text: 'Write README',
+  },
+  {
+    id: 204,
+    text: 'Create some examples',
+  },
+  {
+    id: 205,
+    text: 'Spam in Twitter and IRC to promote it',
+  },
+  {
+    id: 206,
+    text: '???',
+  },
+  {
+    id: 207,
+    text: 'PROFIT',
+  },
+]
 
-        const moveCard = useCallback((dragIndex: number, hoverIndex: number) => {
+export const Container: FC = memo(() => {
+  const [cards, setCards] = useState(ITEMS)
 
-            // Dragging downwards
-            if (dragIndex < hoverIndex) {
-                console.log('move↓', { dragIndex, hoverIndex });
-            }
-            // Dragging upwards            
-            else if (dragIndex > hoverIndex) {
-                console.log('move↑', { dragIndex, hoverIndex });
-            }
+  const findCard = useCallback(
+    (id: string) => {
+      const card = cards.filter((c) => `${c.id}` === id)[0] as {
+        id: number
+        text: string
+      }
+      return {
+        card,
+        index: cards.indexOf(card),
+      }
+    },
+    [cards],
+  )
 
-            setCards((prevCards: Item[]) =>
-                update(prevCards, {
-                    $splice: [
-                        [dragIndex, 1],
-                        [hoverIndex, 0, prevCards[dragIndex] as Item],
-                    ],
-                }),
-            )
-        }, []);
+  const moveCard = useCallback(
+    (id: string, atIndex: number) => {
 
-        return (
-            <div style={style}>
-                {cards.map((card, index) => (
-                    <Card
-                        key={card.id}
-                        index={index}
-                        id={card.id}
-                        text={card.text}
-                        moveCard={moveCard}
-                    />
-                ))}
-            </div>
-        )
-    }
-}
+      // // Dragging downwards
+      // if (dragIndex < hoverIndex) {
+      //   console.log('move↓', { dragIndex, hoverIndex });
+      // }
+      // // Dragging upwards            
+      // else if (dragIndex > hoverIndex) {
+      //   console.log('move↑', { dragIndex, hoverIndex });
+      // }
+
+      const { card, index } = findCard(id)
+      setCards(
+        update(cards, {
+          $splice: [
+            [index, 1],
+            [atIndex, 0, card],
+          ],
+        }),
+      )
+    },
+    [findCard, cards, setCards],
+  )
+
+  const [, drop] = useDrop(() => ({ accept: ItemTypes.CARD }))
+  return (
+    <div ref={drop} style={style}>
+      {cards.map((card) => (
+        <Card
+          key={card.id}
+          id={`${card.id}`}
+          text={card.text}
+          moveCard={moveCard}
+          findCard={findCard}
+        />
+      ))}
+    </div>
+  )
+})
