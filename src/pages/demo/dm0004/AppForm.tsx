@@ -1,10 +1,49 @@
-//import { Container } from './Container'
+import type { FC } from 'react'
+import { useCallback, useState } from 'react'
 
-export default (props: object) => {
+import { Container } from './Container'
+import { CustomDragLayer } from './CustomDragLayer'
+
+const AppForm: FC = () => {
+  const [snapToGridAfterDrop, setSnapToGridAfterDrop] = useState(false)
+  const [snapToGridWhileDragging, setSnapToGridWhileDragging] = useState(false)
+
+  const handleSnapToGridAfterDropChange = useCallback(() => {
+    setSnapToGridAfterDrop(!snapToGridAfterDrop)
+  }, [snapToGridAfterDrop])
+
+  const handleSnapToGridWhileDraggingChange = useCallback(() => {
+    setSnapToGridWhileDragging(!snapToGridWhileDragging)
+  }, [snapToGridWhileDragging])
+
   return (
     <div>
-      <h1>DEMO-0004: React DnD Sortable List Lab</h1>
-
+      <h1>DEMO-0004: React DnD Custom Drag Layer Lab</h1>
+      <Container snapToGrid={snapToGridAfterDrop} />
+      <CustomDragLayer snapToGrid={snapToGridWhileDragging} />
+      <p>
+        <label htmlFor="snapToGridWhileDragging">
+          <input
+            id="snapToGridWhileDragging"
+            type="checkbox"
+            checked={snapToGridWhileDragging}
+            onChange={handleSnapToGridWhileDraggingChange}
+          />
+          <small>Snap to grid while dragging</small>
+        </label>
+        <br />
+        <label htmlFor="snapToGridAfterDrop">
+          <input
+            id="snapToGridAfterDrop"
+            type="checkbox"
+            checked={snapToGridAfterDrop}
+            onChange={handleSnapToGridAfterDropChange}
+          />
+          <small>Snap to grid after drop</small>
+        </label>
+      </p>
     </div>
   )
 }
+
+export default AppForm
