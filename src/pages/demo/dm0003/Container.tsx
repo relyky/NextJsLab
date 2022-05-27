@@ -62,10 +62,10 @@ export const Container: FC = memo(() => {
   )
 
   const moveCard = useCallback(
-    (id: string, atIndex: number, by: string) => {
-      console.log('moveCard', {id, atIndex, by})
+    (id: string, atIndex: number, from: number, by: string) => {
+      console.log('moveCard', { id, atIndex, from, by })
 
-      const { card, index } = findCard(id)      
+      const { card, index } = findCard(id)
       setCardList(
         update(cardList, {
           $splice: [
@@ -79,7 +79,7 @@ export const Container: FC = memo(() => {
   )
 
   return (
-    <div  style={style}>
+    <div style={style}>
       {cardList.map((card) => (
         <Card
           key={card.id}
