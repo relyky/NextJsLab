@@ -9,8 +9,8 @@ import ItemTypes from './ItemTypes'
 import { snapToGrid as doSnapToGrid } from './snapToGrid'
 
 const styles: CSSProperties = {
-  width: 300,
-  height: 300,
+  width: 600,
+  height: 400,
   border: '1px solid black',
   position: 'relative',
 }
@@ -19,11 +19,16 @@ export interface ContainerProps {
   snapToGrid: boolean
 }
 
+interface DropCollectedProps {
+  isOver: boolean
+  canDrop: boolean
+}
+
 interface BoxMap {
   [key: string]: { top: number; left: number; title: string }
 }
 
-export const Container: FC<ContainerProps> = ({ snapToGrid }) => {
+export const Container: FC<ContainerProps> = (props) => {
   const [boxes, setBoxes] = useState<BoxMap>({
     a: { top: 20, left: 80, title: 'Drag me around' },
     b: { top: 180, left: 20, title: 'Drag me too' },
@@ -42,30 +47,35 @@ export const Container: FC<ContainerProps> = ({ snapToGrid }) => {
     [boxes],
   )
 
-  const [, drop] = useDrop(
-    () => ({
-      accept: ItemTypes.BOX,
-      drop(item: DragItem, monitor) {
-        const delta = monitor.getDifferenceFromInitialOffset() as {
-          x: number
-          y: number
-        }
+  const [{ isOver, canDrop }, drop] = useDrop<DragItem, void, DropCollectedProps>(() => ({
+    accept: ItemTypes.BOX,
+    drop(item, monitor) {
+      const delta = monitor.getDifferenceFromInitialOffset() as {
+        x: number
+        y: number
+      }
 
-        let left = Math.round(item.left + delta.x)
-        let top = Math.round(item.top + delta.y)
-        if (snapToGrid) {
-          ;[left, top] = doSnapToGrid(left, top)
-        }
+      let left = Math.round(item.left + delta.x)
+      let top = Math.round(item.top + delta.y)
+      if (props.snapToGrid) {
+        [left, top] = doSnapToGrid(left, top)
+      }
 
-        moveBox(item.id, left, top)
-        return undefined
-      },
-    }),
-    [moveBox],
+      moveBox(item.id, left, top)
+    },
+    collect: (monitor) => ({
+      isOver: monitor.isOver(),
+      canDrop: monitor.canDrop()
+    })
+  }),
+    [moveBox]
   )
 
   return (
     <div ref={drop} style={styles}>
+      {isOver && <span style={{ float: 'right' }}>{'[isOver]'}</span>}
+      {canDrop && <span style={{ float: 'right' }}>{'[canDrop]'}</span>}
+      
       {Object.keys(boxes).map((key) => (
         <BoxDraggable
           key={key}

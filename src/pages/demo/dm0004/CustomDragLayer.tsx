@@ -14,7 +14,6 @@ const layerStyles: CSSProperties = {
   top: 0,
   width: '100%',
   height: '100%',
-  outline: 'solid 2px pink',
   background: 'pink',
   opacity: .5
 }
