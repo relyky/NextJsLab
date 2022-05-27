@@ -18,6 +18,7 @@ const layerStyles: CSSProperties = {
   opacity: .5
 }
 
+/// 計算移動位移
 function getItemStyles(
   initialOffset: XYCoord | null,
   currentOffset: XYCoord | null,

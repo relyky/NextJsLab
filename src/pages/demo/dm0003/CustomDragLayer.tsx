@@ -17,33 +17,15 @@ const layerStyles: CSSProperties = {
   //opacity: .5
 }
 
-function snapToGrid(x: number, y: number): [number, number] {
-  const snappedX = Math.round(x / 32) * 32
-  const snappedY = Math.round(y / 32) * 32
-  return [snappedX, snappedY]
-}
-
 /// 計算移動位移
-function calcItemMovingStyles(
-  initialOffset: XYCoord | null,
-  currentOffset: XYCoord | null,
-  isSnapToGrid: boolean,
-) {
+function calcItemMovingStyles(initialOffset: XYCoord | null, currentOffset: XYCoord | null) {
   if (!initialOffset || !currentOffset) {
     return {
       display: 'none',
     }
   }
 
-  let { x, y } = currentOffset
-
-  if (isSnapToGrid) {
-    x -= initialOffset.x
-    y -= initialOffset.y;
-    [x, y] = snapToGrid(x, y)
-    x += initialOffset.x
-    y += initialOffset.y
-  }
+  const { x, y } = currentOffset
 
   const transform = `translate(${x}px, ${y}px)`
   return {
@@ -52,18 +34,14 @@ function calcItemMovingStyles(
   }
 }
 
-export interface CustomDragLayerProps {
-  snapToGrid?: boolean
-}
-
-export const CustomDragLayer: FC<CustomDragLayerProps> = (props) => {
+export const CustomDragLayer: FC = (props) => {
   const { itemType, isDragging, item, initialOffset, currentOffset } =
     useDragLayer((monitor) => ({
-      item: monitor.getItem(),
       itemType: monitor.getItemType(),
+      isDragging: monitor.isDragging(),
+      item: monitor.getItem(),
       initialOffset: monitor.getInitialSourceClientOffset(),
       currentOffset: monitor.getSourceClientOffset(),
-      isDragging: monitor.isDragging(),
     }))
 
   function renderItem() {
@@ -81,7 +59,7 @@ export const CustomDragLayer: FC<CustomDragLayerProps> = (props) => {
 
   return (
     <div style={layerStyles}>
-      <div style={calcItemMovingStyles(initialOffset, currentOffset, props.snapToGrid)} >
+      <div style={calcItemMovingStyles(initialOffset, currentOffset)} >
         {renderItem()}
       </div>
     </div>

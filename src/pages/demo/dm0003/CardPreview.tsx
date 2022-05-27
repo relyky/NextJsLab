@@ -12,12 +12,8 @@ const styles: CSSProperties = {
   width: 400,
 }
 
-//export interface CardPreviewProps {
-//  title: string
-//}
-
 export const CardPreview: FC<DragItem> = memo((props) => {
-  const [tickTock, setTickTock] = useState(false)
+  const [tickTock, setTickTock] = useState(true)
 
   useEffect(() => {
     // subscribe to interval tick tock.
@@ -27,17 +23,9 @@ export const CardPreview: FC<DragItem> = memo((props) => {
     [tickTock]
   )
 
-  // return (
-  //   <div style={{ ...styles, backgroundColor: tickTock ? 'yellow' : 'lightgrey' }}>
-  //     <span>Preivew: </span>
-  //     <span>id{props.id}:index{props.index}</span>
-  //     <span>{props.text}</span>
-  //   </div>
-  // )
-
   return (
-    <div className={clsx.card} style={styles} >
-      <span>{props.index}:{props.id}</span>
+    <div className={clsx.card} style={{ ...styles, backgroundColor: tickTock ? 'yellow' : 'lightgrey' }} >
+      <span>Preivew:{props.index}:{props.id}</span>
       <br />
       {props.text}
     </div>
