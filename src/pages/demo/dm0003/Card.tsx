@@ -20,21 +20,16 @@ interface CardDropCollected {
 interface CardProps {
   id: string
   text: string
-  moveCard: (id: string, to: number) => void
+  moveCard: (id: string, to: number, by: string) => void
   findCard: (id: string) => { index: number }
 }
 
-export const Card: FC<CardProps> = memo(({
-  id,
-  text,
-  moveCard,
-  findCard,
-}) => {
-  const originalIndex = findCard(id).index
+export const Card: FC<CardProps> = memo(props => {
+  const originalIndex = props.findCard(props.id).index
   const [{ isDragging }, drag] = useDrag<DragItem, void, CardDragCollected>(
     () => ({
       type: ItemTypes.CARD,
-      item: { id, originalIndex, text },
+      item: { id: props.id, originalIndex, text: props.text },
       collect: (monitor) => ({
         isDragging: monitor.isDragging(),
       }),
@@ -42,20 +37,20 @@ export const Card: FC<CardProps> = memo(({
         const { id: droppedId, originalIndex } = item
         const didDrop = monitor.didDrop()
         if (!didDrop) {
-          moveCard(droppedId, originalIndex)
+          props.moveCard(droppedId, originalIndex, 'end')
         }
       },
     }),
-    [id, originalIndex, moveCard]
+    [props.id, originalIndex, props.moveCard]
   )
 
   const [{ handlerId, isOver, canDrop }, drop] = useDrop<DragItem, void, CardDropCollected>(
     () => ({
       accept: ItemTypes.CARD,
       hover({ id: draggedId }) {
-        if (draggedId !== id) {
-          const { index: overIndex } = findCard(id)
-          moveCard(draggedId, overIndex)
+        if (draggedId !== props.id) {
+          const { index: overIndex } = props.findCard(props.id)
+          props.moveCard(draggedId, overIndex, 'hover')
         }
       },
       collect: (monitor) => ({
@@ -64,18 +59,21 @@ export const Card: FC<CardProps> = memo(({
         canDrop: monitor.canDrop()
       }),
     }),
-    [findCard, moveCard]
+    [props.findCard, props.moveCard]
   )
 
-  const opacity = isDragging ? 0.5 : 1
   return (
-    <div className={ss.card} ref={(node) => drag(drop(node))} style={{ opacity }}>
-      <span>{handlerId}:{originalIndex}:{id}</span>
+    <div
+      ref={(node) => drag(drop(node))}
+      className={ss.card}
+      style={{ opacity: isDragging ? .5 : 1 }}
+    >
+      <span>{handlerId}:{originalIndex}:{props.id}</span>
       {isDragging && <span>{'[isDragging]'}</span>}
       {canDrop && <span>{'[canDrop]'}</span>}
       {isOver && <span>{'[isOver]'}</span>}
       <br />
-      {text}
+      {props.text}
     </div>
   )
 })

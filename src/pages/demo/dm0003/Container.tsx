@@ -1,10 +1,8 @@
 import update from 'immutability-helper'
 import type { FC, CSSProperties } from 'react'
 import { memo, useCallback, useState } from 'react'
-import { useDrop } from 'react-dnd'
 
 import { Card } from './Card'
-import ItemTypes from './ItemTypes'
 
 const style: CSSProperties = {
   width: 400,
@@ -13,10 +11,6 @@ const style: CSSProperties = {
 interface Item {
   id: number
   text: string
-}
-
-export interface ContainerState {
-  cards: Item[]
 }
 
 const ITEMS = [
@@ -51,37 +45,29 @@ const ITEMS = [
 ]
 
 export const Container: FC = memo(() => {
-  const [cards, setCards] = useState(ITEMS)
+  const [cardList, setCardList] = useState<Item[]>(ITEMS)
 
   const findCard = useCallback(
     (id: string) => {
-      const card = cards.filter((c) => `${c.id}` === id)[0] as {
+      const card = cardList.filter((c) => `${c.id}` === id)[0] as {
         id: number
         text: string
       }
       return {
         card,
-        index: cards.indexOf(card),
+        index: cardList.indexOf(card),
       }
     },
-    [cards],
+    [cardList],
   )
 
   const moveCard = useCallback(
-    (id: string, atIndex: number) => {
+    (id: string, atIndex: number, by: string) => {
+      console.log('moveCard', {id, atIndex, by})
 
-      // // Dragging downwards
-      // if (dragIndex < hoverIndex) {
-      //   console.log('move↓', { dragIndex, hoverIndex });
-      // }
-      // // Dragging upwards            
-      // else if (dragIndex > hoverIndex) {
-      //   console.log('move↑', { dragIndex, hoverIndex });
-      // }
-
-      const { card, index } = findCard(id)
-      setCards(
-        update(cards, {
+      const { card, index } = findCard(id)      
+      setCardList(
+        update(cardList, {
           $splice: [
             [index, 1],
             [atIndex, 0, card],
@@ -89,13 +75,12 @@ export const Container: FC = memo(() => {
         }),
       )
     },
-    [findCard, cards, setCards],
+    [findCard, cardList, setCardList],
   )
 
-  const [, drop] = useDrop(() => ({ accept: ItemTypes.CARD }))
   return (
-    <div ref={drop} style={style}>
-      {cards.map((card) => (
+    <div  style={style}>
+      {cardList.map((card) => (
         <Card
           key={card.id}
           id={`${card.id}`}
