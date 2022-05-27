@@ -1,16 +1,11 @@
 import type { FC } from 'react'
 import type { Identifier, XYCoord } from 'dnd-core'
+import type { DragItem } from './interface'
 import { useRef, useEffect } from 'react'
 import { useDrag, useDrop } from 'react-dnd'
 import { getEmptyImage } from 'react-dnd-html5-backend'
-
 import ItemTypes from './ItemTypes'
 import styles from './Card.module.css'
-
-interface DragItem {
-    index: number
-    id: string
-}
 
 interface DragCollectedProps {
     isDragging: boolean
@@ -104,7 +99,7 @@ export const Card: FC<CardProps> = (props) => {
         DragCollectedProps
     >({
         type: ItemTypes.CARD,
-        item: { id: props.id, index: props.index },
+        item: { id: props.id, index: props.index, text: props.text },
         collect: (monitor) => ({
             isDragging: monitor.isDragging(),
         }),
@@ -119,7 +114,7 @@ export const Card: FC<CardProps> = (props) => {
 
     return (
         <div className={styles.card} ref={ref} style={{ opacity: isDragging ? .5 : 1 }} data-handler-id={handlerId}>
-            <span>{handlerId}</span>
+            <span>{handlerId}:{props.index}:{props.id}</span>
             {isDragging && <span>{'[isDragging]'}</span>}
             {canDrop && <span>{'[canDrop]'}</span>}
             {isOver && <span>{'[isOver]'}</span>}

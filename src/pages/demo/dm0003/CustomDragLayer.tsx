@@ -23,7 +23,8 @@ function snapToGrid(x: number, y: number): [number, number] {
   return [snappedX, snappedY]
 }
 
-function getItemStyles(
+/// 計算移動位移
+function calcItemMovingStyles(
   initialOffset: XYCoord | null,
   currentOffset: XYCoord | null,
   isSnapToGrid: boolean,
@@ -52,7 +53,7 @@ function getItemStyles(
 }
 
 export interface CustomDragLayerProps {
-  snapToGrid: boolean
+  snapToGrid?: boolean
 }
 
 export const CustomDragLayer: FC<CustomDragLayerProps> = (props) => {
@@ -68,7 +69,7 @@ export const CustomDragLayer: FC<CustomDragLayerProps> = (props) => {
   function renderItem() {
     switch (itemType) {
       case ItemTypes.CARD:
-        return <CardPreview title={item.title} />
+        return <CardPreview {...item} />
       default:
         return null
     }
@@ -80,9 +81,7 @@ export const CustomDragLayer: FC<CustomDragLayerProps> = (props) => {
 
   return (
     <div style={layerStyles}>
-      <div
-        style={getItemStyles(initialOffset, currentOffset, props.snapToGrid)}
-      >
+      <div style={calcItemMovingStyles(initialOffset, currentOffset, props.snapToGrid)} >
         {renderItem()}
       </div>
     </div>
