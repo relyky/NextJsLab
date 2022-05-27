@@ -5,3 +5,12 @@
     background-color: lightgray;
     cursor: move;
 }
+
+.preview {
+    display: inline-block;
+    transform: rotate(-7deg);
+    -webkit-transform: rotate(-7deg);
+    border: dashed 2px red;
+    opacity: .7;
+    width: 400px;
+}
