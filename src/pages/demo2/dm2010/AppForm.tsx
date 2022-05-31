@@ -1,8 +1,10 @@
 import { useState } from 'react'
 import { Box, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Button } from '@mui/material'
-import { H3 } from 'components/highorder'
+import { H3, AButton } from 'components/highorder'
 import InboxIcon from '@mui/icons-material/Inbox'
 import DraftsIcon from '@mui/icons-material/Drafts'
+
+import TreeContainer from './TreeContainer'
 
 //import styles from 'styles/Home.module.css'
 
@@ -17,8 +19,9 @@ export default (props) => {
         <Box>
             <H3>DM2010</H3>
             <pre>selectedIndex:{selectedIndex}</pre>
+            <AButton label='測試' mutant='primary' onClick={handleClick} />
 
-            <Button onClick={handleClick}>aaa</Button>
+            <TreeContainer />
 
             <List>
                 <ListItem disablePadding>

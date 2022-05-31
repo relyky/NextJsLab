@@ -1,10 +1,14 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit'
-
-import counterReducer from '../components/counter/counterSlice'
+// customized reducers
+import counterReducer from 'components/counter/counterSlice'
+import decisionTreeReducer from 'pages/demo2/dm2010/decisionTreeSlice'
 
 export function makeStore() {
   return configureStore({
-    reducer: { counter: counterReducer },
+    reducer: { 
+      counter: counterReducer,
+      decisionTree:  decisionTreeReducer,
+    },
   })
 }
 
