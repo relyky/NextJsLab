@@ -17,6 +17,7 @@ const StatementCard: FC<{
   const { isElse, cond, action } = props.item
 
   const isTreeAction = !isDcsAssignment(action)
+  const toggleShow = () => setShowFlag(f => !f)
 
   return (
     <div>
@@ -26,7 +27,7 @@ const StatementCard: FC<{
             <WhenIcon sx={{ mr: 1 }} />
             <Box flexGrow={1}>否則</Box>
 
-            {isTreeAction && <Switch checked={f_show} onChange={_ => setShowFlag(f => !f)} />}
+            {isTreeAction && <IconButton onClick={toggleShow} color={f_show ? 'primary' : 'default'}>{f_show ? <OnIcon /> : <OffIcon />}</IconButton>}
 
           </Box>
         </Paper>
@@ -36,7 +37,7 @@ const StatementCard: FC<{
             <WhenIcon sx={{ mr: 1 }} />
             <Box flexGrow={1}>當 {cond.fdName} {codeName(cond.cmpAct)} {cond.cmpValue}, {cond.fdNote}</Box>
 
-            {isTreeAction && <Switch checked={f_show} onChange={_ => setShowFlag(f => !f)} />}
+            {isTreeAction && <IconButton onClick={toggleShow} color={f_show ? 'primary' : 'default'}>{f_show ? <OnIcon /> : <OffIcon />}</IconButton>}
 
             <IconButton color="primary">
               <MoreIcon />
