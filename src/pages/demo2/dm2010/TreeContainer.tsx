@@ -3,8 +3,7 @@ import { useState } from 'react'
 import { useAppSelector, useAppDispatch } from 'hooks/hooks'
 import { add } from './decisionTreeSlice'
 
-import StatementCard from './StatementCard'
-
+import TreeContent from './TreeContent'
 
 // TreeContainer
 export default (props) => {
@@ -13,9 +12,7 @@ export default (props) => {
 
     return (
         <div>
-            {decisionTree.map((item, index) => 
-                <StatementCard key={index} item={item} />
-            )}
+            <TreeContent decisionTree={decisionTree} />
         </div>
     )
 }

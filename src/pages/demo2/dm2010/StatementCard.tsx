@@ -1,6 +1,7 @@
 import type { FC } from 'react'
 import type { DcsStatement, DcsAssignment, DecisionTreeState } from './decisionTreeSlice'
 import { isDcsAssignment } from './decisionTreeSlice'
+import TreeContent from './TreeContent'
 
 const StatementCard: FC<{
   item: DcsStatement
@@ -10,7 +11,8 @@ const StatementCard: FC<{
   return (
     <div>
       {isElse ?
-        <div>否則</div> :
+        <div>否則</div>
+        :
         <div>
           當 {cond.fdName} {codeName(cond.cmpAct)} {cond.cmpValue}, {cond.fdNote}
         </div>
@@ -19,10 +21,11 @@ const StatementCard: FC<{
       {isDcsAssignment(action) ?
         <div style={{ marginLeft: '2em' }}>
           值為 {action.retValue}, {action.fdNote}
-        </div> :
-        <pre>
-          {JSON.stringify(action, null, ' ')}
-        </pre>
+        </div>
+        :
+        <div style={{ paddingLeft: '2em' }}>
+          <TreeContent decisionTree={action} />
+        </div>
       }
     </div>
   )

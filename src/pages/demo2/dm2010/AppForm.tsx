@@ -17,7 +17,7 @@ export default (props) => {
 
     return (
         <Box>
-            <H3>DM2010</H3>
+            <H3>DM2010: Decision Tree UI 畫面試作</H3>
             <pre>selectedIndex:{selectedIndex}</pre>
             <AButton label='測試' mutant='primary' onClick={handleClick} />
 
