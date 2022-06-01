@@ -1,23 +1,30 @@
-import type { FC } from 'react'
+import { FC, useEffect } from 'react'
 import type { DcsStatement } from './decisionTreeSlice'
-import { useState, useMemo } from 'react'
-import { Paper, Box, Switch, Collapse, IconButton } from '@mui/material'
+import { useState } from 'react'
+import { Paper, Box, Collapse, IconButton, Button } from '@mui/material'
+import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@mui/material'
+import { TextField } from '@mui/material'
+
 import { isDcsAssignment } from './decisionTreeSlice'
 import TreeContent from './TreeContent'
 
 import WhenIcon from '@mui/icons-material/PlaylistAddCheckOutlined'
 import MoreIcon from '@mui/icons-material/MoreVert'
-import OnIcon from '@mui/icons-material/VisibilityOutlined';
-import OffIcon from '@mui/icons-material/VisibilityOffOutlined';
+import OnIcon from '@mui/icons-material/VisibilityOutlined'
+import OffIcon from '@mui/icons-material/VisibilityOffOutlined'
+import EditIcon from '@mui/icons-material/EditRounded'
 
 const StatementCard: FC<{
   item: DcsStatement
 }> = props => {
-  const [f_show, setShowFlag] = useState(true)
   const { isElse, cond, action } = props.item
 
+  const [f_showDetail, setShowDetail] = useState(true)
+  const [f_showCond, setShowCond] = useState(false)
+
+  const toggleShowDetail = () => setShowDetail(f => !f)
+
   const isTreeAction = !isDcsAssignment(action)
-  const toggleShow = () => setShowFlag(f => !f)
 
   return (
     <div>
@@ -27,7 +34,11 @@ const StatementCard: FC<{
             <WhenIcon sx={{ mr: 1 }} />
             <Box flexGrow={1}>否則</Box>
 
-            {isTreeAction && <IconButton onClick={toggleShow} color={f_show ? 'primary' : 'default'}>{f_show ? <OnIcon /> : <OffIcon />}</IconButton>}
+            {isTreeAction &&
+              <IconButton onClick={toggleShowDetail} color={f_showDetail ? 'primary' : 'default'}>
+                {f_showDetail ? <OnIcon /> : <OffIcon />}
+              </IconButton>
+            }
 
           </Box>
         </Paper>
@@ -37,7 +48,15 @@ const StatementCard: FC<{
             <WhenIcon sx={{ mr: 1 }} />
             <Box flexGrow={1}>當 {cond.fdName} {codeName(cond.cmpAct)} {cond.cmpValue}, {cond.fdNote}</Box>
 
-            {isTreeAction && <IconButton onClick={toggleShow} color={f_show ? 'primary' : 'default'}>{f_show ? <OnIcon /> : <OffIcon />}</IconButton>}
+            {isTreeAction &&
+              <IconButton onClick={toggleShowDetail} color={f_showDetail ? 'primary' : 'default'}>
+                {f_showDetail ? <OnIcon /> : <OffIcon />}
+              </IconButton>
+            }
+
+            <IconButton onClick={() => setShowCond(true)} color={'primary'}>
+              <EditIcon />
+            </IconButton>
 
             <IconButton color="primary">
               <MoreIcon />
@@ -46,7 +65,7 @@ const StatementCard: FC<{
         </Paper>
       }
 
-      <Collapse in={f_show} >
+      <Collapse in={f_showDetail} >
         {isDcsAssignment(action) ?
           <Box sx={{ m: 1, pl: '2em' }}>
             <Paper sx={{ m: 1, p: 1 }} elevation={0}>
@@ -59,6 +78,13 @@ const StatementCard: FC<{
           </Box>
         }
       </Collapse>
+
+      <CondEditDialog
+        open={f_showCond}
+        item={cond}
+        onCancel={() => setShowCond(false)}
+        onOk={() => setShowCond(false)}
+      />
 
     </div>
   )
@@ -76,4 +102,46 @@ function codeName(code: string) {
             : code === 'eq' ? '='
               : code === 'in' ? 'in'
                 : ''
+}
+
+//---------------------------
+const CondEditDialog: FC<{
+  open: boolean,
+  item: object,
+  onCancel: () => void,
+  onOk: (info: object) => void,
+}> = props => {
+
+  const [info, setInfo] = useState(null)
+
+  useEffect(() => {
+    if (open) {
+      setInfo({ ...props.item })
+    }
+  }, [props.open])
+
+  return (
+    <Dialog open={props.open} onClose={() => props.onCancel()}>
+      <DialogTitle>Subscribe</DialogTitle>
+      <DialogContent>
+        <DialogContentText>
+          To subscribe to this website, please enter your email address here. We
+          will send updates occasionally.
+        </DialogContentText>
+        <TextField
+          autoFocus
+          margin="dense"
+          id="name"
+          label="Email Address"
+          type="email"
+          fullWidth
+          variant="standard"
+        />
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={() => props.onCancel()}>取消</Button>
+        <Button variant='contained' onClick={() => props.onOk(info)}>確認</Button>
+      </DialogActions>
+    </Dialog>
+  )
 }
