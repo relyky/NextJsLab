@@ -1,4 +1,5 @@
 import type { AppState, AppThunk } from 'store/store'
+import type { DcsCondision, DcsAssignment, DcsStatement, DecisionTreeState } from './interfaces'
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import assert from 'assert'
 
@@ -7,29 +8,9 @@ import assert from 'assert'
 //DecisionAction := Assignment | DecisionTree
 //ElseStatemnet  := Special-Statement
 
-export interface Condision {
-  fdNote: string
-  fdName: string
-  cmpAct: 'gt' | 'ls' | 'ge' | 'le' | 'eq' | 'in'
-  cmpValue: string | number | boolean
-}
-
-export interface DcsAssignment {
-  fdNote: string
-  retValue: string | number | boolean
-}
-
 export function isDcsAssignment(obj: any): obj is DcsAssignment {
   return 'fdNote' in obj && 'retValue' in obj;
 }
-
-export interface DcsStatement {
-  isElse: boolean
-  cond: Condision
-  action: DcsAssignment | DecisionTreeState
-}
-
-export type DecisionTreeState = DcsStatement[]
 
 const initialState: DecisionTreeState = [
   {

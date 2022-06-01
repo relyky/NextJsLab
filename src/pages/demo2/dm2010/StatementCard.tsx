@@ -1,5 +1,5 @@
+import type { DcsStatement, DcsCondision } from './interfaces'
 import { FC, useEffect } from 'react'
-import type { DcsStatement } from './decisionTreeSlice'
 import { useState } from 'react'
 import { Paper, Box, Collapse, IconButton, Button } from '@mui/material'
 import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@mui/material'
@@ -81,7 +81,7 @@ const StatementCard: FC<{
 
       <CondEditDialog
         open={f_showCond}
-        item={cond}
+        cond={cond}
         onCancel={() => setShowCond(false)}
         onOk={() => setShowCond(false)}
       />
@@ -107,36 +107,75 @@ function codeName(code: string) {
 //---------------------------
 const CondEditDialog: FC<{
   open: boolean,
-  item: object,
+  cond: DcsCondision,
   onCancel: () => void,
   onOk: (info: object) => void,
 }> = props => {
-
-  const [info, setInfo] = useState(null)
+  const { open, cond } = props
+  const [info, setInfo] = useState<DcsCondision>({ fdNote: '', fdName: '', cmpAct: 'eq', cmpValue: '' })
 
   useEffect(() => {
     if (open) {
-      setInfo({ ...props.item })
+      setInfo({ ...cond })
     }
-  }, [props.open])
+  }, [open])
 
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const name = event.target.name
+    const value = event.target.value
+    setInfo({ ...info, [name]: value })
+  }
+
+  console.log('CondEditDialog', { cond })
   return (
     <Dialog open={props.open} onClose={() => props.onCancel()}>
-      <DialogTitle>Subscribe</DialogTitle>
+      <DialogTitle>編輯條件</DialogTitle>
       <DialogContent>
         <DialogContentText>
-          To subscribe to this website, please enter your email address here. We
-          will send updates occasionally.
+          選取節點：當 {cond?.fdName} {codeName(cond?.cmpAct)} {cond?.cmpValue}, {cond?.fdNote}
         </DialogContentText>
+
         <TextField
+          label="說明"
+          name="fdNode"
+          value={info.fdNote}
+          onChange={handleChange}
           autoFocus
-          margin="dense"
-          id="name"
-          label="Email Address"
-          type="email"
           fullWidth
           variant="standard"
+          margin="normal"
         />
+
+        <TextField
+          label="欄位"
+          name="fdName"
+          value={info.fdName}
+          onChange={handleChange}
+          fullWidth
+          variant="standard"
+          margin="normal"
+        />
+
+        <TextField
+          label="比對"
+          name="cmpAct"
+          value={info.cmpAct}
+          onChange={handleChange}
+          fullWidth
+          variant="standard"
+          margin="normal"
+        />
+
+        <TextField
+          label="設定值"
+          name="cmpValue"
+          value={info.cmpValue}
+          onChange={handleChange}
+          fullWidth
+          variant="standard"
+          margin="normal"
+        />
+
       </DialogContent>
       <DialogActions>
         <Button onClick={() => props.onCancel()}>取消</Button>
