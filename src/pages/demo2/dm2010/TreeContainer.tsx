@@ -12,7 +12,7 @@ export default (props) => {
 
     return (
         <div>
-            <TreeContent decisionTree={decisionTree} />
+            <TreeContent parent={null} decisionTree={decisionTree} />
         </div>
     )
 }

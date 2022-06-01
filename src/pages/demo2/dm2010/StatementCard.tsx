@@ -55,7 +55,7 @@ const StatementCard: FC<{
           </Box>
           :
           <Box sx={{ m: 1, pl: '2em' }}>
-            <TreeContent decisionTree={action} />
+            <TreeContent parent={props.item} decisionTree={action} />
           </Box>
         }
       </Collapse>

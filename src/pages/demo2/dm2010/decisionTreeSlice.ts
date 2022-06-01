@@ -61,31 +61,31 @@ const initialState: DecisionTreeState = [
   {
     isElse: false,
     cond: {
-      fdNote: '信用小白(沒有JCIC紀錄申請)',
-      fdName: 'Small_White',
-      cmpAct: 'eq',
-      cmpValue: 'Y',
+      fdNote: 'Customer Segment',
+      fdName: '職稱',
+      cmpAct: 'in',
+      cmpValue: "'16','29','36','34'",
     },
     action: [
       {
         isElse: false,
         cond: {
-          fdNote: '是否為DBS員工',
-          fdName: 'Staff',
-          cmpAct: 'gt',
-          cmpValue: 2000,
+          fdNote: 'Customer Segment',
+          fdName: '客戶層級',
+          cmpAct: 'eq',
+          cmpValue: 'VIP',
         },
         action: {
-          fdNote: '是否為DBS員工',
-          retValue: 'Y'
+          fdNote: '',
+          retValue: 'Z'
         }
       },
       {
         isElse: true,
         cond: null,
         action: {
-          fdNote: '是否為DBS員工',
-          retValue: 'Y'
+          fdNote: '來賓層級',
+          retValue: 'GUEST'
         }
       },
     ]
@@ -107,7 +107,7 @@ export const decisionTreeSlice = createSlice({
     add: (state, action: PayloadAction<DcsStatement>) => {
       const len = state.length
       assert(len > 0, 'decisionTree 筆數不可少於１筆。')
-      state.splice(len, 0, action.payload)
+      state.splice(len - 1, 0, action.payload)
     },
     updateByIndex: (state, action: PayloadAction<{ item: DcsStatement, index: bigint }>) => {
       const { item, index } = action.payload
