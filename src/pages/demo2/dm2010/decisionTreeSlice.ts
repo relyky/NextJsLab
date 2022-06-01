@@ -98,10 +98,39 @@ export const decisionTreeSlice = createSlice({
     removeByIndex: (state, action: PayloadAction<number>) => {
       state.splice(action.payload, 1)
     },
+    newStatement(state, action: PayloadAction<{ path: number[] }>) {
+      /// 新增一筆條件陳述
+
+      const { path } = action.payload
+
+      let branch = state
+      path.forEach(i => {
+        branch = branch[i].action as WritableDraft<DcsStatement>[]
+      });
+
+      // 新增一筆空白陳述。
+      const newItem: DcsStatement = {
+        isElse: false,
+        cond: {
+          fdName: 'NewTest',
+          fdNote: '新測試欄位',
+          cmpAct: 'eq',
+          cmpValue: '新比較值'
+        },
+        action: {
+          fdNote: '新結果',
+          retValue: '新回傳值'
+        }
+      }
+
+      const len = branch.length
+      assert(len > 0, '條件陳述筆數不可少於１筆。')
+      branch.splice(len - 1, 0, newItem)
+    },    
     updCond(state, action: PayloadAction<{ cond: DcsCondision, index: number, path: number[] }>) {
       const { cond, index, path } = action.payload
       //console.debug('updCond', { cond, index, path })
-      
+
       let branch = state
       path.forEach(i => {
         branch = branch[i].action as WritableDraft<DcsStatement>[]
@@ -112,7 +141,7 @@ export const decisionTreeSlice = createSlice({
     updAssimt(state, action: PayloadAction<{ assimt: DcsAssignment, index: number, path: number[] }>) {
       const { assimt, index, path } = action.payload
       //console.debug('updCond', { cond, index, path })
-      
+
       let branch = state
       path.forEach(i => {
         branch = branch[i].action as WritableDraft<DcsStatement>[]
@@ -127,6 +156,7 @@ export const decisionTreeSlice = createSlice({
 export const {
   updCond,
   updAssimt,
+  newStatement,
   add,
   updateByIndex,
   removeByIndex,

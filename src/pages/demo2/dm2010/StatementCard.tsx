@@ -6,7 +6,7 @@ import { Paper, Box, Collapse, IconButton, Button } from '@mui/material'
 import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@mui/material'
 import { TextField } from '@mui/material'
 
-import { isDcsAssignment, updCond, updAssimt } from './decisionTreeSlice'
+import { isDcsAssignment, updCond, updAssimt, newStatement } from './decisionTreeSlice'
 import TreeContent from './TreeContent'
 
 import WhenIcon from '@mui/icons-material/PlaylistAddCheckOutlined'
@@ -14,6 +14,7 @@ import MoreIcon from '@mui/icons-material/MoreVert'
 import OnIcon from '@mui/icons-material/VisibilityOutlined'
 import OffIcon from '@mui/icons-material/VisibilityOffOutlined'
 import EditIcon from '@mui/icons-material/EditRounded'
+import NewIcon from '@mui/icons-material/AddComment'
 
 const StatementCard: FC<{
   item: DcsStatement,
@@ -47,6 +48,9 @@ const StatementCard: FC<{
               </IconButton>
             }
 
+            <IconButton color="primary" onClick={() => dispatch(newStatement({ path: props.path }))}>
+              <NewIcon />
+            </IconButton>
           </Box>
         </Paper>
         :
@@ -61,7 +65,7 @@ const StatementCard: FC<{
               </IconButton>
             }
 
-            <IconButton onClick={() => setShowCond(true)} color={'primary'}>
+            <IconButton color={'primary'} onClick={() => setShowCond(true)} >
               <EditIcon />
             </IconButton>
 
