@@ -1,12 +1,12 @@
 import type { FC } from 'react'
-import type { DcsStatement, DcsCondision } from './interfaces'
+import type { DcsStatement, DcsCondision, DcsAssignment } from './interfaces'
 import { useState, useEffect } from 'react'
 import { useAppSelector, useAppDispatch } from 'hooks/hooks'
 import { Paper, Box, Collapse, IconButton, Button } from '@mui/material'
 import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@mui/material'
 import { TextField } from '@mui/material'
 
-import { isDcsAssignment, updCond } from './decisionTreeSlice'
+import { isDcsAssignment, updCond, updAssimt } from './decisionTreeSlice'
 import TreeContent from './TreeContent'
 
 import WhenIcon from '@mui/icons-material/PlaylistAddCheckOutlined'
@@ -27,6 +27,7 @@ const StatementCard: FC<{
 
   const [f_showDetail, setShowDetail] = useState(true)
   const [f_showCond, setShowCond] = useState(false)
+  const [f_showAss, setShowAss] = useState(false)
 
   const toggleShowDetail = () => setShowDetail(f => !f)
 
@@ -75,7 +76,12 @@ const StatementCard: FC<{
         {isDcsAssignment(action) ?
           <Box sx={{ m: 1, pl: '2em' }}>
             <Paper sx={{ m: 1, p: 1 }} elevation={0}>
-              值為 {action.retValue}, {action.fdNote}
+              <Box display="flex" alignItems="center">
+                <Box flexGrow={1}>值為 {action.retValue}, {action.fdNote}</Box>
+                <IconButton onClick={() => setShowAss(true)} color={'primary'}>
+                  <EditIcon />
+                </IconButton>
+              </Box>
             </Paper>
           </Box>
           :
@@ -91,12 +97,27 @@ const StatementCard: FC<{
           onCancel={() => setShowCond(false)}
           onOk={(info) => {
             //console.info('CondEditDialog:Ok', { info })
-            dispatch(updCond({ 
-              cond: info, 
-              index: props.pos, 
-              path: props.path 
+            dispatch(updCond({
+              cond: info,
+              index: props.pos,
+              path: props.path
             }))
             setShowCond(false)
+          }}
+        />
+      }
+
+      {f_showAss &&
+        <AssimtEditDialog
+          assimt={action as DcsAssignment}
+          onCancel={() => setShowAss(false)}
+          onOk={(info) => {
+            dispatch(updAssimt({
+              assimt: info,
+              index: props.pos,
+              path: props.path
+            }))
+            setShowAss(false)
           }}
         />
       }
@@ -177,6 +198,56 @@ const CondEditDialog: FC<{
           label="設定值"
           name="cmpValue"
           value={info.cmpValue}
+          onChange={handleChange}
+          fullWidth
+          variant="standard"
+          margin="normal"
+        />
+
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={() => props.onCancel()}>取消</Button>
+        <Button variant='contained' onClick={() => props.onOk(info)}>確認</Button>
+      </DialogActions>
+    </Dialog>
+  )
+}
+
+//---------------------------
+const AssimtEditDialog: FC<{
+  assimt: DcsAssignment,
+  onCancel: () => void,
+  onOk: (info: DcsAssignment) => void,
+}> = props => {
+  const { assimt } = props
+  const [info, setInfo] = useState<DcsAssignment>({ ...assimt })
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const name = event.target.name
+    const value = event.target.value
+    setInfo({ ...info, [name]: value })
+  }
+
+  return (
+    <Dialog open={true} onClose={() => props.onCancel()}>
+      <DialogTitle>編輯條件</DialogTitle>
+      <DialogContent>
+
+        <TextField
+          label="說明"
+          name="fdNote"
+          value={info.fdNote}
+          onChange={handleChange}
+          autoFocus
+          fullWidth
+          variant="standard"
+          margin="normal"
+        />
+
+        <TextField
+          label="設定值"
+          name="retValue"
+          value={info.retValue}
           onChange={handleChange}
           fullWidth
           variant="standard"

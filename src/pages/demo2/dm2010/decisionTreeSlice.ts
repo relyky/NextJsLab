@@ -109,12 +109,24 @@ export const decisionTreeSlice = createSlice({
 
       branch[index].cond = cond
     },
+    updAssimt(state, action: PayloadAction<{ assimt: DcsAssignment, index: number, path: number[] }>) {
+      const { assimt, index, path } = action.payload
+      //console.debug('updCond', { cond, index, path })
+      
+      let branch = state
+      path.forEach(i => {
+        branch = branch[i].action as WritableDraft<DcsStatement>[]
+      });
+
+      branch[index].action = assimt
+    },
   },
   extraReducers: (builder) => { },
 })
 
 export const {
   updCond,
+  updAssimt,
   add,
   updateByIndex,
   removeByIndex,
