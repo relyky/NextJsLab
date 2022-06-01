@@ -1,4 +1,3 @@
-import type { DcsStatement, DecisionTreeState } from './decisionTreeSlice'
 import { useState } from 'react'
 import { useAppSelector, useAppDispatch } from 'hooks/hooks'
 import { add } from './decisionTreeSlice'
@@ -12,7 +11,7 @@ export default (props) => {
 
     return (
         <div>
-            <TreeContent parent={null} decisionTree={decisionTree} />
+            <TreeContent path={[]} decisionTree={decisionTree} />
         </div>
     )
 }

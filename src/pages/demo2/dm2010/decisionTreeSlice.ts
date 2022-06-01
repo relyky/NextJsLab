@@ -1,4 +1,5 @@
 import type { AppState, AppThunk } from 'store/store'
+import type { WritableDraft } from 'immer/dist/internal';
 import type { DcsCondision, DcsAssignment, DcsStatement, DecisionTreeState } from './interfaces'
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import assert from 'assert'
@@ -97,9 +98,16 @@ export const decisionTreeSlice = createSlice({
     removeByIndex: (state, action: PayloadAction<number>) => {
       state.splice(action.payload, 1)
     },
-    updCond(state, action: PayloadAction<{ cond: DcsCondision, index: number }>) {
-      const { cond, index } = action.payload
-      state[index].cond = cond
+    updCond(state, action: PayloadAction<{ cond: DcsCondision, index: number, path: number[] }>) {
+      const { cond, index, path } = action.payload
+      //console.debug('updCond', { cond, index, path })
+      
+      let branch = state
+      path.forEach(i => {
+        branch = branch[i].action as WritableDraft<DcsStatement>[]
+      });
+
+      branch[index].cond = cond
     },
   },
   extraReducers: (builder) => { },

@@ -1,17 +1,16 @@
 import type { FC } from 'react'
-import type { DcsStatement, DecisionTreeState } from './decisionTreeSlice'
-
+import type { DecisionTreeState } from './interfaces'
 import StatementCard from './StatementCard'
 
 const TreeContent: FC<{
     decisionTree: DecisionTreeState,
-    parent: DcsStatement | null,
+    path: number[],
 }> = props => {
     return (
         <div>
-            <code style={{ border: 'dashed thin pink', padding: '4px' }}>parent node: {JSON.stringify(props.parent?.cond)}</code>
+            <code style={{ border: 'dashed thin pink', padding: '4px' }}>path: {JSON.stringify(props.path)}</code>
             {props.decisionTree.map((item, index) =>
-                <StatementCard key={index} item={item} />
+                <StatementCard key={index} pos={index} item={item} path={props.path} />
             )}
         </div>
     )

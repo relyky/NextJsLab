@@ -16,7 +16,9 @@ import OffIcon from '@mui/icons-material/VisibilityOffOutlined'
 import EditIcon from '@mui/icons-material/EditRounded'
 
 const StatementCard: FC<{
-  item: DcsStatement
+  item: DcsStatement,
+  path: number[],
+  pos: number
 }> = props => {
   //const decisionTree = useAppSelector(store => store.decisionTree)
   const dispatch = useAppDispatch()
@@ -78,7 +80,7 @@ const StatementCard: FC<{
           </Box>
           :
           <Box sx={{ m: 1, pl: '2em' }}>
-            <TreeContent parent={props.item} decisionTree={action} />
+            <TreeContent path={[...props.path, props.pos]} decisionTree={action} />
           </Box>
         }
       </Collapse>
@@ -88,8 +90,12 @@ const StatementCard: FC<{
           cond={cond}
           onCancel={() => setShowCond(false)}
           onOk={(info) => {
-            console.info('CondEditDialog:Ok', { info })
-            dispatch(updCond({ cond: info, index: 1 }))
+            //console.info('CondEditDialog:Ok', { info })
+            dispatch(updCond({ 
+              cond: info, 
+              index: props.pos, 
+              path: props.path 
+            }))
             setShowCond(false)
           }}
         />
@@ -138,7 +144,7 @@ const CondEditDialog: FC<{
 
         <TextField
           label="說明"
-          name="fdNode"
+          name="fdNote"
           value={info.fdNote}
           onChange={handleChange}
           autoFocus
