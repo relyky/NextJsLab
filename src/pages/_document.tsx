@@ -1,4 +1,5 @@
 import Document, { DocumentContext, Html, Head, Main, NextScript } from 'next/document'
+import { getInitColorSchemeScript } from '@mui/material/styles'
 
 class MyDocument extends Document {
   static async getInitialProps(ctx: DocumentContext) {
@@ -11,7 +12,8 @@ class MyDocument extends Document {
     return (
       <Html lang="zh-Hant">
         <Head />
-        <body style={{backgroundColor:'#f8f8f8'}}>
+        <body style={{ backgroundColor: '#f8f8f8' }}>
+          {getInitColorSchemeScript()}
           <Main />
           <NextScript />
         </body>
