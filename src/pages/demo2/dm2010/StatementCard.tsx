@@ -1,11 +1,12 @@
+import type { FC } from 'react'
 import type { DcsStatement, DcsCondision } from './interfaces'
-import { FC, useEffect } from 'react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useAppSelector, useAppDispatch } from 'hooks/hooks'
 import { Paper, Box, Collapse, IconButton, Button } from '@mui/material'
 import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@mui/material'
 import { TextField } from '@mui/material'
 
-import { isDcsAssignment } from './decisionTreeSlice'
+import { isDcsAssignment, updCond } from './decisionTreeSlice'
 import TreeContent from './TreeContent'
 
 import WhenIcon from '@mui/icons-material/PlaylistAddCheckOutlined'
@@ -17,6 +18,9 @@ import EditIcon from '@mui/icons-material/EditRounded'
 const StatementCard: FC<{
   item: DcsStatement
 }> = props => {
+  //const decisionTree = useAppSelector(store => store.decisionTree)
+  const dispatch = useAppDispatch()
+
   const { isElse, cond, action } = props.item
 
   const [f_showDetail, setShowDetail] = useState(true)
@@ -83,7 +87,11 @@ const StatementCard: FC<{
         <CondEditDialog
           cond={cond}
           onCancel={() => setShowCond(false)}
-          onOk={() => setShowCond(false)}
+          onOk={(info) => {
+            console.info('CondEditDialog:Ok', { info })
+            dispatch(updCond({ cond: info, index: 1 }))
+            setShowCond(false)
+          }}
         />
       }
 
@@ -109,7 +117,7 @@ function codeName(code: string) {
 const CondEditDialog: FC<{
   cond: DcsCondision,
   onCancel: () => void,
-  onOk: (info: object) => void,
+  onOk: (info: DcsCondision) => void,
 }> = props => {
   const { cond } = props
   const [info, setInfo] = useState<DcsCondision>({ ...cond })

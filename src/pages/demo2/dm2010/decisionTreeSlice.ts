@@ -90,18 +90,23 @@ export const decisionTreeSlice = createSlice({
       assert(len > 0, 'decisionTree 筆數不可少於１筆。')
       state.splice(len - 1, 0, action.payload)
     },
-    updateByIndex: (state, action: PayloadAction<{ item: DcsStatement, index: bigint }>) => {
+    updateByIndex: (state, action: PayloadAction<{ item: DcsStatement, index: number }>) => {
       const { item, index } = action.payload
-      state.splice(Number(index), 1, item)
+      state.splice(index, 1, item)
     },
-    removeByIndex: (state, action: PayloadAction<bigint>) => {
-      state.splice(Number(action.payload), 1)
+    removeByIndex: (state, action: PayloadAction<number>) => {
+      state.splice(action.payload, 1)
+    },
+    updCond(state, action: PayloadAction<{ cond: DcsCondision, index: number }>) {
+      const { cond, index } = action.payload
+      state[index].cond = cond
     },
   },
   extraReducers: (builder) => { },
 })
 
 export const {
+  updCond,
   add,
   updateByIndex,
   removeByIndex,

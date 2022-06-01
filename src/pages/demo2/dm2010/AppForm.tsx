@@ -1,9 +1,10 @@
+import type { DcsStatement } from './interfaces'
 import { useState } from 'react'
 import { useAppSelector, useAppDispatch } from 'hooks/hooks'
 import { Container } from '@mui/material'
 import { H3, AButton } from 'components/highorder'
 import TreeContainer from './TreeContainer'
-import { add, DcsStatement } from './decisionTreeSlice'
+import { add } from './decisionTreeSlice'
 
 export default (props) => {
     const decisionTree = useAppSelector(store => store.decisionTree)
