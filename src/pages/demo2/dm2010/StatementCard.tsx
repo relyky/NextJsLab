@@ -79,12 +79,13 @@ const StatementCard: FC<{
         }
       </Collapse>
 
-      <CondEditDialog
-        open={f_showCond}
-        cond={cond}
-        onCancel={() => setShowCond(false)}
-        onOk={() => setShowCond(false)}
-      />
+      {f_showCond &&
+        <CondEditDialog
+          cond={cond}
+          onCancel={() => setShowCond(false)}
+          onOk={() => setShowCond(false)}
+        />
+      }
 
     </div>
   )
@@ -106,19 +107,12 @@ function codeName(code: string) {
 
 //---------------------------
 const CondEditDialog: FC<{
-  open: boolean,
   cond: DcsCondision,
   onCancel: () => void,
   onOk: (info: object) => void,
 }> = props => {
-  const { open, cond } = props
-  const [info, setInfo] = useState<DcsCondision>({ fdNote: '', fdName: '', cmpAct: 'eq', cmpValue: '' })
-
-  useEffect(() => {
-    if (open) {
-      setInfo({ ...cond })
-    }
-  }, [open])
+  const { cond } = props
+  const [info, setInfo] = useState<DcsCondision>({ ...cond })
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const name = event.target.name
@@ -126,9 +120,8 @@ const CondEditDialog: FC<{
     setInfo({ ...info, [name]: value })
   }
 
-  console.log('CondEditDialog', { cond })
   return (
-    <Dialog open={props.open} onClose={() => props.onCancel()}>
+    <Dialog open={true} onClose={() => props.onCancel()}>
       <DialogTitle>編輯條件</DialogTitle>
       <DialogContent>
         <DialogContentText>
