@@ -37,7 +37,7 @@ const StatementCard: FC<{
   return (
     <div>
       {isElse ?
-        <Paper sx={{ m: 1, p: 1 }}>
+        <Paper sx={{ mt: 1, mr: 1, mb: 0, ml: 1, p: 1 }}>
           <Box display="flex" alignItems="center">
             <WhenIcon sx={{ mr: 1 }} />
             <Box flexGrow={1}>否則</Box>
@@ -54,7 +54,7 @@ const StatementCard: FC<{
           </Box>
         </Paper>
         :
-        <Paper sx={{ m: 1, p: 1 }}>
+        <Paper sx={{ mt: 1, mr: 1, mb: 0, ml: 1, p: 1 }}>
           <Box display="flex" alignItems="center">
             <WhenIcon sx={{ mr: 1 }} />
             <Box flexGrow={1}>當 {cond.fdName} {codeName(cond.cmpAct)} {cond.cmpValue}, {cond.fdNote}</Box>
@@ -69,17 +69,17 @@ const StatementCard: FC<{
               <EditIcon />
             </IconButton>
 
-            <IconButton color="primary">
+            {/* <IconButton color="primary">
               <MoreIcon />
-            </IconButton>
+            </IconButton> */}
           </Box>
         </Paper>
       }
 
       <Collapse in={f_showDetail} >
         {isDcsAssignment(action) ?
-          <Box sx={{ m: 1, pl: '2em' }}>
-            <Paper sx={{ m: 1, p: 1 }} elevation={0}>
+          <Box sx={{ mt: 1, mr: 1, mb: 0, ml: 1, pl: '2em' }}>
+            <Paper sx={{ mt: 0, mr: 1, mb: 1, ml: 1, p: 1 }} elevation={0}>
               <Box display="flex" alignItems="center">
                 <Box flexGrow={1}>值為 {action.retValue}, {action.fdNote}</Box>
                 <IconButton onClick={() => setShowAss(true)} color={'primary'}>
@@ -89,7 +89,7 @@ const StatementCard: FC<{
             </Paper>
           </Box>
           :
-          <Box sx={{ m: 1, pl: '2em' }}>
+          <Box sx={{ mt: 1, mr: 1, mb: 0, ml: 1, pl: '2em' }}>
             <TreeContent path={[...props.path, props.pos]} decisionTree={action} />
           </Box>
         }
