@@ -86,18 +86,6 @@ export const decisionTreeSlice = createSlice({
   name: 'decisionTree',
   initialState,
   reducers: {
-    add: (state, action: PayloadAction<DcsStatement>) => {
-      const len = state.length
-      assert(len > 0, 'decisionTree 筆數不可少於１筆。')
-      state.splice(len - 1, 0, action.payload)
-    },
-    updateByIndex: (state, action: PayloadAction<{ item: DcsStatement, index: number }>) => {
-      const { item, index } = action.payload
-      state.splice(index, 1, item)
-    },
-    removeByIndex: (state, action: PayloadAction<number>) => {
-      state.splice(action.payload, 1)
-    },
     newStatement(state, action: PayloadAction<{ path: number[] }>) {
       /// 新增一筆條件陳述
 
@@ -170,9 +158,6 @@ export const {
   updAssimt,
   newStatement,
   rmvStatement,
-  add,
-  updateByIndex,
-  removeByIndex,
 } = decisionTreeSlice.actions
 
 export default decisionTreeSlice.reducer

@@ -8,7 +8,10 @@ const TreeContent: FC<{
 }> = props => {
     return (
         <div>
-            <code style={{ border: 'dashed thin pink', padding: '4px' }}>path: {JSON.stringify(props.path)}</code>
+            {/* <code style={{ border: 'dashed thin pink', padding: '4px' }}>
+                path: {JSON.stringify(props.path)}
+            </code> */}
+            
             {props.decisionTree.map((item, index) =>
                 <StatementCard key={index} pos={index} item={item} path={props.path} />
             )}
