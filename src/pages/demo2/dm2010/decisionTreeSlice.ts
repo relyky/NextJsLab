@@ -126,7 +126,19 @@ export const decisionTreeSlice = createSlice({
       const len = branch.length
       assert(len > 0, '條件陳述筆數不可少於１筆。')
       branch.splice(len - 1, 0, newItem)
-    },    
+    },
+    rmvStatement(state, action: PayloadAction<{ path: number[], index: number }>) {
+      /// 移除一筆條件陳述
+
+      const { path, index } = action.payload
+
+      let branch = state
+      path.forEach(i => {
+        branch = branch[i].action as WritableDraft<DcsStatement>[]
+      });
+
+      branch.splice(index, 1)
+    },
     updCond(state, action: PayloadAction<{ cond: DcsCondision, index: number, path: number[] }>) {
       const { cond, index, path } = action.payload
       //console.debug('updCond', { cond, index, path })
@@ -157,6 +169,7 @@ export const {
   updCond,
   updAssimt,
   newStatement,
+  rmvStatement,
   add,
   updateByIndex,
   removeByIndex,

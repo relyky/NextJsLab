@@ -5,8 +5,9 @@ import { useAppSelector, useAppDispatch } from 'hooks/hooks'
 import { Paper, Box, Collapse, IconButton, Button } from '@mui/material'
 import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@mui/material'
 import { TextField } from '@mui/material'
+import Swal from 'sweetalert2'
 
-import { isDcsAssignment, updCond, updAssimt, newStatement } from './decisionTreeSlice'
+import { isDcsAssignment, updCond, updAssimt, newStatement, rmvStatement } from './decisionTreeSlice'
 import TreeContent from './TreeContent'
 
 import WhenIcon from '@mui/icons-material/PlaylistAddCheckOutlined'
@@ -15,6 +16,7 @@ import OnIcon from '@mui/icons-material/VisibilityOutlined'
 import OffIcon from '@mui/icons-material/VisibilityOffOutlined'
 import EditIcon from '@mui/icons-material/EditRounded'
 import NewIcon from '@mui/icons-material/AddComment'
+import ClearIcon from '@mui/icons-material/Clear'
 
 const StatementCard: FC<{
   item: DcsStatement,
@@ -69,6 +71,23 @@ const StatementCard: FC<{
               <EditIcon />
             </IconButton>
 
+            <IconButton color={'primary'} onClick={() => {
+              Swal.fire({
+                title: '確定要移除嗎？',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: '確定',
+                cancelButtonText: '取消'
+              }).then(result => {
+                if (result.isConfirmed) {
+                  dispatch(rmvStatement({ path: props.path, index: props.pos }));
+                }
+              })
+            }}
+            >
+              <ClearIcon />
+            </IconButton>
+
             {/* <IconButton color="primary">
               <MoreIcon />
             </IconButton> */}
@@ -95,7 +114,8 @@ const StatementCard: FC<{
         }
       </Collapse>
 
-      {f_showCond &&
+      {
+        f_showCond &&
         <CondEditDialog
           cond={cond}
           onCancel={() => setShowCond(false)}
@@ -111,7 +131,8 @@ const StatementCard: FC<{
         />
       }
 
-      {f_showAss &&
+      {
+        f_showAss &&
         <AssimtEditDialog
           assimt={action as DcsAssignment}
           onCancel={() => setShowAss(false)}
@@ -126,7 +147,7 @@ const StatementCard: FC<{
         />
       }
 
-    </div>
+    </div >
   )
 }
 
