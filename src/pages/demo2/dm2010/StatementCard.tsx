@@ -7,7 +7,7 @@ import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } 
 import { TextField } from '@mui/material'
 import Swal from 'sweetalert2'
 
-import { isDcsAssignment, updCond, updAssimt, newStatement, rmvStatement } from './decisionTreeSlice'
+import { isDcsAssignment, updCond, updAssimt, newStatement, rmvStatement, moveUpward } from './decisionTreeSlice'
 import TreeContent from './TreeContent'
 
 import WhenIcon from '@mui/icons-material/PlaylistAddCheckOutlined'
@@ -17,6 +17,7 @@ import OffIcon from '@mui/icons-material/VisibilityOffOutlined'
 import EditIcon from '@mui/icons-material/EditRounded'
 import NewIcon from '@mui/icons-material/AddComment'
 import ClearIcon from '@mui/icons-material/Clear'
+import UpwardIcon from '@mui/icons-material/ArrowUpward'
 
 const StatementCard: FC<{
   item: DcsStatement,
@@ -64,6 +65,14 @@ const StatementCard: FC<{
             {isTreeAction &&
               <IconButton onClick={toggleShowDetail} color={f_showDetail ? 'primary' : 'default'}>
                 {f_showDetail ? <OnIcon /> : <OffIcon />}
+              </IconButton>
+            }
+
+            {(props.pos > 0) &&
+              <IconButton color={'primary'} onClick={() => {
+                dispatch(moveUpward({ path: props.path, index: props.pos }))
+              }}>
+                <UpwardIcon />
               </IconButton>
             }
 

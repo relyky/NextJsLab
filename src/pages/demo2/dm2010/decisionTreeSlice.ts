@@ -3,6 +3,7 @@ import type { WritableDraft } from 'immer/dist/internal';
 import type { DcsCondision, DcsAssignment, DcsStatement, DecisionTreeState } from './interfaces'
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import assert from 'assert'
+import { ConstructionOutlined } from '@mui/icons-material';
 
 //DecisionTree   := Statement[] & ElseStatement
 //Statement      := IF Condision Then DecisionAction
@@ -127,6 +128,24 @@ export const decisionTreeSlice = createSlice({
 
       branch.splice(index, 1)
     },
+    moveUpward(state, action: PayloadAction<{ path: number[], index: number }>) {
+      /// 移除一筆條件陳述
+
+      const { path, index } = action.payload
+      assert(index > 0, '位罝為0時不可能再上移。')
+
+      let branch = state
+      path.forEach(i => {
+        branch = branch[i].action as WritableDraft<DcsStatement>[]
+      });
+
+      const prev = branch[index - 1]
+      const curr = branch[index]
+
+      //效果等同：與前面換位置
+      branch.splice(index, 1, prev)     // 前位後罝
+      branch.splice(index - 1, 1, curr) // 現位前置
+    },
     updCond(state, action: PayloadAction<{ cond: DcsCondision, index: number, path: number[] }>) {
       const { cond, index, path } = action.payload
       //console.debug('updCond', { cond, index, path })
@@ -158,6 +177,7 @@ export const {
   updAssimt,
   newStatement,
   rmvStatement,
+  moveUpward,
 } = decisionTreeSlice.actions
 
 export default decisionTreeSlice.reducer
