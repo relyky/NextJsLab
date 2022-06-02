@@ -11,11 +11,19 @@ export const H3: FC<{
 )
 
 export const AButton: FC<{
-    mutant: 'primary' | 'secondary',
+    mutant: 'primary' | 'secondary' | 'primary0' | 'secondary0',
     label: string,
     onClick: MouseEventHandler<HTMLButtonElement>
-}> = props => (
-    <Button color={props.mutant} variant='contained' onClick={props.onClick} >
-        {props.label}
-    </Button>
-)
+}> = ({ mutant, label, onClick }) => {
+    const color = mutant.startsWith('secondary') ? 'secondary'
+        : 'primary';
+
+    const variant = mutant.endsWith('0') ? 'outlined'
+        : 'contained';
+
+    return (
+        <Button color={color} variant={variant} sx={{ mr: 1 }} onClick={onClick} >
+            {label}
+        </Button >
+    )
+}
