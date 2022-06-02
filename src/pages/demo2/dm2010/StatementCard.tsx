@@ -2,7 +2,7 @@ import type { FC } from 'react'
 import type { DcsStatement, DcsCondision, DcsAssignment } from './interfaces'
 import { useState, useEffect } from 'react'
 import { useAppSelector, useAppDispatch } from 'hooks/hooks'
-import { Paper, Box, Collapse, IconButton, Button } from '@mui/material'
+import { Paper, Box, Collapse, IconButton, Button, MenuItem } from '@mui/material'
 import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@mui/material'
 import { TextField } from '@mui/material'
 import Swal from 'sweetalert2'
@@ -218,7 +218,7 @@ const CondEditDialog: FC<{
           margin="normal"
         />
 
-        <TextField
+        <TextField select
           label="比對"
           name="cmpAct"
           value={info.cmpAct}
@@ -226,7 +226,14 @@ const CondEditDialog: FC<{
           fullWidth
           variant="standard"
           margin="normal"
-        />
+        >
+          <MenuItem value={'lt'}>{'>'}</MenuItem>
+          <MenuItem value={'le'}>{'>='}</MenuItem>
+          <MenuItem value={'ls'}>{'<'}</MenuItem>
+          <MenuItem value={'le'}>{'<='}</MenuItem>
+          <MenuItem value={'eq'}>{'='}</MenuItem>
+          <MenuItem value={'in'}>{'in'}</MenuItem>
+        </TextField>
 
         <TextField
           label="設定值"
