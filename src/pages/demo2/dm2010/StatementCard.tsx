@@ -1,9 +1,9 @@
 import type { FC } from 'react'
 import type { DcsStatement, DcsCondision, DcsAssignment } from './interfaces'
-import { useState, useEffect } from 'react'
-import { useAppSelector, useAppDispatch } from 'hooks/hooks'
+import { useState } from 'react'
+import { useAppDispatch } from 'hooks/hooks'
 import { Paper, Box, Collapse, IconButton, Button, MenuItem } from '@mui/material'
-import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@mui/material'
+import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, colors } from '@mui/material'
 import { TextField } from '@mui/material'
 import Swal from 'sweetalert2'
 
@@ -27,7 +27,7 @@ const StatementCard: FC<{
 }> = props => {
   //const decisionTree = useAppSelector(store => store.decisionTree)
   const dispatch = useAppDispatch()
-
+  
   const { isElse, cond, action } = props.item
 
   const [f_showDetail, setShowDetail] = useState(true)
@@ -108,7 +108,7 @@ const StatementCard: FC<{
       <Collapse in={f_showDetail} >
         {isDcsAssignment(action) ?
           <Box sx={{ mt: 1, mr: 1, mb: 0, ml: 1, pl: '2em' }}>
-            <Paper sx={{ mt: 0, mr: 1, mb: 1, ml: 1, p: 1 }} elevation={0}>
+            <Paper sx={{ mt: 0, mr: 1, mb: 1, ml: 1, p: 1, backgroundColor: colors.yellow[50] }} elevation={0}>
               <Box display="flex" alignItems="center">
                 <Box flexGrow={1}>值為 {action.retValue}, {action.fdNote}</Box>
                 <IconButton onClick={() => setShowAss(true)} color={'primary'}>

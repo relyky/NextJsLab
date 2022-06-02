@@ -101,14 +101,14 @@ export const decisionTreeSlice = createSlice({
       const newItem: DcsStatement = {
         isElse: false,
         cond: {
-          fdName: 'NewTest',
-          fdNote: '新測試欄位',
+          fdName: 'New Field Name',
+          fdNote: '新欄位說明',
           cmpAct: 'eq',
-          cmpValue: '新比較值'
+          cmpValue: '欄位比較值'
         },
         action: {
-          fdNote: '新結果',
-          retValue: '新回傳值'
+          fdNote: '回傳值說明',
+          retValue: '回傳值'
         }
       }
 
@@ -121,12 +121,20 @@ export const decisionTreeSlice = createSlice({
 
       const { path, index } = action.payload
 
+      let parent: DcsStatement = null;
       let branch = state
       path.forEach(i => {
+        parent = branch[i]
         branch = branch[i].action as WritableDraft<DcsStatement>[]
       });
 
       branch.splice(index, 1)
+
+      //## 若剩最後一筆 ElseStatement 則轉換成 DcsAssignmnet。然頂層不可轉換。
+      if (branch.length === 1 && parent !== null) {
+        const assimt = branch[0].action
+        parent.action = assimt
+      }
     },
     moveUpward(state, action: PayloadAction<{ path: number[], index: number }>) {
       /// 移除一筆條件陳述
