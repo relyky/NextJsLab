@@ -168,6 +168,44 @@ export const decisionTreeSlice = createSlice({
 
       branch[index].action = assimt
     },
+    assimtAsTree(state, action: PayloadAction<{ index: number, path: number[] }>) {
+      const { index, path } = action.payload
+      //console.debug('updCond', { cond, index, path })
+
+      let branch = state
+      path.forEach(i => {
+        branch = branch[i].action as WritableDraft<DcsStatement>[]
+      });
+
+      const assimt = branch[index].action as DcsAssignment
+
+      const newSubTree: DecisionTreeState = [
+        {
+          isElse: false,
+          cond: {
+            fdName: 'New Field Name',
+            fdNote: '新欄位說明',
+            cmpAct: 'eq',
+            cmpValue: '欄位比較值'
+          },
+          action: {
+            fdNote: '回傳值說明',
+            retValue: '回傳值'
+          }
+        },
+        {
+          isElse: true,
+          cond: null,
+          action: {
+            fdNote: assimt.fdNote,
+            retValue: assimt.retValue
+          }
+        },
+      ]
+
+      // 轉換成 Decision-Tree 模式
+      branch[index].action = newSubTree
+    },
   },
   extraReducers: (builder) => { },
 })
@@ -178,6 +216,7 @@ export const {
   newStatement,
   rmvStatement,
   moveUpward,
+  assimtAsTree,
 } = decisionTreeSlice.actions
 
 export default decisionTreeSlice.reducer
