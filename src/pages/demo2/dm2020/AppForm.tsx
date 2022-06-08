@@ -23,7 +23,7 @@ export default (props) => {
 
     return (
         <Container>
-            <H3>DM2010: Decision Tree UI 試作</H3>
+            <H3>DM2020: Decision Tree UI 試作II</H3>
             <pre>decisionTree 筆數:{decisionTree.length}</pre>
             <AButton label='驗證' mutant='primary' onClick={handleClick} />
             <AButton label='查看編輯資料' mutant='secondary0' onClick={handleShowData} />
