@@ -1,5 +1,5 @@
-import type { SyntheticEvent } from 'react'
-import React, { useState } from 'react'
+import type { SyntheticEvent, FC } from 'react'
+import React, { useState, useMemo } from 'react'
 import { useAppSelector, useAppDispatch } from 'hooks/hooks'
 import { Box, Button, IconButton, Divider, Typography } from '@mui/material'
 import { TreeView } from '@mui/lab'
@@ -33,6 +33,8 @@ export default (props) => {
     const [expanded, setExpanded] = useState<string[]>([]);
     const [selected, setSelected] = useState<string>(null);
 
+    const notExpand = useMemo(() => expanded.length === 0 || expanded.length === 1 && expanded[0] === 'root', [expanded])
+
     const handleToggle = (event: SyntheticEvent, nodeIds: string[]) => {
         setExpanded(nodeIds);
     };
@@ -44,7 +46,9 @@ export default (props) => {
 
     const handleExpandClick = () => {
         setExpanded((oldExpanded) =>
-            oldExpanded.length === 0 ? ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15'] : [],
+            notExpand
+                ? ['root', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19']
+                : ['root']
         );
     };
 
@@ -57,7 +61,7 @@ export default (props) => {
             <Box>
                 <Box sx={{ mb: 1 }}>
                     <Button onClick={handleExpandClick}>
-                        {expanded.length === 0 ? '展開' : '褶疊'}
+                        {notExpand ? '展開' : '褶疊'}
                     </Button>
                 </Box>
                 <pre>
@@ -66,111 +70,48 @@ export default (props) => {
                 </pre>
 
                 <TreeView
-                    defaultCollapseIcon={<MinusIcon />}
-                    defaultExpandIcon={<PlusIcon />}
-                    defaultEndIcon={<ForwardIcon className="close" />}
+                    defaultCollapseIcon={<MinusIcon color="primary" />}
+                    defaultExpandIcon={<PlusIcon color="primary" />}
+                    defaultEndIcon={<ForwardIcon color="secondary" />}
                     expanded={expanded}
                     selected={selected}
                     onNodeToggle={handleToggle}
                     onNodeSelect={handleSelect}
                 >
-                    <TreeItem nodeId="1" label="開始">
-                        <TreeItem nodeId="2" label="當 Staff = Y, 是否為DBS員工" >
-                            <TreeItem nodeId="3" label="值為 Yend," />
+                    <TreeItem nodeId="root" label="開始">
+                        <TreeCondItem nodeId="1" desc="當 Staff = Y, 是否為DBS員工" >
+                            <TreeAssimtItem nodeId="2" desc="值為 Yend," />
+                        </TreeCondItem>
+
+                        <TreeCondItem nodeId="3" desc="當 Small_White = Y, 信用小白(沒有JCIC紀錄申請)" >
+                            <TreeAssimtItem nodeId="4" desc="值為 0," />
+                        </TreeCondItem>
+
+                        <TreeCondItem nodeId="5" desc="當 職稱 in '16','29','36','34', Customer Segment" >
+                            <TreeCondItem nodeId="6" desc="當 客戶層級 = VIP, Customer Segment 7" >
+                                <TreeAssimtItem nodeId="7" desc="值為 8," />
+                            </TreeCondItem>
+                            <TreeCondItem nodeId="8" desc="當 客戶層級 = VIP, Customer Segment 13" >
+                                <TreeAssimtItem nodeId="9" desc="值為 Z," />
+                            </TreeCondItem>
+                            <TreeCondItem nodeId="10" desc="當 客戶層級 = VIP, Customer Segment 13" >
+                                <TreeAssimtItem nodeId="11" desc="值為 Z," />
+                            </TreeCondItem>
+                            <TreeCondItem nodeId="12" desc="當 客戶層級 = VIP, Customer Segment 13" >
+                                <TreeAssimtItem nodeId="13" desc="值為 Z," />
+                            </TreeCondItem>
+                            <TreeCondItem nodeId="14" desc="當 客戶層級 = VIP, Customer Segment 13" >
+                                <TreeAssimtItem nodeId="15" desc="值為 Z," />
+                            </TreeCondItem>
+                            <TreeItem nodeId="16" label="否則" >
+                                <TreeAssimtItem nodeId="17" desc="值為 GUEST, 來賓層級" />
+                            </TreeItem>
+                        </TreeCondItem>
+
+                        <TreeItem nodeId="18" label="否則" >
+                            <TreeAssimtItem nodeId="19" desc="值為 Otherwise, 其他" />
                         </TreeItem>
-                        <TreeItem nodeId="4" label="當 Small_White = Y, 信用小白(沒有JCIC紀錄申請)" >
-                            <TreeItem nodeId="5" label="值為 0," />
-                        </TreeItem>
-                        <TreeItem nodeId="6" label="當 職稱 in '16','29','36','34', Customer Segment" >
-                            <TreeItem nodeId="7" label="當 客戶層級 = VIP, Customer Segment" >
-                                <TreeItem nodeId="8" label="值為 Z," />
-                            </TreeItem>
 
-                            <TreeItem nodeId="13" label={
-                                <Box className={ss.item} sx={{ display: 'flex', alignItems: 'center', p: 0.5, pr: 0 }}>
-                                    {/* <Box component={InfoIcon} color="inherit" sx={{ mr: 1 }} /> */}
-                                    <Typography variant="body1" sx={{ fontWeight: 'inherit', flexGrow: 0, mr: 1 }}>
-                                        {'當 客戶層級 = VIP, Customer Segment'}
-                                    </Typography>
-                                    <IconButton className={ss.command} color="primary" size="small" component="span" onClick={e => {
-                                        e.stopPropagation();
-                                        console.log('按一下', e);
-                                    }}>
-                                        <InfoIcon />
-                                    </IconButton>
-                                </Box>
-                            }>
-                                <TreeItem nodeId="8" label="值為 Z," />
-                            </TreeItem>
-
-                            <TreeItem nodeId="14" label={
-                                <Box className={ss.item} sx={{ display: 'flex', alignItems: 'center', p: 0.5, pr: 0 }}>
-                                    {/* <Box component={InfoIcon} color="inherit" sx={{ mr: 1 }} /> */}
-                                    <Typography variant="body1" sx={{ fontWeight: 'inherit', flexGrow: 0, mr: 1 }}>
-                                        {'當 客戶層級 = VIP, Customer Segment'}
-                                    </Typography>
-                                    <IconButton className={ss.command} color="primary" size="small" component="span" onClick={e => {
-                                        e.stopPropagation();
-                                        console.log('按一下', e);
-                                    }}>
-                                        <InfoIcon />
-                                    </IconButton>
-                                </Box>
-                            }>
-                                <TreeItem nodeId="8" label="值為 Z," />
-                            </TreeItem>
-
-                            <TreeItem nodeId="15" label={
-                                <Box className={ss.item} sx={{ display: 'flex', alignItems: 'center', p: 0.5, pr: 0 }}>
-                                    {/* <Box component={InfoIcon} color="inherit" sx={{ mr: 1 }} /> */}
-                                    <Typography variant="body1" sx={{ fontWeight: 'inherit', flexGrow: 0, mr: 1 }}>
-                                        {'當 客戶層級 = VIP, Customer Segment'}
-                                    </Typography>
-                                    <IconButton className={ss.command} color="primary" size="small" component="span">
-                                        <UpwardIcon />
-                                    </IconButton>
-                                    <IconButton className={ss.command} color="primary" size="small" component="span">
-                                        <EditIcon />
-                                    </IconButton>
-                                    <IconButton className={ss.command} color="primary" size="small" component="span">
-                                        <ClearIcon />
-                                    </IconButton>
-                                    <IconButton className={ss.command} color="primary" size="small" component="span" onClick={e => {
-                                        e.stopPropagation();
-                                        console.log('按一下', e);
-                                    }}>
-                                        <InfoIcon />
-                                    </IconButton>
-                                </Box>
-                            }>
-                                <TreeItem nodeId="8" label={
-                                    <Box className={ss.item} sx={{ display: 'flex', alignItems: 'center', py: 0.5 }}>
-                                        {/* <Box component={InfoIcon} color="inherit" sx={{ mr: 1 }} /> */}
-                                        <Typography variant="body1" sx={{ fontWeight: 'inherit', flexGrow: 0, mr: 1 }}>
-                                            {'值為 Z, 我是值的說明。'}
-                                        </Typography>
-                                        <IconButton className={ss.command} color="primary" size="small" component="span">
-                                            <EditIcon />
-                                        </IconButton>
-                                        <IconButton className={ss.command} color="primary" size="small" component="span"
-                                            onClick={e => {
-                                                e.stopPropagation();
-                                                console.log('按一下', e);
-                                            }}>
-                                            <TransIcon />
-                                        </IconButton>
-                                    </Box>
-                                } />
-
-                            </TreeItem>
-
-                            <TreeItem nodeId="9" label="否則" >
-                                <TreeItem nodeId="10" label="值為 GUEST, 來賓層級" />
-                            </TreeItem>
-                        </TreeItem>
-                        <TreeItem nodeId="11" label="否則" >
-                            <TreeItem nodeId="12" label="值為 Otherwise, 其他" />
-                        </TreeItem>
                     </TreeItem>
                 </TreeView>
             </Box>
@@ -182,3 +123,70 @@ export default (props) => {
         </div>
     )
 }
+
+
+//------------------------
+const TreeCondItem: FC<{
+    nodeId: string,
+    desc: string,
+}> = (props) => {
+    return (
+        <TreeItem nodeId={props.nodeId} label={
+            <Box className={ss.item} sx={{ display: 'flex', alignItems: 'center' }}>
+                {/* <Box component={InfoIcon} color="inherit" sx={{ mr: 1 }} /> */}
+                <Typography variant="body1" sx={{ fontWeight: 'inherit', flexGrow: 0, mr: 1 }}>
+                    {props.desc}
+                    {/* {'當 客戶層級 = VIP16, Customer Segment 17'} */}
+                </Typography>
+                <IconButton className={ss.command} color="primary" size="small" component="span">
+                    <UpwardIcon />
+                </IconButton>
+                <IconButton className={ss.command} color="primary" size="small" component="span">
+                    <EditIcon />
+                </IconButton>
+                <IconButton className={ss.command} color="primary" size="small" component="span">
+                    <ClearIcon />
+                </IconButton>
+                <IconButton className={ss.command} color="primary" size="small" component="span" onClick={e => {
+                    e.stopPropagation();
+                    alert('按一下', e);
+                }}>
+                    <InfoIcon />
+                </IconButton>
+            </Box>
+        }>
+            {props.children}
+        </TreeItem>
+    )
+}
+
+//------------------------
+const TreeAssimtItem: FC<{
+    nodeId: string,
+    desc: string
+}> = (props) => {
+    return (
+        <TreeItem nodeId={props.nodeId} label={
+            <Box className={ss.item} sx={{ display: 'flex', alignItems: 'center' }}>
+                {/* <Box component={InfoIcon} color="inherit" sx={{ mr: 1 }} /> */}
+                <Typography variant="body1" sx={{ fontWeight: 'inherit', mr: 1 }}>
+                    {props.desc}
+                    {/* {'值為 Z, 我是值的說明。'} */}
+                </Typography>
+                <IconButton className={ss.command} color="primary" size="small" component="span">
+                    <EditIcon />
+                </IconButton>
+                <IconButton className={ss.command} color="primary" size="small" component="span"
+                    onClick={e => {
+                        e.stopPropagation();
+                        console.log('按一下', e);
+                    }}>
+                    <TransIcon />
+                </IconButton>
+            </Box>
+        } />
+    )
+}
+
+
+
