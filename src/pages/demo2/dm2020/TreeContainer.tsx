@@ -2,8 +2,9 @@ import type { SyntheticEvent } from 'react'
 import React, { useState } from 'react'
 import { useAppSelector, useAppDispatch } from 'hooks/hooks'
 import { Box, Button, IconButton, Divider, Typography } from '@mui/material'
-import { TreeView, TreeItem } from '@mui/lab'
+import { TreeView } from '@mui/lab'
 import TreeContent from './TreeContent'
+import TreeItem from './StyledTreeItem'
 // CSS style
 import ss from './AppForm.module.css'
 // icons
