@@ -4,7 +4,7 @@ import { useAppSelector, useAppDispatch } from 'hooks/hooks'
 import { Box, Button, IconButton, Divider, Typography } from '@mui/material'
 import { TreeView } from '@mui/lab'
 import TreeContent from './TreeContent'
-import TreeItem from './StyledTreeItem'
+import TreeItem from './widgets/StyledTreeItem'
 // CSS style
 import ss from './AppForm.module.css'
 // icons
@@ -20,6 +20,10 @@ import NewIcon from '@mui/icons-material/AddComment'
 import ClearIcon from '@mui/icons-material/Clear'
 import UpwardIcon from '@mui/icons-material/ArrowUpward'
 import TransIcon from '@mui/icons-material/Transform'
+import PlusIcon from '@mui/icons-material/AddBoxOutlined'
+import MinusIcon from '@mui/icons-material/IndeterminateCheckBoxOutlined'
+import EndIcon from '@mui/icons-material/DisabledByDefaultOutlined'
+import ForwardIcon from '@mui/icons-material/ForwardTwoTone';
 
 // TreeContainer
 export default (props) => {
@@ -62,8 +66,9 @@ export default (props) => {
                 </pre>
 
                 <TreeView
-                    defaultCollapseIcon={<ExpandMoreIcon />}
-                    defaultExpandIcon={<ChevronRightIcon />}
+                    defaultCollapseIcon={<MinusIcon />}
+                    defaultExpandIcon={<PlusIcon />}
+                    defaultEndIcon={<ForwardIcon className="close" />}
                     expanded={expanded}
                     selected={selected}
                     onNodeToggle={handleToggle}
@@ -71,7 +76,7 @@ export default (props) => {
                 >
                     <TreeItem nodeId="1" label="開始">
                         <TreeItem nodeId="2" label="當 Staff = Y, 是否為DBS員工" >
-                            <TreeItem nodeId="3" label="值為 Y," />
+                            <TreeItem nodeId="3" label="值為 Yend," />
                         </TreeItem>
                         <TreeItem nodeId="4" label="當 Small_White = Y, 信用小白(沒有JCIC紀錄申請)" >
                             <TreeItem nodeId="5" label="值為 0," />
