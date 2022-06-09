@@ -1,0 +1,19 @@
+/* .item {
+    display: flex;
+    align-items: center;
+    background: lightgrey;
+}
+
+.item:hover {
+    background: lightyellow;
+} */
+
+.item .command {
+    /* padding: .25em 1em;
+    margin: .25em 0 .25em 1em; */
+    display: none;
+}
+
+.item:hover .command {
+    display: block;
+}

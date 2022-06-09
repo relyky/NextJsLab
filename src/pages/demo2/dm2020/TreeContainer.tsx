@@ -4,10 +4,21 @@ import { useAppSelector, useAppDispatch } from 'hooks/hooks'
 import { Box, Button, IconButton, Divider, Typography } from '@mui/material'
 import { TreeView, TreeItem } from '@mui/lab'
 import TreeContent from './TreeContent'
+// CSS style
+import ss from './AppForm.module.css'
 // icons
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import InfoIcon from '@mui/icons-material/Info';
+import WhenIcon from '@mui/icons-material/PlaylistAddCheckOutlined'
+import MoreIcon from '@mui/icons-material/MoreVert'
+import OnIcon from '@mui/icons-material/VisibilityOutlined'
+import OffIcon from '@mui/icons-material/VisibilityOffOutlined'
+import EditIcon from '@mui/icons-material/EditRounded'
+import NewIcon from '@mui/icons-material/AddComment'
+import ClearIcon from '@mui/icons-material/Clear'
+import UpwardIcon from '@mui/icons-material/ArrowUpward'
+import TransIcon from '@mui/icons-material/Transform'
 
 // TreeContainer
 export default (props) => {
@@ -28,7 +39,7 @@ export default (props) => {
 
     const handleExpandClick = () => {
         setExpanded((oldExpanded) =>
-            oldExpanded.length === 0 ? ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'] : [],
+            oldExpanded.length === 0 ? ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15'] : [],
         );
     };
 
@@ -70,12 +81,12 @@ export default (props) => {
                             </TreeItem>
 
                             <TreeItem nodeId="13" label={
-                                <Box sx={{ display: 'flex', alignItems: 'center', p: 0.5, pr: 0 }}>
+                                <Box className={ss.item} sx={{ display: 'flex', alignItems: 'center', p: 0.5, pr: 0 }}>
                                     {/* <Box component={InfoIcon} color="inherit" sx={{ mr: 1 }} /> */}
-                                    <Typography variant="body1" sx={{ fontWeight: 'inherit', flexGrow: 1 }}>
+                                    <Typography variant="body1" sx={{ fontWeight: 'inherit', flexGrow: 0, mr: 1 }}>
                                         {'當 客戶層級 = VIP, Customer Segment'}
                                     </Typography>
-                                    <IconButton color="primary" size="small" component="span" onClick={e => {
+                                    <IconButton className={ss.command} color="primary" size="small" component="span" onClick={e => {
                                         e.stopPropagation();
                                         console.log('按一下', e);
                                     }}>
@@ -84,6 +95,67 @@ export default (props) => {
                                 </Box>
                             }>
                                 <TreeItem nodeId="8" label="值為 Z," />
+                            </TreeItem>
+
+                            <TreeItem nodeId="14" label={
+                                <Box className={ss.item} sx={{ display: 'flex', alignItems: 'center', p: 0.5, pr: 0 }}>
+                                    {/* <Box component={InfoIcon} color="inherit" sx={{ mr: 1 }} /> */}
+                                    <Typography variant="body1" sx={{ fontWeight: 'inherit', flexGrow: 0, mr: 1 }}>
+                                        {'當 客戶層級 = VIP, Customer Segment'}
+                                    </Typography>
+                                    <IconButton className={ss.command} color="primary" size="small" component="span" onClick={e => {
+                                        e.stopPropagation();
+                                        console.log('按一下', e);
+                                    }}>
+                                        <InfoIcon />
+                                    </IconButton>
+                                </Box>
+                            }>
+                                <TreeItem nodeId="8" label="值為 Z," />
+                            </TreeItem>
+
+                            <TreeItem nodeId="15" label={
+                                <Box className={ss.item} sx={{ display: 'flex', alignItems: 'center', p: 0.5, pr: 0 }}>
+                                    {/* <Box component={InfoIcon} color="inherit" sx={{ mr: 1 }} /> */}
+                                    <Typography variant="body1" sx={{ fontWeight: 'inherit', flexGrow: 0, mr: 1 }}>
+                                        {'當 客戶層級 = VIP, Customer Segment'}
+                                    </Typography>
+                                    <IconButton className={ss.command} color="primary" size="small" component="span">
+                                        <UpwardIcon />
+                                    </IconButton>
+                                    <IconButton className={ss.command} color="primary" size="small" component="span">
+                                        <EditIcon />
+                                    </IconButton>
+                                    <IconButton className={ss.command} color="primary" size="small" component="span">
+                                        <ClearIcon />
+                                    </IconButton>
+                                    <IconButton className={ss.command} color="primary" size="small" component="span" onClick={e => {
+                                        e.stopPropagation();
+                                        console.log('按一下', e);
+                                    }}>
+                                        <InfoIcon />
+                                    </IconButton>
+                                </Box>
+                            }>
+                                <TreeItem nodeId="8" label={
+                                    <Box className={ss.item} sx={{ display: 'flex', alignItems: 'center', py: 0.5 }}>
+                                        {/* <Box component={InfoIcon} color="inherit" sx={{ mr: 1 }} /> */}
+                                        <Typography variant="body1" sx={{ fontWeight: 'inherit', flexGrow: 0, mr: 1 }}>
+                                            {'值為 Z, 我是值的說明。'}
+                                        </Typography>
+                                        <IconButton className={ss.command} color="primary" size="small" component="span">
+                                            <EditIcon />
+                                        </IconButton>
+                                        <IconButton className={ss.command} color="primary" size="small" component="span"
+                                            onClick={e => {
+                                                e.stopPropagation();
+                                                console.log('按一下', e);
+                                            }}>
+                                            <TransIcon />
+                                        </IconButton>
+                                    </Box>
+                                } />
+
                             </TreeItem>
 
                             <TreeItem nodeId="9" label="否則" >
