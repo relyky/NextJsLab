@@ -1,4 +1,5 @@
 import type { SyntheticEvent, FC } from 'react'
+import { DecisionTreeState } from './interfaces'
 import { useState, useMemo } from 'react'
 import { useAppSelector, useAppDispatch } from 'hooks/hooks'
 import { Box, Button, IconButton, Divider, Typography } from '@mui/material'
@@ -28,7 +29,7 @@ import ForwardIcon from '@mui/icons-material/ForwardTwoTone';
 // TreeContainer
 export default (props) => {
     const dispatch = useAppDispatch()
-    const decisionTree = useAppSelector(store => store.decisionTree)
+    const decisionTree = useAppSelector(store => store.decisionTree2)
 
     const [expanded, setExpanded] = useState<string[]>([]);
     const [selected, setSelected] = useState<string>(null);
@@ -54,10 +55,6 @@ export default (props) => {
 
     return (
         <div>
-
-
-            <Divider sx={{ my: 3 }} />
-
             <Box>
                 <Box sx={{ mb: 1 }}>
                     <Button onClick={handleExpandClick}>
@@ -69,7 +66,27 @@ export default (props) => {
                     expanded:{JSON.stringify(expanded)}
                 </pre>
 
-                <TreeView                    
+                <TreeView
+                    defaultCollapseIcon={<MinusIcon color="primary" />}
+                    defaultExpandIcon={<PlusIcon color="primary" />}
+                    defaultEndIcon={<ForwardIcon color="secondary" />}
+                    expanded={expanded}
+                    selected={selected}
+                    onNodeToggle={handleToggle}
+                    onNodeSelect={handleSelect}
+                >
+                    <TreeItem nodeId="root" label="開始">
+                        <TreeContent path={[]} decisionTree={decisionTree} />
+                    </TreeItem>
+                </TreeView>
+
+            </Box>
+
+            <Divider sx={{ my: 3 }} />
+
+            <Box>
+
+                <TreeView
                     defaultCollapseIcon={<MinusIcon color="primary" />}
                     defaultExpandIcon={<PlusIcon color="primary" />}
                     defaultEndIcon={<ForwardIcon color="secondary" />}
@@ -118,8 +135,6 @@ export default (props) => {
             </Box>
 
             <Divider sx={{ my: 3 }} />
-
-            {/* <TreeContent path={[]} decisionTree={decisionTree} /> */}
 
         </div>
     )

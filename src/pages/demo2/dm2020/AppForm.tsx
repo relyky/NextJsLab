@@ -8,7 +8,7 @@ import TreeContainer from './TreeContainer'
 import Swal from 'sweetalert2'
 
 export default (props) => {
-    const decisionTree = useAppSelector(store => store.decisionTree)
+    const decisionTree = useAppSelector(store => store.decisionTree2)
     //const dispatch = useAppDispatch()
 
     const [f_show, setShowFlag] = useState(false)
@@ -26,6 +26,7 @@ export default (props) => {
             <H3>DM2020: Decision Tree UI 試作II</H3>
             <pre>decisionTree 筆數:{decisionTree.length}</pre>
             <AButton label='驗證' mutant='primary' onClick={handleClick} />
+            <AButton label='複製(sub tree)' mutant='primary' onClick={handleClick} />
             <AButton label='查看編輯資料' mutant='secondary0' onClick={handleShowData} />
 
             <TreeContainer />

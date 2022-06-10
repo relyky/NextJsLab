@@ -11,11 +11,12 @@ import { ConstructionOutlined } from '@mui/icons-material';
 //ElseStatemnet  := Special-Statement
 
 export function isDcsAssignment(obj: any): obj is DcsAssignment {
-  return 'fdNote' in obj && 'retValue' in obj;
+  return 'nodeId' in obj && 'fdNote' in obj && 'retValue' in obj;
 }
 
 const initialState: DecisionTreeState = [
   {
+    nodeId: '1',
     isElse: false,
     cond: {
       fdNote: '是否為DBS員工',
@@ -24,24 +25,28 @@ const initialState: DecisionTreeState = [
       cmpValue: 'Y',
     },
     action: {
+      nodeId: '2',
       fdNote: '',
-      retValue: 'Y'
+      retValue: 'A'
     }
   },
   {
+    nodeId: '3',
     isElse: false,
     cond: {
       fdNote: '信用小白(沒有JCIC紀錄申請)',
       fdName: 'Small_White',
       cmpAct: 'eq',
-      cmpValue: 'Y',
+      cmpValue: 'N',
     },
     action: {
+      nodeId: '4',
       fdNote: '',
-      retValue: '0'
+      retValue: 'B'
     }
   },
   {
+    nodeId: '5',
     isElse: false,
     cond: {
       fdNote: 'Customer Segment',
@@ -51,6 +56,7 @@ const initialState: DecisionTreeState = [
     },
     action: [
       {
+        nodeId: '6',
         isElse: false,
         cond: {
           fdNote: 'Customer Segment',
@@ -59,14 +65,17 @@ const initialState: DecisionTreeState = [
           cmpValue: 'VIP',
         },
         action: {
+          nodeId: '7',
           fdNote: '',
           retValue: 'Z'
         }
       },
       {
+        nodeId: '8',
         isElse: true,
         cond: null,
         action: {
+          nodeId: '9',
           fdNote: '來賓層級',
           retValue: 'GUEST'
         }
@@ -74,9 +83,11 @@ const initialState: DecisionTreeState = [
     ]
   },
   {
+    nodeId: '10',
     isElse: true,
     cond: null,
     action: {
+      nodeId: '11',
       fdNote: '其他',
       retValue: 'Otherwise'
     }
@@ -99,6 +110,7 @@ export const decisionTreeSlice = createSlice({
 
       // 新增一筆空白陳述。
       const newItem: DcsStatement = {
+        nodeId: 'XXX',
         isElse: false,
         cond: {
           fdName: 'New Field Name',
@@ -107,6 +119,7 @@ export const decisionTreeSlice = createSlice({
           cmpValue: '欄位比較值'
         },
         action: {
+          nodeId: 'YYY',
           fdNote: '回傳值說明',
           retValue: '回傳值'
         }
@@ -189,6 +202,7 @@ export const decisionTreeSlice = createSlice({
 
       const newSubTree: DecisionTreeState = [
         {
+          nodeId: 'XXX',
           isElse: false,
           cond: {
             fdName: 'New Field Name',
@@ -197,14 +211,17 @@ export const decisionTreeSlice = createSlice({
             cmpValue: '欄位比較值'
           },
           action: {
+            nodeId: 'YYY',
             fdNote: '回傳值說明',
             retValue: '回傳值'
           }
         },
         {
+          nodeId: 'ZZZ',
           isElse: true,
           cond: null,
           action: {
+            nodeId: assimt.nodeId,
             fdNote: assimt.fdNote,
             retValue: assimt.retValue
           }
