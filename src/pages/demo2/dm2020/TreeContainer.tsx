@@ -1,7 +1,7 @@
 import type { SyntheticEvent, FC } from 'react'
 import { useState, useMemo } from 'react'
 import { useAppSelector, useAppDispatch } from 'hooks/hooks'
-import { Box, Button, IconButton, Divider, Typography, Stack } from '@mui/material'
+import { Box, Button, IconButton, Divider, Typography } from '@mui/material'
 import { TreeView } from '@mui/lab'
 import TreeContent from './TreeContent'
 import TreeItem from './widgets/StyledTreeItem'
@@ -64,12 +64,12 @@ export default (props) => {
                         {notExpand ? '展開' : '褶疊'}
                     </Button>
                 </Box>
-                <Box sx={{ display: 'none' }}>
+                <pre>
                     selected:{JSON.stringify(selected)} <br />
                     expanded:{JSON.stringify(expanded)}
-                </Box>
+                </pre>
 
-                <TreeView
+                <TreeView                    
                     defaultCollapseIcon={<MinusIcon color="primary" />}
                     defaultExpandIcon={<PlusIcon color="primary" />}
                     defaultEndIcon={<ForwardIcon color="secondary" />}
@@ -139,24 +139,22 @@ const TreeCondItem: FC<{
                     {props.desc}
                     {/* {'當 客戶層級 = VIP16, Customer Segment 17'} */}
                 </Typography>
-                <Stack direction="row">
-                    <IconButton className={ss.command} color="primary" size="small" component="span">
-                        <UpwardIcon />
-                    </IconButton>
-                    <IconButton className={ss.command} color="primary" size="small" component="span">
-                        <EditIcon />
-                    </IconButton>
-                    <IconButton className={ss.command} color="primary" size="small" component="span">
-                        <ClearIcon />
-                    </IconButton>
-                    <IconButton className={ss.command} color="primary" size="small" component="span" onClick={e => {
-                        e.stopPropagation();
-                        alert('回應按一下');
-                    }}>
-                        <InfoIcon />
-                    </IconButton>
-                </Stack>
 
+                <IconButton className={ss.command} color="primary" size="small" component="span">
+                    <UpwardIcon />
+                </IconButton>
+                <IconButton className={ss.command} color="primary" size="small" component="span">
+                    <EditIcon />
+                </IconButton>
+                <IconButton className={ss.command} color="primary" size="small" component="span">
+                    <ClearIcon />
+                </IconButton>
+                <IconButton className={ss.command} color="primary" size="small" component="span" onClick={e => {
+                    e.stopPropagation();
+                    alert('回應按一下');
+                }}>
+                    <InfoIcon />
+                </IconButton>
             </Box>
         }>
             {props.children}
@@ -177,6 +175,7 @@ const TreeAssimtItem: FC<{
                     {props.desc}
                     {/* {'值為 Z, 我是值的說明。'} */}
                 </Typography>
+
                 <IconButton className={ss.command} color="primary" size="small" component="span">
                     <EditIcon />
                 </IconButton>
