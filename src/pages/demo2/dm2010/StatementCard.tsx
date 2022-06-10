@@ -27,7 +27,7 @@ const StatementCard: FC<{
 }> = props => {
   //const decisionTree = useAppSelector(store => store.decisionTree)
   const dispatch = useAppDispatch()
-  
+
   const { isElse, cond, action } = props.item
 
   const [f_showDetail, setShowDetail] = useState(true)
@@ -231,8 +231,8 @@ const CondEditDialog: FC<{
           variant="standard"
           margin="normal"
         >
-          <MenuItem value={'lt'}>{'>'}</MenuItem>
-          <MenuItem value={'le'}>{'>='}</MenuItem>
+          <MenuItem value={'gt'}>{'>'}</MenuItem>
+          <MenuItem value={'ge'}>{'>='}</MenuItem>
           <MenuItem value={'ls'}>{'<'}</MenuItem>
           <MenuItem value={'le'}>{'<='}</MenuItem>
           <MenuItem value={'eq'}>{'='}</MenuItem>

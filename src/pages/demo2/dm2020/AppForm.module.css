@@ -6,7 +6,7 @@
 
 .item:hover {
     /* background: lightyellow; */
-    padding: .5em;
+    padding: .25em;
 }
 
 .item .command {

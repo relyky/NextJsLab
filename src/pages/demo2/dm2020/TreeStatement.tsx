@@ -4,7 +4,7 @@ import type { DcsStatement, DcsCondision, DcsAssignment } from './interfaces'
 // 
 import { useState, useMemo } from 'react'
 import { useAppSelector, useAppDispatch } from 'hooks/hooks'
-import { Box, Button, IconButton, Divider, Typography, TextField } from '@mui/material'
+import { Box, Stack, Button, IconButton, Divider, Typography, TextField, MenuItem } from '@mui/material'
 import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, colors } from '@mui/material'
 import { TreeView } from '@mui/lab'
 import TreeContent from './TreeContent'
@@ -41,41 +41,42 @@ const TreeStatement: FC<{
 
     const dispatch = useAppDispatch()
 
-    const isTreeAction = !isDcsAssignment(action)
-    const [f_showCond, setShowCond] = useState(false)
+    const isTreeAction = useMemo(() => !isDcsAssignment(action), [action])
 
-    return (
-        <>
-            {isElse ?
-                <TreeItem nodeId={`${nodeId}`} label={`[${nodeId}]否則`} >
-                    {isDcsAssignment(action) ?
-                        <TreeAssimtItem assimt={action}
-                            onOk={info => dispatch(updAssimt({
-                                assimt: info,
-                                index: props.pos,
-                                path: props.path
-                            }))}
-                        />
-                        :
-                        <TreeContent path={[...props.path, props.pos]} decisionTree={action} />
-                    }
-                </TreeItem>
+    return (isElse ?
+        <TreeItem nodeId={`${nodeId}`} label={`[${nodeId}]否則`} >
+            {isDcsAssignment(action) ?
+                <TreeAssimtItem assimt={action}
+                    onOk={info => dispatch(updAssimt({
+                        assimt: info,
+                        index: props.pos,
+                        path: props.path
+                    }))}
+                />
                 :
-                <TreeCondItem nodeId={nodeId} desc={`[${nodeId}]當 ${cond.fdName} ${codeName(cond.cmpAct)} ${cond.cmpValue}, ${cond.fdNote}`} >
-                    {isDcsAssignment(action) ?
-                        <TreeAssimtItem assimt={action}
-                            onOk={info => dispatch(updAssimt({
-                                assimt: info,
-                                index: props.pos,
-                                path: props.path
-                            }))}
-                        />
-                        :
-                        <TreeContent path={[...props.path, props.pos]} decisionTree={action} />
-                    }
-                </TreeCondItem>
+                <TreeContent path={[...props.path, props.pos]} decisionTree={action} />
             }
-        </>
+        </TreeItem>
+        :
+        <TreeCondItem item={props.item}
+            onOk={info => dispatch(updCond({
+                cond: info,
+                index: props.pos,
+                path: props.path
+            }))}
+        >
+            {isDcsAssignment(action) ?
+                <TreeAssimtItem assimt={action}
+                    onOk={info => dispatch(updAssimt({
+                        assimt: info,
+                        index: props.pos,
+                        path: props.path
+                    }))}
+                />
+                :
+                <TreeContent path={[...props.path, props.pos]} decisionTree={action} />
+            }
+        </TreeCondItem>
     )
 
     // if (isElse) return (
@@ -103,37 +104,59 @@ export default TreeStatement
 
 //------------------------
 const TreeCondItem: FC<{
-    nodeId: string,
-    desc: string,
+    item: DcsStatement
+    onOk: (info: DcsCondision) => void
 }> = (props) => {
+    const { item } = props
+    const { cond } = props.item
+    const [f_showCond, setShowCond] = useState(false)
     return (
-        <TreeItem nodeId={props.nodeId} label={
-            <Box className={ss.item} sx={{ display: 'flex', alignItems: 'center' }}>
-                {/* <Box component={InfoIcon} color="inherit" sx={{ mr: 1 }} /> */}
-                <Typography variant="body1" sx={{ fontWeight: 'inherit', flexGrow: 0, mr: 1 }}>
-                    {props.desc}
-                    {/* {'當 客戶層級 = VIP16, Customer Segment 17'} */}
-                </Typography>
+        <>
+            <TreeItem nodeId={item.nodeId} label={
+                <Stack direction="row" alignItems="center" className={ss.item}>
+                    <Typography variant="body1" mr="1">
+                        {/* {`[${item.nodeId}]`} */}
+                        {`當 ${cond.fdName} ${codeName(cond.cmpAct)} ${cond.cmpValue}, ${cond.fdNote}`}
+                    </Typography>
 
-                <IconButton className={ss.command} color="primary" size="small" component="span">
-                    <UpwardIcon />
-                </IconButton>
-                <IconButton className={ss.command} color="primary" size="small" component="span">
-                    <EditIcon />
-                </IconButton>
-                <IconButton className={ss.command} color="primary" size="small" component="span">
-                    <ClearIcon />
-                </IconButton>
-                <IconButton className={ss.command} color="primary" size="small" component="span" onClick={e => {
-                    e.stopPropagation();
-                    alert('回應按一下');
-                }}>
-                    <InfoIcon />
-                </IconButton>
-            </Box>
-        }>
-            {props.children}
-        </TreeItem>
+                    <IconButton className={ss.command} color="primary">
+                        <UpwardIcon />
+                    </IconButton>
+
+                    <IconButton className={ss.command} color="primary" children={<EditIcon />}
+                        onClick={e => {
+                            e.stopPropagation()
+                            setShowCond(true)
+                        }}
+                    />
+
+                    <IconButton className={ss.command} color="primary">
+                        <ClearIcon />
+                    </IconButton>
+                    <IconButton className={ss.command} color="primary" onClick={e => {
+                        e.stopPropagation();
+                        alert('回應按一下');
+                    }}>
+                        <InfoIcon />
+                    </IconButton>
+                </Stack>
+            }>
+                {props.children}
+            </TreeItem>
+
+            {f_showCond &&
+                <CondEditDialog
+                    nodeId={item.nodeId}
+                    cond={cond}
+                    onCancel={() => setShowCond(false)}
+                    onOk={(info) => {
+                        setShowCond(false)
+                        props.onOk(info)
+                    }}
+                />
+            }
+        </>
+
     )
 }
 
@@ -147,26 +170,26 @@ const TreeAssimtItem: FC<{
     return (
         <>
             <TreeItem nodeId={assimt.nodeId} label={
-                <Box className={ss.item} sx={{ display: 'flex', alignItems: 'center' }}>
+                <Stack direction="row" alignItems="center" className={ss.item}>
                     <Typography variant="body1" mr="1">
-                        {`[${assimt.nodeId}]值為 ${assimt.retValue}, ${assimt.fdNote}`}
+                        {/* {`[${assimt.nodeId}]`} */}
+                        {`值為 ${assimt.retValue}, ${assimt.fdNote}`}
                     </Typography>
 
-                    <IconButton className={ss.command} color="primary" size="small" component="span"
+                    <IconButton className={ss.command} color="primary" children={<EditIcon />}
                         onClick={e => {
                             e.stopPropagation()
                             setShowAssimt(true)
-                        }}>
-                        <EditIcon />
-                    </IconButton>
-                    <IconButton className={ss.command} color="primary" size="small" component="span"
+                        }}
+                    />
+
+                    <IconButton className={ss.command} color="primary" children={<TransIcon />}
                         onClick={e => {
                             e.stopPropagation();
                             console.log('按一下', e);
-                        }}>
-                        <TransIcon />
-                    </IconButton>
-                </Box>
+                        }}
+                    />
+                </Stack>
             } />
 
             {f_showAssimt &&
@@ -244,6 +267,96 @@ const AssimtEditDialog: FC<{
                     variant="standard"
                     margin="normal"
                     fullWidth
+                />
+
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={() => props.onCancel()}>取消</Button>
+                <Button variant='contained' onClick={() => props.onOk(info)}>確認</Button>
+            </DialogActions>
+        </Dialog>
+    )
+}
+
+//---------------------------
+const CondEditDialog: FC<{
+    nodeId: string
+    cond: DcsCondision
+    onCancel: () => void
+    onOk: (info: DcsCondision) => void
+}> = props => {
+    const { cond } = props
+    const [info, setInfo] = useState<DcsCondision>({ ...cond })
+
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const name = event.target.name
+        const value = event.target.value
+        setInfo({ ...info, [name]: value })
+    }
+
+    return (
+        <Dialog open={true} onClose={() => props.onCancel()}>
+            <DialogTitle>編輯條件</DialogTitle>
+            <DialogContent>
+                <DialogContentText>
+                    選取節點：條件[{props.nodeId}] 當 {cond?.fdName} {codeName(cond?.cmpAct)} {cond?.cmpValue}, {cond?.fdNote}
+                </DialogContentText>
+
+                <TextField
+                    label="節點"
+                    value={`條件[${props.nodeId}]`}
+                    inputProps={{ readOnly: true }}
+                    variant="standard"
+                    margin="normal"
+                    fullWidth
+                />
+
+                <TextField
+                    label="說明"
+                    name="fdNote"
+                    value={info.fdNote}
+                    onChange={handleChange}
+                    autoFocus
+                    fullWidth
+                    variant="standard"
+                    margin="normal"
+                />
+
+                <TextField
+                    label="欄位"
+                    name="fdName"
+                    value={info.fdName}
+                    onChange={handleChange}
+                    fullWidth
+                    variant="standard"
+                    margin="normal"
+                />
+
+                <TextField select
+                    label="比對"
+                    name="cmpAct"
+                    value={info.cmpAct}
+                    onChange={handleChange}
+                    fullWidth
+                    variant="standard"
+                    margin="normal"
+                >
+                    <MenuItem value={'gt'}>{'>'}</MenuItem>
+                    <MenuItem value={'ge'}>{'>='}</MenuItem>
+                    <MenuItem value={'ls'}>{'<'}</MenuItem>
+                    <MenuItem value={'le'}>{'<='}</MenuItem>
+                    <MenuItem value={'eq'}>{'='}</MenuItem>
+                    <MenuItem value={'in'}>{'in'}</MenuItem>
+                </TextField>
+
+                <TextField
+                    label="設定值"
+                    name="cmpValue"
+                    value={info.cmpValue}
+                    onChange={handleChange}
+                    fullWidth
+                    variant="standard"
+                    margin="normal"
                 />
 
             </DialogContent>
