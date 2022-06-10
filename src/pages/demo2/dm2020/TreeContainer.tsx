@@ -1,7 +1,7 @@
 import type { SyntheticEvent, FC } from 'react'
-import React, { useState, useMemo } from 'react'
+import { useState, useMemo } from 'react'
 import { useAppSelector, useAppDispatch } from 'hooks/hooks'
-import { Box, Button, IconButton, Divider, Typography } from '@mui/material'
+import { Box, Button, IconButton, Divider, Typography, Stack } from '@mui/material'
 import { TreeView } from '@mui/lab'
 import TreeContent from './TreeContent'
 import TreeItem from './widgets/StyledTreeItem'
@@ -64,10 +64,10 @@ export default (props) => {
                         {notExpand ? '展開' : '褶疊'}
                     </Button>
                 </Box>
-                <pre>
+                <Box sx={{ display: 'none' }}>
                     selected:{JSON.stringify(selected)} <br />
                     expanded:{JSON.stringify(expanded)}
-                </pre>
+                </Box>
 
                 <TreeView
                     defaultCollapseIcon={<MinusIcon color="primary" />}
@@ -79,29 +79,30 @@ export default (props) => {
                     onNodeSelect={handleSelect}
                 >
                     <TreeItem nodeId="root" label="開始">
-                        <TreeCondItem nodeId="1" desc="當 Staff = Y, 是否為DBS員工" >
-                            <TreeAssimtItem nodeId="2" desc="值為 Yend," />
+                        <TreeCondItem nodeId="1" desc="當 是否為DBS員工 = Y, Staff" >
+                            <TreeAssimtItem nodeId="2" desc="值為 Y," />
                         </TreeCondItem>
 
                         <TreeCondItem nodeId="3" desc="當 Small_White = Y, 信用小白(沒有JCIC紀錄申請)" >
                             <TreeAssimtItem nodeId="4" desc="值為 0," />
                         </TreeCondItem>
 
-                        <TreeCondItem nodeId="5" desc="當 職稱 in '16','29','36','34', Customer Segment" >
-                            <TreeCondItem nodeId="6" desc="當 客戶層級 = VIP, Customer Segment 7" >
-                                <TreeAssimtItem nodeId="7" desc="值為 8," />
+                        <TreeCondItem nodeId="5" desc="當 客戶層級 = Z, Customer Segment" >
+                            <TreeAssimtItem nodeId="6" desc="值為 0," />
+                        </TreeCondItem>
+
+                        <TreeCondItem nodeId="7" desc="當 職稱 in '16','29','36','34', Occupation" >
+                            <TreeCondItem nodeId="8" desc="當 年齡 > 65 , Age" >
+                                <TreeAssimtItem nodeId="9" desc="值為 A," />
                             </TreeCondItem>
-                            <TreeCondItem nodeId="8" desc="當 客戶層級 = VIP, Customer Segment 13" >
-                                <TreeAssimtItem nodeId="9" desc="值為 Z," />
+                            <TreeCondItem nodeId="10" desc="當 New_To_Bureau = Y, 近6個月沒有貸款或信貸記錄" >
+                                <TreeAssimtItem nodeId="11" desc="值為 N," />
                             </TreeCondItem>
-                            <TreeCondItem nodeId="10" desc="當 客戶層級 = VIP, Customer Segment 13" >
-                                <TreeAssimtItem nodeId="11" desc="值為 Z," />
+                            <TreeCondItem nodeId="12" desc="當 月收入 > 300000, Declared_ monthly_income" >
+                                <TreeAssimtItem nodeId="13" desc="值為 A," />
                             </TreeCondItem>
-                            <TreeCondItem nodeId="12" desc="當 客戶層級 = VIP, Customer Segment 13" >
-                                <TreeAssimtItem nodeId="13" desc="值為 Z," />
-                            </TreeCondItem>
-                            <TreeCondItem nodeId="14" desc="當 客戶層級 = VIP, Customer Segment 13" >
-                                <TreeAssimtItem nodeId="15" desc="值為 Z," />
+                            <TreeCondItem nodeId="14" desc="當 財力證明 < 4000, " >
+                                <TreeAssimtItem nodeId="15" desc="值為 B," />
                             </TreeCondItem>
                             <TreeItem nodeId="16" label="否則" >
                                 <TreeAssimtItem nodeId="17" desc="值為 GUEST, 來賓層級" />
@@ -118,7 +119,7 @@ export default (props) => {
 
             <Divider sx={{ my: 3 }} />
 
-            <TreeContent path={[]} decisionTree={decisionTree} />
+            {/* <TreeContent path={[]} decisionTree={decisionTree} /> */}
 
         </div>
     )
@@ -138,21 +139,24 @@ const TreeCondItem: FC<{
                     {props.desc}
                     {/* {'當 客戶層級 = VIP16, Customer Segment 17'} */}
                 </Typography>
-                <IconButton className={ss.command} color="primary" size="small" component="span">
-                    <UpwardIcon />
-                </IconButton>
-                <IconButton className={ss.command} color="primary" size="small" component="span">
-                    <EditIcon />
-                </IconButton>
-                <IconButton className={ss.command} color="primary" size="small" component="span">
-                    <ClearIcon />
-                </IconButton>
-                <IconButton className={ss.command} color="primary" size="small" component="span" onClick={e => {
-                    e.stopPropagation();
-                    alert('按一下', e);
-                }}>
-                    <InfoIcon />
-                </IconButton>
+                <Stack direction="row">
+                    <IconButton className={ss.command} color="primary" size="small" component="span">
+                        <UpwardIcon />
+                    </IconButton>
+                    <IconButton className={ss.command} color="primary" size="small" component="span">
+                        <EditIcon />
+                    </IconButton>
+                    <IconButton className={ss.command} color="primary" size="small" component="span">
+                        <ClearIcon />
+                    </IconButton>
+                    <IconButton className={ss.command} color="primary" size="small" component="span" onClick={e => {
+                        e.stopPropagation();
+                        alert('回應按一下');
+                    }}>
+                        <InfoIcon />
+                    </IconButton>
+                </Stack>
+
             </Box>
         }>
             {props.children}
