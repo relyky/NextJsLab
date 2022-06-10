@@ -45,7 +45,22 @@ const TreeStatement: FC<{
     const isTreeAction = useMemo(() => !isDcsAssignment(action), [action])
 
     return (isElse ?
-        <TreeItem nodeId={`${nodeId}`} label={`[${nodeId}]否則`} >
+        <TreeItem nodeId={`${nodeId}`}
+            label={
+                <Stack direction="row" alignItems="center" className={ss.item}>
+                    <Typography variant="body1" mr="1">
+                        {`[${nodeId}]否則`}
+                    </Typography>
+                    
+                    <IconButton className={ss.command} color="primary" children={<NewIcon />}
+                        onClick={e => {
+                            e.stopPropagation()
+                            dispatch(newStatement({ path: props.path }))
+                        }}
+                    />
+                </Stack>
+            }
+        >
             {isDcsAssignment(action) ?
                 <TreeAssimtItem assimt={action}
                     onUpd={info => dispatch(updAssimt({
@@ -110,7 +125,7 @@ const TreeCondItem: FC<{
             <TreeItem nodeId={item.nodeId} label={
                 <Stack direction="row" alignItems="center" className={ss.item}>
                     <Typography variant="body1" mr="1">
-                        {/* {`[${item.nodeId}]`} */}
+                        {`[${item.nodeId}]`}
                         {`當 ${cond.fdName} ${codeName(cond.cmpAct)} ${cond.cmpValue}, ${cond.fdNote}`}
                     </Typography>
 
@@ -171,7 +186,7 @@ const TreeAssimtItem: FC<{
             <TreeItem nodeId={assimt.nodeId} label={
                 <Stack direction="row" alignItems="center" className={ss.item}>
                     <Typography variant="body1" mr="1">
-                        {/* {`[${assimt.nodeId}]`} */}
+                        {`[${assimt.nodeId}]`}
                         {`值為 ${assimt.retValue}, ${assimt.fdNote}`}
                     </Typography>
 

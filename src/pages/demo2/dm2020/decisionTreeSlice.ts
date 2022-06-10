@@ -1,6 +1,7 @@
 import type { AppState, AppThunk } from 'store/store'
 import type { WritableDraft } from 'immer/dist/internal';
 import type { DcsCondision, DcsAssignment, DcsStatement, DecisionTreeState } from './interfaces'
+import { useEffect, useState } from 'react'
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import assert from 'assert'
 import { ConstructionOutlined } from '@mui/icons-material';
@@ -110,7 +111,7 @@ export const decisionTreeSlice = createSlice({
 
       // 新增一筆空白陳述。
       const newItem: DcsStatement = {
-        nodeId: 'XXX',
+        nodeId: GenNodeId(),
         isElse: false,
         cond: {
           fdName: 'New Field Name',
@@ -119,7 +120,7 @@ export const decisionTreeSlice = createSlice({
           cmpValue: '欄位比較值'
         },
         action: {
-          nodeId: 'YYY',
+          nodeId: GenNodeId(),
           fdNote: '回傳值說明',
           retValue: '回傳值'
         }
@@ -245,3 +246,12 @@ export const {
 } = decisionTreeSlice.actions
 
 export default decisionTreeSlice.reducer
+
+//-------------------------
+
+function GenNodeId(): string {
+  const newNodeId = globalThis.nodeIdBase || 101;
+  console.info('newNodeId', { newNodeId })
+  globalThis.nodeIdBase = newNodeId + 1;
+  return String(newNodeId)
+}
