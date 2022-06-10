@@ -38,28 +38,15 @@ const TreeStatement: FC<{
     path: number[],
     pos: number
 }> = props => {
-    const { nodeId, isElse, cond, action } = props.item
-
+    const { isElse, action } = props.item
     const dispatch = useAppDispatch()
-
-    const isTreeAction = useMemo(() => !isDcsAssignment(action), [action])
+    //const isTreeAction = useMemo(() => !isDcsAssignment(action), [action])
 
     return (isElse ?
-        <TreeItem nodeId={`${nodeId}`}
-            label={
-                <Stack direction="row" alignItems="center" className={ss.item}>
-                    <Typography variant="body1" mr="1">
-                        {`[${nodeId}]否則`}
-                    </Typography>
-                    
-                    <IconButton className={ss.command} color="primary" children={<NewIcon />}
-                        onClick={e => {
-                            e.stopPropagation()
-                            dispatch(newStatement({ path: props.path }))
-                        }}
-                    />
-                </Stack>
-            }
+        <TreeElseItem item={props.item}
+            onNew={() => dispatch(newStatement({
+                path: props.path
+            }))}
         >
             {isDcsAssignment(action) ?
                 <TreeAssimtItem assimt={action}
@@ -72,7 +59,7 @@ const TreeStatement: FC<{
                 :
                 <TreeContent path={[...props.path, props.pos]} decisionTree={action} />
             }
-        </TreeItem>
+        </TreeElseItem>
         :
         <TreeCondItem item={props.item}
             onUpd={info => dispatch(updCond({
@@ -171,6 +158,33 @@ const TreeCondItem: FC<{
             }
         </>
 
+    )
+}
+
+//------------------------
+const TreeElseItem: FC<{
+    item: DcsStatement
+    onNew: () => void
+}> = (props) => {
+    const { item } = props
+    return (
+        <TreeItem nodeId={item.nodeId} label={
+            <Stack direction="row" alignItems="center" className={ss.item}>
+                <Typography variant="body1" mr="1">
+                    {`[${item.nodeId}]`}
+                    {`否則`}
+                </Typography>
+
+                <IconButton className={ss.command} color="primary" children={<NewIcon />}
+                    onClick={e => {
+                        e.stopPropagation()
+                        props.onNew()
+                    }}
+                />
+            </Stack>
+        }>
+            {props.children}
+        </TreeItem>
     )
 }
 
