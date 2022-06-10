@@ -203,7 +203,7 @@ export const decisionTreeSlice = createSlice({
 
       const newSubTree: DecisionTreeState = [
         {
-          nodeId: 'XXX',
+          nodeId: GenNodeId(),
           isElse: false,
           cond: {
             fdName: 'New Field Name',
@@ -212,13 +212,13 @@ export const decisionTreeSlice = createSlice({
             cmpValue: '欄位比較值'
           },
           action: {
-            nodeId: 'YYY',
+            nodeId: GenNodeId(),
             fdNote: '回傳值說明',
             retValue: '回傳值'
           }
         },
         {
-          nodeId: 'ZZZ',
+          nodeId: GenNodeId(),
           isElse: true,
           cond: null,
           action: {

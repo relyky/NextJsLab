@@ -26,7 +26,7 @@ import EditIcon from '@mui/icons-material/EditRounded'
 import NewIcon from '@mui/icons-material/AddComment'
 import ClearIcon from '@mui/icons-material/Clear'
 import UpwardIcon from '@mui/icons-material/ArrowUpward'
-import TransIcon from '@mui/icons-material/Transform'
+import ForkIcon from '@mui/icons-material/CallSplit'
 import PlusIcon from '@mui/icons-material/AddBoxOutlined'
 import MinusIcon from '@mui/icons-material/IndeterminateCheckBoxOutlined'
 import EndIcon from '@mui/icons-material/DisabledByDefaultOutlined'
@@ -54,6 +54,10 @@ const TreeStatement: FC<{
                         assimt: info,
                         index: props.pos,
                         path: props.path
+                    }))}
+                    onFork={_ => dispatch(assimtAsTree({
+                        path: props.path,
+                        index: props.pos
                     }))}
                 />
                 :
@@ -87,6 +91,10 @@ const TreeStatement: FC<{
                         assimt: info,
                         index: props.pos,
                         path: props.path
+                    }))}
+                    onFork={_ => dispatch(assimtAsTree({
+                        path: props.path,
+                        index: props.pos
                     }))}
                 />
                 :
@@ -192,6 +200,7 @@ const TreeElseItem: FC<{
 const TreeAssimtItem: FC<{
     assimt: DcsAssignment
     onUpd: (info: DcsAssignment) => void
+    onFork: (info: DcsAssignment) => void
 }> = (props) => {
     const { assimt } = props
     const [f_showAssimt, setShowAssimt] = useState(false)
@@ -211,10 +220,10 @@ const TreeAssimtItem: FC<{
                         }}
                     />
 
-                    <IconButton className={ss.command} color="primary" children={<TransIcon />}
+                    <IconButton className={ss.command} color="primary" children={<ForkIcon />}
                         onClick={e => {
-                            e.stopPropagation();
-                            console.log('按一下', e);
+                            e.stopPropagation()
+                            props.onFork(assimt)
                         }}
                     />
                 </Stack>
