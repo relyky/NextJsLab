@@ -39,15 +39,10 @@ const TreeStatement: FC<{
     pos: number
 }> = props => {
     const { isElse, action } = props.item
-    const dispatch = useAppDispatch()
     //const isTreeAction = useMemo(() => !isDcsAssignment(action), [action])
 
     return (isElse ?
-        <TreeElseItem
-            item={props.item}
-            path={props.path}
-            pos={props.pos}
-        >
+        <TreeElseItem {...props} >
             {isDcsAssignment(action) ?
                 <TreeAssimtItem
                     assimt={action}
@@ -62,10 +57,7 @@ const TreeStatement: FC<{
             }
         </TreeElseItem>
         :
-        <TreeCondItem item={props.item}
-            path={props.path}
-            pos={props.pos}
-        >
+        <TreeCondItem {...props}>
             {isDcsAssignment(action) ?
                 <TreeAssimtItem
                     assimt={action}
@@ -103,12 +95,17 @@ const TreeCondItem: FC<{
                         {`當 ${cond.fdName} ${codeName(cond.cmpAct)} ${cond.cmpValue}, ${cond.fdNote}`}
                     </Typography>
 
-                    <IconButton color={'primary'} children={<UpwardIcon />}
-                        onClick={e => {
-                            e.stopPropagation()
-                            dispatch(moveUpward({ path: props.path, index: props.pos }))
-                        }}
-                    />
+                    {(props.pos > 0) &&
+                        <IconButton color={'primary'} children={<UpwardIcon />}
+                            onClick={e => {
+                                e.stopPropagation()
+                                dispatch(moveUpward({
+                                    path: props.path,
+                                    index: props.pos
+                                }))
+                            }}
+                        />
+                    }
 
                     <IconButton className={ss.command} color="primary" children={<EditIcon />}
                         onClick={e => {
@@ -137,12 +134,12 @@ const TreeCondItem: FC<{
                         }}
                     />
 
-                    <IconButton className={ss.command} color="primary" onClick={e => {
+                    {/* <IconButton className={ss.command} color="primary" onClick={e => {
                         e.stopPropagation()
                         alert('回應按一下')
                     }}>
                         <InfoIcon />
-                    </IconButton>
+                    </IconButton> */}
                 </Stack>
             }>
                 {props.children}
