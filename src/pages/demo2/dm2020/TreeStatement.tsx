@@ -35,11 +35,14 @@ import MinusIcon from '@mui/icons-material/IndeterminateCheckBoxOutlined'
 import EndIcon from '@mui/icons-material/DisabledByDefaultOutlined'
 import ForwardIcon from '@mui/icons-material/ForwardTwoTone';
 import ItemTypes from 'pages/demo/dm0003/ItemTypes'
+import CopyIcon from '@mui/icons-material/ContentCopy'			
+import PasteIcon from '@mui/icons-material/CopyAll'
 
 const TreeStatement: FC<{
     item: DcsStatement
     path: number[]
     pos: number
+    selectedNodeId: string // 用來識別是否被選取了
 }> = props => {
     const { isElse, action } = props.item
     //const isTreeAction = useMemo(() => !isDcsAssignment(action), [action])
@@ -56,6 +59,7 @@ const TreeStatement: FC<{
                 <TreeContent
                     path={[...props.path, props.pos]}
                     decisionTree={action}
+                    selectedNodeId={props.selectedNodeId}
                 />
             }
         </TreeElseItem>
@@ -71,6 +75,7 @@ const TreeStatement: FC<{
                 <TreeContent
                     path={[...props.path, props.pos]}
                     decisionTree={action}
+                    selectedNodeId={props.selectedNodeId}
                 />
             }
         </TreeCondItem>
@@ -84,6 +89,7 @@ const TreeCondItem: FC<{
     item: DcsStatement
     path: number[]
     pos: number
+    selectedNodeId: string
 }> = (props) => {
     const { item } = props
     const { cond } = props.item
@@ -91,63 +97,86 @@ const TreeCondItem: FC<{
     const appEnv = useContext(AppFormContext)
     const dispatch = useAppDispatch()
 
+    const isSelected = item.nodeId === props.selectedNodeId;
+
     return (
         <>
-            <TreeItem nodeId={item.nodeId} label={
-                <Stack direction="row" alignItems="center" className={ss.item}>
-                    <Typography variant="body1" mr="1">
-                        {appEnv.showNodeId && <span style={{ color: 'grey' }}>[{item.nodeId}]&nbsp;</span>}
-                        {`當 ${cond.fdName} ${codeName(cond.cmpAct)} ${cond.cmpValue}, ${cond.fdNote}`}
-                        {/* {appEnv.showNodeId && <Chip label={item.nodeId} variant="outlined" size="small" color="info" sx={{ mx: 1 }} />} */}
-                    </Typography>
+            <TreeItem nodeId={item.nodeId}
+                label={
+                    <Stack direction="row" alignItems="center" className={ss.item}>
+                        <Typography variant="body1" mr="1">
+                            {appEnv.showNodeId && <span style={{ color: 'grey' }}>[{item.nodeId}]&nbsp;</span>}
+                            {`當 ${cond.fdName} ${codeName(cond.cmpAct)} ${cond.cmpValue}, ${cond.fdNote}`}
+                            {/* {appEnv.showNodeId && <Chip label={item.nodeId} variant="outlined" size="small" color="info" sx={{ mx: 1 }} />} */}
+                        </Typography>
 
-                    {(props.pos > 0) &&
-                        <IconButton className={ss.command} color={'primary'} children={<UpwardIcon />}
-                            onClick={e => {
-                                e.stopPropagation()
-                                dispatch(moveUpward({
-                                    path: props.path,
-                                    index: props.pos
-                                }))
-                            }}
-                        />
-                    }
-
-                    <IconButton className={ss.command} color="primary" children={<EditIcon />}
-                        onClick={e => {
-                            e.stopPropagation()
-                            setShowCond(true)
-                        }}
-                    />
-
-                    <IconButton className={ss.command} color="primary" children={<ClearIcon />}
-                        onClick={e => {
-                            e.stopPropagation()
-                            Swal.fire({
-                                title: '確定要移除嗎？',
-                                icon: 'question',
-                                showCancelButton: true,
-                                confirmButtonText: '確定',
-                                cancelButtonText: '取消'
-                            }).then(result => {
-                                if (result.isConfirmed) {
-                                    dispatch(rmvStatement({
+                        {(props.pos > 0) &&
+                            <IconButton className={ss.command} color={'primary'} children={<UpwardIcon />}
+                                onClick={e => {
+                                    e.stopPropagation()
+                                    dispatch(moveUpward({
                                         path: props.path,
                                         index: props.pos
                                     }))
-                                }
-                            })
-                        }}
-                    />
+                                }}
+                            />
+                        }
 
-                    {/* <IconButton className={ss.command} color="primary" onClick={e => {
+                        <IconButton className={ss.command} color="primary" children={<EditIcon />}
+                            onClick={e => {
+                                e.stopPropagation()
+                                setShowCond(true)
+                            }}
+                        />
+
+                        <IconButton className={ss.command} color="primary" children={<ClearIcon />}
+                            onClick={e => {
+                                e.stopPropagation()
+                                Swal.fire({
+                                    title: '確定要移除嗎？',
+                                    icon: 'question',
+                                    showCancelButton: true,
+                                    confirmButtonText: '確定',
+                                    cancelButtonText: '取消'
+                                }).then(result => {
+                                    if (result.isConfirmed) {
+                                        dispatch(rmvStatement({
+                                            path: props.path,
+                                            index: props.pos
+                                        }))
+                                    }
+                                })
+                            }}
+                        />
+
+                        {(isSelected) &&
+                            <IconButton className={ss.command} color="primary" children={<CopyIcon />}
+                                onClick={e => {
+                                    e.stopPropagation()
+                                    Swal.fire('複製條件，未實作。')
+                                }}
+                            />
+                        }
+
+                        {(isSelected) &&
+                            <IconButton className={ss.command} color="primary" children={<PasteIcon />}
+                                onClick={e => {
+                                    e.stopPropagation()
+                                    Swal.fire('貼上複製條件，未實作。')
+                                }}
+                            />
+                        }
+
+
+                        {/* <IconButton className={ss.command} color="primary" onClick={e => {
                         e.stopPropagation()
                         alert('回應按一下')
                     }}>
                         <InfoIcon />
                     </IconButton> */}
-                </Stack>
-            }>
+                    </Stack>
+                }
+            >
                 {props.children}
             </TreeItem>
 

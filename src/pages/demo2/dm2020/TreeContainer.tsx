@@ -68,91 +68,81 @@ export default (props) => {
 
     return (
         <div>
-            <Box>
-                <Box sx={{ mb: 1 }}>
-                    <Button onClick={handleExpand}>
-                        {notExpand ? '展開' : '褶疊'}
-                    </Button>
-                </Box>
-                <pre>
-                    selected:{JSON.stringify(selected)} <br />
-                    expanded:{JSON.stringify(expanded)}
-                </pre>
-
-                <TreeView
-                    defaultCollapseIcon={<MinusIcon color="primary" />}
-                    defaultExpandIcon={<PlusIcon color="primary" />}
-                    defaultEndIcon={<ForwardIcon color="secondary" />}
-                    expanded={expanded}
-                    selected={selected}
-                    onNodeToggle={handleToggle}
-                    onNodeSelect={handleSelect}
-                >
-                    <TreeItem nodeId="root" label="開始">
-                        <TreeContent path={[]} decisionTree={decisionTree} />
-                    </TreeItem>
-                </TreeView>
-
+            <Box sx={{ mb: 1 }}>
+                <Button onClick={handleExpand}>
+                    {notExpand ? '展開' : '褶疊'}
+                </Button>
             </Box>
+            <pre>
+                selected:{JSON.stringify(selected)} <br />
+                expanded:{JSON.stringify(expanded)}
+            </pre>
 
-            <Divider sx={{ my: 3 }} />
-
-            {/* <Box>
-
-                <TreeView
-                    defaultCollapseIcon={<MinusIcon color="primary" />}
-                    defaultExpandIcon={<PlusIcon color="primary" />}
-                    defaultEndIcon={<ForwardIcon color="secondary" />}
-                    expanded={expanded}
-                    selected={selected}
-                    onNodeToggle={handleToggle}
-                    onNodeSelect={handleSelect}
-                >
-                    <TreeItem nodeId="root" label="開始">
-                        <TreeCondItem nodeId="1" desc="當 是否為DBS員工 = Y, Staff" >
-                            <TreeAssimtItem nodeId="2" desc="值為 Y," />
-                        </TreeCondItem>
-
-                        <TreeCondItem nodeId="3" desc="當 Small_White = Y, 信用小白(沒有JCIC紀錄申請)" >
-                            <TreeAssimtItem nodeId="4" desc="值為 0," />
-                        </TreeCondItem>
-
-                        <TreeCondItem nodeId="5" desc="當 客戶層級 = Z, Customer Segment" >
-                            <TreeAssimtItem nodeId="6" desc="值為 0," />
-                        </TreeCondItem>
-
-                        <TreeCondItem nodeId="7" desc="當 職稱 in '16','29','36','34', Occupation" >
-                            <TreeCondItem nodeId="8" desc="當 年齡 > 65 , Age" >
-                                <TreeAssimtItem nodeId="9" desc="值為 A," />
-                            </TreeCondItem>
-                            <TreeCondItem nodeId="10" desc="當 New_To_Bureau = Y, 近6個月沒有貸款或信貸記錄" >
-                                <TreeAssimtItem nodeId="11" desc="值為 N," />
-                            </TreeCondItem>
-                            <TreeCondItem nodeId="12" desc="當 月收入 > 300000, Declared_ monthly_income" >
-                                <TreeAssimtItem nodeId="13" desc="值為 A," />
-                            </TreeCondItem>
-                            <TreeCondItem nodeId="14" desc="當 財力證明 < 4000, " >
-                                <TreeAssimtItem nodeId="15" desc="值為 B," />
-                            </TreeCondItem>
-                            <TreeItem nodeId="16" label="否則" >
-                                <TreeAssimtItem nodeId="17" desc="值為 GUEST, 來賓層級" />
-                            </TreeItem>
-                        </TreeCondItem>
-
-                        <TreeItem nodeId="18" label="否則" >
-                            <TreeAssimtItem nodeId="19" desc="值為 Otherwise, 其他" />
-                        </TreeItem>
-
-                    </TreeItem>
-                </TreeView>
-            </Box>
-
-            <Divider sx={{ my: 3 }} /> */}
-
+            <TreeView
+                defaultCollapseIcon={<MinusIcon color="primary" />}
+                defaultExpandIcon={<PlusIcon color="primary" />}
+                defaultEndIcon={<ForwardIcon color="secondary" />}
+                expanded={expanded}
+                selected={selected}
+                onNodeToggle={handleToggle}
+                onNodeSelect={handleSelect}
+            >
+                <TreeItem nodeId="root" label="開始">
+                    <TreeContent path={[]} decisionTree={decisionTree} selectedNodeId={selected} />
+                </TreeItem>
+            </TreeView>
         </div>
     )
 }
 
+{/*
+    <TreeView
+        defaultCollapseIcon={<MinusIcon color="primary" />}
+        defaultExpandIcon={<PlusIcon color="primary" />}
+        defaultEndIcon={<ForwardIcon color="secondary" />}
+        expanded={expanded}
+        selected={selected}
+        onNodeToggle={handleToggle}
+        onNodeSelect={handleSelect}
+    >
+        <TreeItem nodeId="root" label="開始">
+            <TreeCondItem nodeId="1" desc="當 是否為DBS員工 = Y, Staff" >
+                <TreeAssimtItem nodeId="2" desc="值為 Y," />
+            </TreeCondItem>
+
+            <TreeCondItem nodeId="3" desc="當 Small_White = Y, 信用小白(沒有JCIC紀錄申請)" >
+                <TreeAssimtItem nodeId="4" desc="值為 0," />
+            </TreeCondItem>
+
+            <TreeCondItem nodeId="5" desc="當 客戶層級 = Z, Customer Segment" >
+                <TreeAssimtItem nodeId="6" desc="值為 0," />
+            </TreeCondItem>
+
+            <TreeCondItem nodeId="7" desc="當 職稱 in '16','29','36','34', Occupation" >
+                <TreeCondItem nodeId="8" desc="當 年齡 > 65 , Age" >
+                    <TreeAssimtItem nodeId="9" desc="值為 A," />
+                </TreeCondItem>
+                <TreeCondItem nodeId="10" desc="當 New_To_Bureau = Y, 近6個月沒有貸款或信貸記錄" >
+                    <TreeAssimtItem nodeId="11" desc="值為 N," />
+                </TreeCondItem>
+                <TreeCondItem nodeId="12" desc="當 月收入 > 300000, Declared_ monthly_income" >
+                    <TreeAssimtItem nodeId="13" desc="值為 A," />
+                </TreeCondItem>
+                <TreeCondItem nodeId="14" desc="當 財力證明 < 4000, " >
+                    <TreeAssimtItem nodeId="15" desc="值為 B," />
+                </TreeCondItem>
+                <TreeItem nodeId="16" label="否則" >
+                    <TreeAssimtItem nodeId="17" desc="值為 GUEST, 來賓層級" />
+                </TreeItem>
+            </TreeCondItem>
+
+            <TreeItem nodeId="18" label="否則" >
+                <TreeAssimtItem nodeId="19" desc="值為 Otherwise, 其他" />
+            </TreeItem>
+
+        </TreeItem>
+    </TreeView>
+ */}
 
 //------------------------
 const TreeCondItem: FC<{

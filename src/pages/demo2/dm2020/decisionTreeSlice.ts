@@ -251,7 +251,7 @@ export default decisionTreeSlice.reducer
 
 function GenNodeId(): string {
   const newNodeId = globalThis.nodeIdBase || 101;
-  console.info('newNodeId', { newNodeId })
+  //console.info('newNodeId', { newNodeId })
   globalThis.nodeIdBase = newNodeId + 1;
   return String(newNodeId)
 }
