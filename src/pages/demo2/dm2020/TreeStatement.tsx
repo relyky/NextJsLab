@@ -34,8 +34,8 @@ import ForwardIcon from '@mui/icons-material/ForwardTwoTone';
 import ItemTypes from 'pages/demo/dm0003/ItemTypes'
 
 const TreeStatement: FC<{
-    item: DcsStatement,
-    path: number[],
+    item: DcsStatement
+    path: number[]
     pos: number
 }> = props => {
     const { isElse, action } = props.item
@@ -43,64 +43,40 @@ const TreeStatement: FC<{
     //const isTreeAction = useMemo(() => !isDcsAssignment(action), [action])
 
     return (isElse ?
-        <TreeElseItem item={props.item}
-            onNew={() => dispatch(newStatement({
-                path: props.path
-            }))}
+        <TreeElseItem
+            item={props.item}
+            path={props.path}
+            pos={props.pos}
         >
             {isDcsAssignment(action) ?
-                <TreeAssimtItem assimt={action}
-                    onUpd={info => dispatch(updAssimt({
-                        assimt: info,
-                        index: props.pos,
-                        path: props.path
-                    }))}
-                    onFork={_ => dispatch(assimtAsTree({
-                        path: props.path,
-                        index: props.pos
-                    }))}
+                <TreeAssimtItem
+                    assimt={action}
+                    path={props.path}
+                    pos={props.pos}
                 />
                 :
-                <TreeContent path={[...props.path, props.pos]} decisionTree={action} />
+                <TreeContent
+                    path={[...props.path, props.pos]}
+                    decisionTree={action}
+                />
             }
         </TreeElseItem>
         :
         <TreeCondItem item={props.item}
             path={props.path}
             pos={props.pos}
-            onUpd={info => dispatch(updCond({
-                cond: info,
-                index: props.pos,
-                path: props.path
-            }))}
-            onDel={item => {
-                Swal.fire({
-                    title: '確定要移除嗎？',
-                    icon: 'question',
-                    showCancelButton: true,
-                    confirmButtonText: '確定',
-                    cancelButtonText: '取消'
-                }).then(result => {
-                    if (result.isConfirmed) {
-                        dispatch(rmvStatement({ path: props.path, index: props.pos }))
-                    }
-                })
-            }}
         >
             {isDcsAssignment(action) ?
-                <TreeAssimtItem assimt={action}
-                    onUpd={info => dispatch(updAssimt({
-                        assimt: info,
-                        index: props.pos,
-                        path: props.path
-                    }))}
-                    onFork={_ => dispatch(assimtAsTree({
-                        path: props.path,
-                        index: props.pos
-                    }))}
+                <TreeAssimtItem
+                    assimt={action}
+                    path={props.path}
+                    pos={props.pos}
                 />
                 :
-                <TreeContent path={[...props.path, props.pos]} decisionTree={action} />
+                <TreeContent
+                    path={[...props.path, props.pos]}
+                    decisionTree={action}
+                />
             }
         </TreeCondItem>
     )
@@ -111,18 +87,13 @@ export default TreeStatement
 //------------------------
 const TreeCondItem: FC<{
     item: DcsStatement
-    onUpd: (info: DcsCondision) => void
-    onDel: (item: DcsStatement) => void
-
     path: number[]
     pos: number
 }> = (props) => {
     const { item } = props
     const { cond } = props.item
     const [f_showCond, setShowCond] = useState(false)
-
     const dispatch = useAppDispatch()
-
     return (
         <>
             <TreeItem nodeId={item.nodeId} label={
@@ -149,7 +120,20 @@ const TreeCondItem: FC<{
                     <IconButton className={ss.command} color="primary" children={<ClearIcon />}
                         onClick={e => {
                             e.stopPropagation()
-                            props.onDel(item)
+                            Swal.fire({
+                                title: '確定要移除嗎？',
+                                icon: 'question',
+                                showCancelButton: true,
+                                confirmButtonText: '確定',
+                                cancelButtonText: '取消'
+                            }).then(result => {
+                                if (result.isConfirmed) {
+                                    dispatch(rmvStatement({
+                                        path: props.path,
+                                        index: props.pos
+                                    }))
+                                }
+                            })
                         }}
                     />
 
@@ -171,7 +155,11 @@ const TreeCondItem: FC<{
                     onCancel={() => setShowCond(false)}
                     onOk={(info) => {
                         setShowCond(false)
-                        props.onUpd(info)
+                        dispatch(updCond({
+                            cond: info,
+                            index: props.pos,
+                            path: props.path
+                        }))
                     }}
                 />
             }
@@ -183,9 +171,11 @@ const TreeCondItem: FC<{
 //------------------------
 const TreeElseItem: FC<{
     item: DcsStatement
-    onNew: () => void
+    path: number[]
+    pos: number
 }> = (props) => {
     const { item } = props
+    const dispatch = useAppDispatch()
     return (
         <TreeItem nodeId={item.nodeId} label={
             <Stack direction="row" alignItems="center" className={ss.item}>
@@ -197,7 +187,9 @@ const TreeElseItem: FC<{
                 <IconButton className={ss.command} color="primary" children={<NewIcon />}
                     onClick={e => {
                         e.stopPropagation()
-                        props.onNew()
+                        dispatch(newStatement({
+                            path: props.path
+                        }))
                     }}
                 />
             </Stack>
@@ -210,11 +202,12 @@ const TreeElseItem: FC<{
 //------------------------
 const TreeAssimtItem: FC<{
     assimt: DcsAssignment
-    onUpd: (info: DcsAssignment) => void
-    onFork: (info: DcsAssignment) => void
+    path: number[]
+    pos: number
 }> = (props) => {
     const { assimt } = props
     const [f_showAssimt, setShowAssimt] = useState(false)
+    const dispatch = useAppDispatch()
     return (
         <>
             <TreeItem nodeId={assimt.nodeId} label={
@@ -234,7 +227,10 @@ const TreeAssimtItem: FC<{
                     <IconButton className={ss.command} color="primary" children={<ForkIcon />}
                         onClick={e => {
                             e.stopPropagation()
-                            props.onFork(assimt)
+                            dispatch(assimtAsTree({
+                                path: props.path,
+                                index: props.pos
+                            }))
                         }}
                     />
                 </Stack>
@@ -246,7 +242,11 @@ const TreeAssimtItem: FC<{
                     onCancel={() => setShowAssimt(false)}
                     onOk={(info) => {
                         setShowAssimt(false)
-                        props.onUpd(info)
+                        dispatch(updAssimt({
+                            assimt: info,
+                            index: props.pos,
+                            path: props.path
+                        }))
                     }}
                 />
             }
@@ -265,7 +265,6 @@ function codeName(code: string) {
                             : code === 'in' ? 'in'
                                 : ''
 }
-
 
 //---------------------------
 const AssimtEditDialog: FC<{
