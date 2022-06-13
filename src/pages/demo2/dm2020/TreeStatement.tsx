@@ -153,7 +153,10 @@ const TreeCondItem: FC<{
                             <IconButton className={ss.command} color="primary" children={<CopyIcon />}
                                 onClick={e => {
                                     e.stopPropagation()
-                                    dispatch(cloneStatement(props.pos, props.path))
+                                    dispatch(cloneStatement({
+                                        path: props.path,
+                                        index: props.pos
+                                    }))
                                 }}
                             />
                         }

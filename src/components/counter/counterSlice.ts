@@ -20,7 +20,11 @@ const initialState: CounterState = {
 // typically used to make async requests.
 export const incrementAsync = createAsyncThunk(
   'counter/fetchCount',
-  async (amount: number) => {
+  async (amount: number, thunkAPI) => {
+     /// ※ 可以透過 thunkAPI 取得 dispatch 函式與 store 狀態。
+     /// const store = thunkAPI.getState() as AppState
+     /// thunkAPI.dispatch(yourAction(payload))
+
     const response = await fetchCount(amount)
     // The value we return becomes the `fulfilled` action payload
     return response.data

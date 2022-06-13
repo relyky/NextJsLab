@@ -1,7 +1,6 @@
 import type { AppState, AppThunk } from 'store/store'
 import type { WritableDraft } from 'immer/dist/internal';
 import type { DcsCondision, DcsAssignment, DcsStatement, DecisionTreeState } from './interfaces'
-import { useEffect, useState } from 'react'
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { setBuffer } from 'store/bufferSlice'
 import assert from 'assert'
@@ -95,7 +94,7 @@ const initialState: DecisionTreeState = [
   },
 ]
 
-export const decisionTreeSlice = createSlice({
+const decisionTreeSlice = createSlice({
   name: 'decisionTree',
   initialState,
   reducers: {
@@ -111,7 +110,7 @@ export const decisionTreeSlice = createSlice({
 
       // 新增一筆空白陳述。
       const newItem: DcsStatement = {
-        nodeId: GenNodeId(),
+        nodeId: genNodeId(),
         isElse: false,
         cond: {
           fdName: 'New Field Name',
@@ -120,7 +119,7 @@ export const decisionTreeSlice = createSlice({
           cmpValue: '欄位比較值'
         },
         action: {
-          nodeId: GenNodeId(),
+          nodeId: genNodeId(),
           fdNote: '回傳值說明',
           retValue: '回傳值'
         }
@@ -203,7 +202,7 @@ export const decisionTreeSlice = createSlice({
 
       const newSubTree: DecisionTreeState = [
         {
-          nodeId: GenNodeId(),
+          nodeId: genNodeId(),
           isElse: false,
           cond: {
             fdName: 'New Field Name',
@@ -212,13 +211,13 @@ export const decisionTreeSlice = createSlice({
             cmpValue: '欄位比較值'
           },
           action: {
-            nodeId: GenNodeId(),
+            nodeId: genNodeId(),
             fdNote: '回傳值說明',
             retValue: '回傳值'
           }
         },
         {
-          nodeId: GenNodeId(),
+          nodeId: genNodeId(),
           isElse: true,
           cond: null,
           action: {
@@ -233,7 +232,15 @@ export const decisionTreeSlice = createSlice({
       branch[index].action = newSubTree
     },
   },
-  extraReducers: (builder) => { },
+  extraReducers: (builder) => {
+    // builder
+    //   .addCase(cloneStatement.pending, (state) => {
+    //     console.log('decisionTree/cloneStatement.pending')
+    //   })
+    //   .addCase(cloneStatement.fulfilled, (state, action) => {
+    //     console.log('decisionTree/cloneStatement.fulfilled', { action })
+    //   })
+  },
 })
 
 export const {
@@ -247,31 +254,32 @@ export const {
 
 export default decisionTreeSlice.reducer
 
-//-------------------------
+///----------------------------------------------------------------------------
+/// 進階應用：Thunk
 
-// We can also write thunks by hand, which may contain both sync and async logic.
-// Here's an example of conditionally dispatching actions based on current state.
-export const cloneStatement =
-  (index: number, path: number[]): AppThunk =>
-    (dispatch, getState) => {
-      const { decisionTree2: decisionTree } = getState()
+export const cloneStatement = createAsyncThunk(
+  'decisionTree/cloneStatement',
+  async (args: { index: number, path: number[] }, thunkAPI) => {
+    const { decisionTree2: decisionTree } = thunkAPI.getState() as AppState
+    const { path, index } = args
 
-      let branch = decisionTree
-      path.forEach(i => {
-        branch = branch[i].action as WritableDraft<DcsStatement>[]
-      });
+    let branch = decisionTree
+    path.forEach(i => {
+      branch = branch[i].action as WritableDraft<DcsStatement>[]
+    });
 
-      const currentStatement = branch[index]
-    
-      // deep clone object
-      const statementClone = JSON.parse(JSON.stringify(currentStatement))
+    const currentStatement = branch[index]
 
-      dispatch(setBuffer(statementClone))
-    }
+    // deep clone object
+    const statementClone = JSON.parse(JSON.stringify(currentStatement))
 
-//-------------------------
+    thunkAPI.dispatch(setBuffer(statementClone))
+  }
+)
 
-function GenNodeId(): string {
+///----------------------------------------------------------------------------
+/// helper function
+function genNodeId(): string {
   const newNodeId = globalThis.nodeIdBase || 101;
   //console.info('newNodeId', { newNodeId })
   globalThis.nodeIdBase = newNodeId + 1;
