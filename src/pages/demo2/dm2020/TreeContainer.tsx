@@ -8,7 +8,7 @@ import TreeItem from './widgets/StyledTreeItem'
 import { useState, useMemo, useCallback, useRef } from 'react'
 import { useAppSelector, useAppDispatch } from 'hooks/hooks'
 import { isDcsAssignment } from './decisionTreeSlice'
-import { toPng } from 'html-to-image'
+import html2canvas from 'html2canvas'
 // CSS style
 import ss from './AppForm.module.css'
 // icons
@@ -68,22 +68,15 @@ export default (props) => {
         }
     }
 
-    const handleTakePhoto = useCallback(() => {
-        if (refPhoto.current === null) {
-            return
-        }
-
-        toPng(refPhoto.current, { backgroundColor: 'white', cacheBust: true, })
-            .then((dataUrl) => {
-                const link = document.createElement('a')
-                link.download = 'tree-image.png'
-                link.href = dataUrl
-                link.click()
-            })
-            .catch((err) => {
-                console.log(err)
-            })
-    }, [refPhoto])
+    function handleTakeCanvas() {
+        html2canvas(refPhoto.current).then(canvas => {
+            const dataUrl = canvas.toDataURL('image/png')
+            const link = document.createElement('a')
+            link.download = 'tree-image.png'
+            link.href = dataUrl
+            link.click()
+        })
+    }
 
     return (
         <div>
@@ -91,7 +84,7 @@ export default (props) => {
                 <Button onClick={handleExpand}>
                     {notExpand ? '展開' : '褶疊'}
                 </Button>
-                <Button onClick={handleTakePhoto}>
+                <Button onClick={handleTakeCanvas}>
                     取得圖片
                 </Button>
             </Box>
