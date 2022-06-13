@@ -12,7 +12,7 @@ import TreeItem from './widgets/StyledTreeItem'
 import Swal from 'sweetalert2'
 // hooks
 import { useContext } from 'react'
-import { isDcsAssignment, updCond, updAssimt, newStatement, rmvStatement, moveUpward, assimtAsTree } from './decisionTreeSlice'
+import { isDcsAssignment, updCond, updAssimt, newStatement, rmvStatement, moveUpward, assimtAsTree, cloneStatement } from './decisionTreeSlice'
 import { AppFormContext } from './AppForm'
 
 // CSS style
@@ -35,7 +35,7 @@ import MinusIcon from '@mui/icons-material/IndeterminateCheckBoxOutlined'
 import EndIcon from '@mui/icons-material/DisabledByDefaultOutlined'
 import ForwardIcon from '@mui/icons-material/ForwardTwoTone';
 import ItemTypes from 'pages/demo/dm0003/ItemTypes'
-import CopyIcon from '@mui/icons-material/ContentCopy'			
+import CopyIcon from '@mui/icons-material/ContentCopy'
 import PasteIcon from '@mui/icons-material/CopyAll'
 
 const TreeStatement: FC<{
@@ -153,7 +153,7 @@ const TreeCondItem: FC<{
                             <IconButton className={ss.command} color="primary" children={<CopyIcon />}
                                 onClick={e => {
                                     e.stopPropagation()
-                                    Swal.fire('複製條件，未實作。')
+                                    dispatch(cloneStatement(props.pos, props.path))
                                 }}
                             />
                         }

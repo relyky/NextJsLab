@@ -3,8 +3,8 @@ import type { WritableDraft } from 'immer/dist/internal';
 import type { DcsCondision, DcsAssignment, DcsStatement, DecisionTreeState } from './interfaces'
 import { useEffect, useState } from 'react'
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { setBuffer } from 'store/bufferSlice'
 import assert from 'assert'
-import { ConstructionOutlined } from '@mui/icons-material';
 
 //DecisionTree   := Statement[] & ElseStatement
 //Statement      := IF Condision Then DecisionAction
@@ -246,6 +246,28 @@ export const {
 } = decisionTreeSlice.actions
 
 export default decisionTreeSlice.reducer
+
+//-------------------------
+
+// We can also write thunks by hand, which may contain both sync and async logic.
+// Here's an example of conditionally dispatching actions based on current state.
+export const cloneStatement =
+  (index: number, path: number[]): AppThunk =>
+    (dispatch, getState) => {
+      const { decisionTree2: decisionTree } = getState()
+
+      let branch = decisionTree
+      path.forEach(i => {
+        branch = branch[i].action as WritableDraft<DcsStatement>[]
+      });
+
+      const currentStatement = branch[index]
+    
+      // deep clone object
+      const statementClone = JSON.parse(JSON.stringify(currentStatement))
+
+      dispatch(setBuffer(statementClone))
+    }
 
 //-------------------------
 
