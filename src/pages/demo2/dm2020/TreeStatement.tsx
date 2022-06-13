@@ -5,13 +5,16 @@ import type { DcsStatement, DcsCondision, DcsAssignment } from './interfaces'
 import { useState, useMemo } from 'react'
 import { useAppSelector, useAppDispatch } from 'hooks/hooks'
 import { Box, Stack, Button, IconButton, Divider, Typography, TextField, MenuItem } from '@mui/material'
-import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, colors } from '@mui/material'
+import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Chip, colors } from '@mui/material'
 import { TreeView } from '@mui/lab'
 import TreeContent from './TreeContent'
 import TreeItem from './widgets/StyledTreeItem'
 import Swal from 'sweetalert2'
 // hooks
+import { useContext } from 'react'
 import { isDcsAssignment, updCond, updAssimt, newStatement, rmvStatement, moveUpward, assimtAsTree } from './decisionTreeSlice'
+import { AppFormContext } from './AppForm'
+
 // CSS style
 import ss from './AppForm.module.css'
 // icons
@@ -85,18 +88,21 @@ const TreeCondItem: FC<{
     const { item } = props
     const { cond } = props.item
     const [f_showCond, setShowCond] = useState(false)
+    const appEnv = useContext(AppFormContext)
     const dispatch = useAppDispatch()
+
     return (
         <>
             <TreeItem nodeId={item.nodeId} label={
                 <Stack direction="row" alignItems="center" className={ss.item}>
                     <Typography variant="body1" mr="1">
-                        {`[${item.nodeId}]`}
+                        {appEnv.showNodeId && <span style={{ color: 'grey' }}>[{item.nodeId}]&nbsp;</span>}
                         {`當 ${cond.fdName} ${codeName(cond.cmpAct)} ${cond.cmpValue}, ${cond.fdNote}`}
+                        {/* {appEnv.showNodeId && <Chip label={item.nodeId} variant="outlined" size="small" color="info" sx={{ mx: 1 }} />} */}
                     </Typography>
 
                     {(props.pos > 0) &&
-                        <IconButton color={'primary'} children={<UpwardIcon />}
+                        <IconButton className={ss.command} color={'primary'} children={<UpwardIcon />}
                             onClick={e => {
                                 e.stopPropagation()
                                 dispatch(moveUpward({
@@ -172,13 +178,15 @@ const TreeElseItem: FC<{
     pos: number
 }> = (props) => {
     const { item } = props
+    const appEnv = useContext(AppFormContext)
     const dispatch = useAppDispatch()
     return (
         <TreeItem nodeId={item.nodeId} label={
             <Stack direction="row" alignItems="center" className={ss.item}>
                 <Typography variant="body1" mr="1">
-                    {`[${item.nodeId}]`}
+                    {appEnv.showNodeId && <span style={{ color: 'grey' }}>[{item.nodeId}]&nbsp;</span>}
                     {`否則`}
+                    {/* {appEnv.showNodeId && <Chip label={item.nodeId} variant="outlined" size="small" color="info" sx={{ mx: 1 }} />} */}
                 </Typography>
 
                 <IconButton className={ss.command} color="primary" children={<NewIcon />}
@@ -204,14 +212,16 @@ const TreeAssimtItem: FC<{
 }> = (props) => {
     const { assimt } = props
     const [f_showAssimt, setShowAssimt] = useState(false)
+    const appEnv = useContext(AppFormContext)
     const dispatch = useAppDispatch()
     return (
         <>
             <TreeItem nodeId={assimt.nodeId} label={
                 <Stack direction="row" alignItems="center" className={ss.item}>
                     <Typography variant="body1" mr="1">
-                        {`[${assimt.nodeId}]`}
+                        {appEnv.showNodeId && <span style={{ color: 'grey' }}>[{assimt.nodeId}]&nbsp;</span>}
                         {`值為 ${assimt.retValue}, ${assimt.fdNote}`}
+                        {/* {appEnv.showNodeId && <Chip label={assimt.nodeId} variant="outlined" size="small" color="info" sx={{ mx: 1 }} />} */}
                     </Typography>
 
                     <IconButton className={ss.command} color="primary" children={<EditIcon />}

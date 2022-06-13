@@ -1,11 +1,13 @@
 import type { SyntheticEvent, FC } from 'react'
-import { DecisionTreeState } from './interfaces'
-import { useState, useMemo } from 'react'
-import { useAppSelector, useAppDispatch } from 'hooks/hooks'
+import { DecisionTreeState, DcsStatement } from './interfaces'
 import { Box, Button, IconButton, Divider, Typography } from '@mui/material'
 import { TreeView } from '@mui/lab'
 import TreeContent from './TreeContent'
 import TreeItem from './widgets/StyledTreeItem'
+// hooks
+import { useState, useMemo } from 'react'
+import { useAppSelector, useAppDispatch } from 'hooks/hooks'
+import { isDcsAssignment } from './decisionTreeSlice'
 // CSS style
 import ss from './AppForm.module.css'
 // icons
@@ -31,33 +33,44 @@ export default (props) => {
     const dispatch = useAppDispatch()
     const decisionTree = useAppSelector(store => store.decisionTree2)
 
-    const [expanded, setExpanded] = useState<string[]>([]);
+    const [expanded, setExpanded] = useState<string[]>(['root']);
     const [selected, setSelected] = useState<string>(null);
 
     const notExpand = useMemo(() => expanded.length === 0 || expanded.length === 1 && expanded[0] === 'root', [expanded])
 
     const handleToggle = (event: SyntheticEvent, nodeIds: string[]) => {
         setExpanded(nodeIds);
-    };
+    }
 
     const handleSelect = (event: SyntheticEvent, nodeIds: string) => {
-        console.log('handleSelect', nodeIds)
         setSelected(nodeIds);
-    };
+    }
 
-    const handleExpandClick = () => {
-        setExpanded((oldExpanded) =>
-            notExpand
-                ? ['root', '1', '3', '5', '6', '8', '10']
-                : ['root']
-        );
-    };
+    const handleExpand = () => {
+        const expandNodeList: string[] = ['root']
+        function procExpandNodeList(subTree: DcsStatement[]) {
+            subTree.forEach(c => {
+                expandNodeList.push(c.nodeId)
+                if (!isDcsAssignment(c.action)) {
+                    procExpandNodeList(c.action)
+                }
+            })
+        }
+
+        if (notExpand) {
+            procExpandNodeList(decisionTree)
+            setExpanded(expandNodeList)
+        }
+        else {
+            setExpanded(['root'])
+        }
+    }
 
     return (
         <div>
             <Box>
                 <Box sx={{ mb: 1 }}>
-                    <Button onClick={handleExpandClick}>
+                    <Button onClick={handleExpand}>
                         {notExpand ? '展開' : '褶疊'}
                     </Button>
                 </Box>
@@ -84,7 +97,7 @@ export default (props) => {
 
             <Divider sx={{ my: 3 }} />
 
-            <Box>
+            {/* <Box>
 
                 <TreeView
                     defaultCollapseIcon={<MinusIcon color="primary" />}
@@ -134,7 +147,7 @@ export default (props) => {
                 </TreeView>
             </Box>
 
-            <Divider sx={{ my: 3 }} />
+            <Divider sx={{ my: 3 }} /> */}
 
         </div>
     )
