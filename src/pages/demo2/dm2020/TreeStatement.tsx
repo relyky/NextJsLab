@@ -23,7 +23,7 @@ import MoreIcon from '@mui/icons-material/MoreVert'
 import OnIcon from '@mui/icons-material/VisibilityOutlined'
 import OffIcon from '@mui/icons-material/VisibilityOffOutlined'
 import EditIcon from '@mui/icons-material/EditRounded'
-import NewIcon from '@mui/icons-material/AccountTree'
+import NewIcon from '@mui/icons-material/AddComment';
 import ClearIcon from '@mui/icons-material/Clear'
 import UpwardIcon from '@mui/icons-material/ArrowUpward'
 import ForkIcon from '@mui/icons-material/CallSplit'
@@ -66,6 +66,8 @@ const TreeStatement: FC<{
         </TreeElseItem>
         :
         <TreeCondItem item={props.item}
+            path={props.path}
+            pos={props.pos}
             onUpd={info => dispatch(updCond({
                 cond: info,
                 index: props.pos,
@@ -80,7 +82,7 @@ const TreeStatement: FC<{
                     cancelButtonText: '取消'
                 }).then(result => {
                     if (result.isConfirmed) {
-                        dispatch(rmvStatement({ path: props.path, index: props.pos }));
+                        dispatch(rmvStatement({ path: props.path, index: props.pos }))
                     }
                 })
             }}
@@ -111,10 +113,16 @@ const TreeCondItem: FC<{
     item: DcsStatement
     onUpd: (info: DcsCondision) => void
     onDel: (item: DcsStatement) => void
+
+    path: number[]
+    pos: number
 }> = (props) => {
     const { item } = props
     const { cond } = props.item
     const [f_showCond, setShowCond] = useState(false)
+
+    const dispatch = useAppDispatch()
+
     return (
         <>
             <TreeItem nodeId={item.nodeId} label={
@@ -124,9 +132,12 @@ const TreeCondItem: FC<{
                         {`當 ${cond.fdName} ${codeName(cond.cmpAct)} ${cond.cmpValue}, ${cond.fdNote}`}
                     </Typography>
 
-                    <IconButton className={ss.command} color="primary">
-                        <UpwardIcon />
-                    </IconButton>
+                    <IconButton color={'primary'} children={<UpwardIcon />}
+                        onClick={e => {
+                            e.stopPropagation()
+                            dispatch(moveUpward({ path: props.path, index: props.pos }))
+                        }}
+                    />
 
                     <IconButton className={ss.command} color="primary" children={<EditIcon />}
                         onClick={e => {
@@ -143,8 +154,8 @@ const TreeCondItem: FC<{
                     />
 
                     <IconButton className={ss.command} color="primary" onClick={e => {
-                        e.stopPropagation();
-                        alert('回應按一下');
+                        e.stopPropagation()
+                        alert('回應按一下')
                     }}>
                         <InfoIcon />
                     </IconButton>
