@@ -266,7 +266,7 @@ export default decisionTreeSlice.reducer
 export const cloneStatement = createAsyncThunk(
   'decisionTree/cloneStatement',
   async (arg: { index: number, path: number[] }, thunkAPI) => {
-    const { decisionTree2: decisionTree } = thunkAPI.getState() as AppState
+    const { decisionTree } = thunkAPI.getState() as AppState
     const { path, index } = arg
 
     let branch = decisionTree

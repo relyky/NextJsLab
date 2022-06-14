@@ -33,7 +33,7 @@ import ForwardIcon from '@mui/icons-material/ForwardTwoTone';
 export default (props) => {
     const refPhoto = useRef<HTMLDivElement>(null)
     const dispatch = useAppDispatch()
-    const decisionTree = useAppSelector(store => store.decisionTree2)
+    const decisionTree = useAppSelector(store => store.decisionTree)
 
     const [expanded, setExpanded] = useState<string[]>(['root']);
     const [selected, setSelected] = useState<string>(null);
