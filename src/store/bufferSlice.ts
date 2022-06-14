@@ -17,9 +17,12 @@ const bufferSlice = createSlice({
     setBuffer: (state, action: PayloadAction<object>) => {
       state.payload = { ...action.payload }
     },
+    clearBuffer: (state) => {
+      state.payload = null
+    },
   },
 })
 
-export const { setBuffer } = bufferSlice.actions
+export const { setBuffer, clearBuffer } = bufferSlice.actions
 
 export default bufferSlice.reducer

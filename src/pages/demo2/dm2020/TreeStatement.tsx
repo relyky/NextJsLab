@@ -96,8 +96,10 @@ const TreeCondItem: FC<{
     const [f_showCond, setShowCond] = useState(false)
     const appEnv = useContext(AppFormContext)
     const dispatch = useAppDispatch()
+    const buffer = useAppSelector(store => store.buffer)
 
-    const isSelected = item.nodeId === props.selectedNodeId;
+    const isSelected = item.nodeId === props.selectedNodeId
+    const hasCloned = useMemo(() => !!buffer.payload, [buffer.payload])
 
     return (
         <>
@@ -161,7 +163,7 @@ const TreeCondItem: FC<{
                             />
                         }
 
-                        {(isSelected) &&
+                        {(isSelected && hasCloned) &&
                             <IconButton className={ss.command} color="primary" children={<PasteIcon />}
                                 onClick={e => {
                                     e.stopPropagation()

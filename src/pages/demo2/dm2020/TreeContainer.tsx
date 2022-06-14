@@ -1,6 +1,6 @@
 import type { SyntheticEvent, FC } from 'react'
 import { DecisionTreeState, DcsStatement } from './interfaces'
-import { Box, Button, IconButton, Divider, Typography, Paper } from '@mui/material'
+import { Box, Button, IconButton, Divider, Typography, Paper, Chip, Stack } from '@mui/material'
 import { TreeView } from '@mui/lab'
 import TreeContent from './TreeContent'
 import TreeItem from './widgets/StyledTreeItem'
@@ -9,6 +9,7 @@ import { useState, useMemo, useCallback, useRef } from 'react'
 import { useAppSelector, useAppDispatch } from 'hooks/hooks'
 import { isDcsAssignment } from './decisionTreeSlice'
 import html2canvas from 'html2canvas'
+import { clearBuffer } from 'store/bufferSlice'
 // CSS style
 import ss from './AppForm.module.css'
 // icons
@@ -33,12 +34,14 @@ import ForwardIcon from '@mui/icons-material/ForwardTwoTone';
 export default (props) => {
     const refPhoto = useRef<HTMLDivElement>(null)
     const dispatch = useAppDispatch()
-    const decisionTree = useAppSelector(store => store.decisionTree)
+    const [decisionTree, buffer] = useAppSelector(store => [store.decisionTree, store.buffer])
 
     const [expanded, setExpanded] = useState<string[]>(['root']);
     const [selected, setSelected] = useState<string>(null);
 
     const notExpand = useMemo(() => expanded.length === 0 || expanded.length === 1 && expanded[0] === 'root', [expanded])
+
+    const hasCloned = useMemo(() => !!buffer.payload, [buffer.payload])
 
     const handleToggle = (event: SyntheticEvent, nodeIds: string[]) => {
         setExpanded(nodeIds);
@@ -80,14 +83,21 @@ export default (props) => {
 
     return (
         <div>
-            <Box sx={{ mb: 1 }}>
-                <Button onClick={handleExpand}>
+            <Stack direction="row" alignItems="baseline" spacing={1}>
+                <Button variant="contained" color="primary" onClick={handleExpand}>
                     {notExpand ? '展開' : '褶疊'}
                 </Button>
-                <Button onClick={handleTakeCanvas}>
+                <Button variant="contained" color="primary" onClick={handleTakeCanvas}>
                     取得圖片
                 </Button>
-            </Box>
+
+                {hasCloned ?
+                    <Chip label="有複製" variant="outlined" color="info" onClick={() => dispatch(clearBuffer())} />
+                    :
+                    <Chip label="未複製" variant="outlined" />
+                }
+
+            </Stack>
             <pre>
                 selected:{JSON.stringify(selected)} <br />
                 expanded:{JSON.stringify(expanded)}
