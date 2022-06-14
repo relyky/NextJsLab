@@ -1,6 +1,6 @@
 import type { SyntheticEvent, FC } from 'react'
 import { DecisionTreeState, DcsStatement } from './interfaces'
-import { Box, Button, IconButton, Divider, Typography } from '@mui/material'
+import { Box, Button, IconButton, Divider, Typography, Paper } from '@mui/material'
 import { TreeView } from '@mui/lab'
 import TreeContent from './TreeContent'
 import TreeItem from './widgets/StyledTreeItem'
@@ -94,19 +94,21 @@ export default (props) => {
             </pre>
 
             <div ref={refPhoto}>
-                <TreeView
-                    defaultCollapseIcon={<MinusIcon color="primary" />}
-                    defaultExpandIcon={<PlusIcon color="primary" />}
-                    defaultEndIcon={<ForwardIcon color="secondary" />}
-                    expanded={expanded}
-                    selected={selected}
-                    onNodeToggle={handleToggle}
-                    onNodeSelect={handleSelect}
-                >
-                    <TreeItem nodeId="root" label="開始">
-                        <TreeContent path={[]} decisionTree={decisionTree} selectedNodeId={selected} />
-                    </TreeItem>
-                </TreeView>
+                <Paper sx={{ p: 2, my: 2 }}>
+                    <TreeView
+                        defaultCollapseIcon={<MinusIcon color="primary" />}
+                        defaultExpandIcon={<PlusIcon color="primary" />}
+                        defaultEndIcon={<ForwardIcon color="secondary" />}
+                        expanded={expanded}
+                        selected={selected}
+                        onNodeToggle={handleToggle}
+                        onNodeSelect={handleSelect}
+                    >
+                        <TreeItem nodeId="root" label="開始">
+                            <TreeContent path={[]} decisionTree={decisionTree} selectedNodeId={selected} />
+                        </TreeItem>
+                    </TreeView>
+                </Paper>
             </div>
         </div>
     )

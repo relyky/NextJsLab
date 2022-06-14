@@ -180,7 +180,7 @@ const decisionTreeSlice = createSlice({
     },
     updAssimt(state, action: PayloadAction<{ assimt: DcsAssignment, index: number, path: number[] }>) {
       const { assimt, index, path } = action.payload
-      //console.debug('updCond', { cond, index, path })
+      console.debug('updCond', { assimt, index, path })
 
       let branch = state
       path.forEach(i => {
@@ -191,7 +191,7 @@ const decisionTreeSlice = createSlice({
     },
     assimtAsTree(state, action: PayloadAction<{ index: number, path: number[] }>) {
       const { index, path } = action.payload
-      //console.debug('updCond', { cond, index, path })
+      console.debug('assimtAsTree', { index, path })
 
       let branch = state
       path.forEach(i => {
@@ -233,13 +233,19 @@ const decisionTreeSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    // builder
-    //   .addCase(cloneStatement.pending, (state) => {
-    //     console.log('decisionTree/cloneStatement.pending')
-    //   })
-    //   .addCase(cloneStatement.fulfilled, (state, action) => {
-    //     console.log('decisionTree/cloneStatement.fulfilled', { action })
-    //   })
+    builder
+      .addCase(pasteStatement.fulfilled, (state, action) => {
+        console.log('decisionTree/pasteStatement/fulfilled', { action })
+        const { payload: newStatement } = action
+        const { path, index } = action.meta.arg
+
+        let branch = state // decisionTree
+        path.forEach(i => {
+          branch = branch[i].action as WritableDraft<DcsStatement>[]
+        });
+
+        branch.splice(index + 1, 0, newStatement)
+      })
   },
 })
 
@@ -259,9 +265,9 @@ export default decisionTreeSlice.reducer
 
 export const cloneStatement = createAsyncThunk(
   'decisionTree/cloneStatement',
-  async (args: { index: number, path: number[] }, thunkAPI) => {
+  async (arg: { index: number, path: number[] }, thunkAPI) => {
     const { decisionTree2: decisionTree } = thunkAPI.getState() as AppState
-    const { path, index } = args
+    const { path, index } = arg
 
     let branch = decisionTree
     path.forEach(i => {
@@ -277,6 +283,25 @@ export const cloneStatement = createAsyncThunk(
   }
 )
 
+export const pasteStatement = createAsyncThunk(
+  'decisionTree/pasteStatement',
+  async (arg: { index: number, path: number[] }, thunkAPI) => {
+    const { buffer } = thunkAPI.getState() as AppState
+
+    assert(buffer.payload, '剪貼簿沒有資料無法貼上。')
+    /// 這時剪貼簿內容一定也必需是DcsStatement。
+
+    // deep clone object
+    const newStatement = JSON.parse(JSON.stringify(buffer.payload))
+
+    // 重給新的 nodeId
+    procNewNodeId(newStatement)
+
+    // 參數 arg 也會 bypass 到下一步程序 
+    return newStatement
+  }
+)
+
 ///----------------------------------------------------------------------------
 /// helper function
 function genNodeId(): string {
@@ -284,4 +309,16 @@ function genNodeId(): string {
   //console.info('newNodeId', { newNodeId })
   globalThis.nodeIdBase = newNodeId + 1;
   return String(newNodeId)
+}
+
+// helper:重給新的 nodeId
+function procNewNodeId(stmt: DcsStatement) {
+  stmt.nodeId = genNodeId()
+  if (isDcsAssignment(stmt.action)) {
+    const assimt = stmt.action
+    assimt.nodeId = genNodeId()
+  } else {
+    const subTree = stmt.action
+    subTree.forEach(procNewNodeId)
+  }
 }

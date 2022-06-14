@@ -12,7 +12,7 @@ import TreeItem from './widgets/StyledTreeItem'
 import Swal from 'sweetalert2'
 // hooks
 import { useContext } from 'react'
-import { isDcsAssignment, updCond, updAssimt, newStatement, rmvStatement, moveUpward, assimtAsTree, cloneStatement } from './decisionTreeSlice'
+import { isDcsAssignment, updCond, updAssimt, newStatement, rmvStatement, moveUpward, assimtAsTree, cloneStatement, pasteStatement } from './decisionTreeSlice'
 import { AppFormContext } from './AppForm'
 
 // CSS style
@@ -165,7 +165,10 @@ const TreeCondItem: FC<{
                             <IconButton className={ss.command} color="primary" children={<PasteIcon />}
                                 onClick={e => {
                                     e.stopPropagation()
-                                    Swal.fire('貼上複製條件，未實作。')
+                                    dispatch(pasteStatement({
+                                        path: props.path,
+                                        index: props.pos
+                                    }))
                                 }}
                             />
                         }
