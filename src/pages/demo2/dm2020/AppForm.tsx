@@ -11,7 +11,7 @@ import { useAppSelector } from 'hooks/hooks'
 export const AppFormContext = createContext({ showNodeId: false });
 
 export default (props) => {
-    const decisionTree = useAppSelector(store => store.decisionTree2)
+    const decisionTree = useAppSelector(store => store.decisionTree)
     //const dispatch = useAppDispatch()
 
     const [f_show, setShowFlag] = useState(false)
