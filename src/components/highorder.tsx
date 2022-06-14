@@ -5,7 +5,16 @@ export const H3: FC<{
     text?: string,
     children?: ReactChild
 }> = props => (
-    <Typography variant='h3'>
+    <Typography variant='h3' my={2}>
+        {props.text ? props.text : props.children}
+    </Typography>
+)
+
+export const H4: FC<{
+    text?: string,
+    children?: ReactChild
+}> = props => (
+    <Typography variant='h4' my={2}>
         {props.text ? props.text : props.children}
     </Typography>
 )
