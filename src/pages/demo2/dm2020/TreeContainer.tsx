@@ -103,8 +103,8 @@ export default (props) => {
                 expanded:{JSON.stringify(expanded)}
             </pre>
 
-            <div ref={refPhoto}>
-                <Paper sx={{ p: 2, my: 2 }}>
+            <Paper sx={{ p: 2, my: 2 }}>
+                <div ref={refPhoto}>{/* <Paper> 會讓 html2canvas 取圖底色變灰！搬到Paper內層以避免。 */}
                     <TreeView
                         defaultCollapseIcon={<MinusIcon color="primary" />}
                         defaultExpandIcon={<PlusIcon color="primary" />}
@@ -118,8 +118,8 @@ export default (props) => {
                             <TreeContent path={[]} decisionTree={decisionTree} selectedNodeId={selected} />
                         </TreeItem>
                     </TreeView>
-                </Paper>
-            </div>
+                </div>
+            </Paper>
         </div>
     )
 }
