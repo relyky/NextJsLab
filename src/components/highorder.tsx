@@ -1,9 +1,9 @@
-import type { FC, MouseEventHandler, ReactChild } from 'react'
+import type { FC, MouseEventHandler } from 'react'
 import { Typography, Button, FormControlLabel, Switch } from "@mui/material"
 
 export const H3: FC<{
     text?: string,
-    children?: ReactChild
+    children?: React.ReactChild
 }> = props => (
     <Typography variant='h3' my={2}>
         {props.text ? props.text : props.children}
@@ -12,10 +12,44 @@ export const H3: FC<{
 
 export const H4: FC<{
     text?: string,
-    children?: ReactChild
+    children?: React.ReactChild
 }> = props => (
     <Typography variant='h4' my={2}>
         {props.text ? props.text : props.children}
+    </Typography>
+)
+
+export const H5: FC<{
+    text?: string,
+    children?: React.ReactChild
+}> = props => (
+    <Typography variant='h5' p={1}>
+        {props.text ? props.text : props.children}
+    </Typography>
+)
+
+export const H6: FC<{
+    text?: string,
+    children?: React.ReactChild
+}> = props => (
+    <Typography variant='h6' p={1}>
+        {props.text ? props.text : props.children}
+    </Typography>
+)
+
+export const P1: FC<{
+    children: React.ReactNode
+}> = props => (
+    <Typography variant='body1'>
+        {props.children}
+    </Typography>
+)
+
+export const P2: FC<{
+    children: React.ReactNode
+}> = props => (
+    <Typography variant='body2'>
+        {props.children}
     </Typography>
 )
 

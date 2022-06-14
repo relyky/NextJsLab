@@ -1,13 +1,13 @@
 import type { FC } from 'react'
 import { useState } from 'react'
 import { useAppSelector } from 'hooks/hooks'
-import { Container, Paper } from '@mui/material'
-import { H3, H4, AButton } from 'components/highorder'
+import { Container, Paper, Stack, Box } from '@mui/material'
+import { H3, H4, H5, H6, P1, P2, AButton } from 'components/highorder'
 import Swal from 'sweetalert2'
 
 import { html } from "diff2html"
 import { createTwoFilesPatch } from 'diff'
-import htmlParse from 'html-react-parser'
+import htmlRenderer from 'html-react-parser'
 
 // CSS
 import "diff2html/bundles/css/diff2html.min.css";
@@ -40,21 +40,33 @@ const newStr = `開始
 　　值為 Otherwise, 其他
 `
 
-export default (props) => {
-    //const decisionTree = useAppSelector(store => store.decisionTree)
-    //const dispatch = useAppDispatch()
+export default function AppForm(props) {
 
     // generate unified diff patchcreateTwoFilesPatch
     const diff = createTwoFilesPatch("資料版本１", "資料版本２", oldStr, newStr);
 
     let outputHtml = html(diff, {
         matching: "lines",
+        drawFileList: false,
         outputFormat: "side-by-side"
     });
 
     return (
         <Container>
-            <H3>DM2010: Decision Tree UI 試作(reset)</H3>
+            <H3>DM0006: jsdiff lab</H3>
+            <P1>參考：<a href="https://codesandbox.io/s/pbk84?file=/src/App.js:1715-1727">jsdiff+diff2html (forked)</a></P1>
+
+            <H4>原始資料</H4>
+            <Stack direction="row" spacing={1}>
+                <Paper sx={{ flexGrow: 1, p: 1 }} >
+                    <H6 text="資料版本１" />
+                    <pre style={{ textAlign: "left" }}>{oldStr}</pre>
+                </Paper>
+                <Paper sx={{ flexGrow: 1, p: 1 }} >
+                    <H6 text="資料版本２" />
+                    <pre style={{ textAlign: "left" }}>{newStr}</pre>
+                </Paper>
+            </Stack>
 
             <H4>原始 unified diff patch</H4>
             <Paper sx={{ p: 2 }}>
@@ -62,10 +74,7 @@ export default (props) => {
             </Paper>
 
             <H4>unified diff patch 2 HTML</H4>
-
-            <Paper sx={{ p: 2 }}>
-                {htmlParse(outputHtml)}
-            </Paper>
+            {htmlRenderer(outputHtml)}
 
         </Container>
     )

@@ -27,6 +27,7 @@ function Banner() {
             <MenuItem><Link href="/demo/dm0003" underline="none">React DnD Sortable List</Link></MenuItem>
             <MenuItem><Link href="/demo/dm0004" underline="none">React DnD Custom Drag Layer</Link></MenuItem>
             <MenuItem><Link href="/demo/dm0005" underline="none">@mui TreeView Lab</Link></MenuItem>
+            <MenuItem><Link href="/demo/dm0006" underline="none">jsdiff Lab</Link></MenuItem>
           </MenuGroup>
 
           <MenuGroup label="介面試作">
