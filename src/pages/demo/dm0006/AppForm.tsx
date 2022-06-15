@@ -49,6 +49,8 @@ const newStr = `開始
 
 export default function AppForm(props) {
     const [f_originalDiff, setOriginalDiff] = useState(false)
+    const [f_setting, setSetting] = useState(false)
+    const [newText, setNewText] = useState(newStr)
 
     // diff options 參數
     const [patchOption, setPatchOption] = useState<PatchOptions>({
@@ -65,7 +67,8 @@ export default function AppForm(props) {
     })
 
     // generate unified diff patch
-    const unifiedDiffPatch = createTwoFilesPatch(filename, filename, oldStr, newStr, oldVersion, newVersion, patchOption);
+    //const unifiedDiffPatch = createTwoFilesPatch(filename, filename, oldStr, newStr, oldVersion, newVersion, patchOption);
+    const unifiedDiffPatch = createTwoFilesPatch(filename, filename, oldStr, newText, oldVersion, newVersion, patchOption);
 
     // convert patch to html
     const outputHtml = useMemo(() => html(unifiedDiffPatch, htmlOption),
@@ -80,25 +83,47 @@ export default function AppForm(props) {
             <H4>原始資料</H4>
             <Stack direction="row" spacing={1}>
                 <Paper sx={{ flexGrow: 1, p: 1 }} >
-                    <H6>{filename}<small>{oldVersion}</small></H6>
-                    <pre style={{ textAlign: "left" }}>{oldStr}</pre>
+                    <H6>{filename}<small>{oldVersion} (唯讀)</small></H6>
+                    {/* <pre style={{ textAlign: "left" }}>{oldStr}</pre> */}
+                    <TextField
+                        variant='outlined'
+                        value={newText}
+                        fullWidth
+                        multiline
+                        rows={12}
+                    />
+
                 </Paper>
                 <Paper sx={{ flexGrow: 1, p: 1 }} >
                     <H6>{filename}<small>{newVersion}</small></H6>
-                    <pre style={{ textAlign: "left" }}>{newStr}</pre>
+                    {/* <pre style={{ textAlign: "left" }}>{newStr}</pre> */}
+
+                    <TextField
+                        variant='outlined'
+                        value={newText}
+                        onChange={e => setNewText(e.target.value)}
+                        fullWidth
+                        multiline
+                        rows={12}
+                        sx={{ backgroundColor: 'lightyellow' }}
+                    />
+
                 </Paper>
             </Stack>
 
-            {/* 設定參數 */}
-            <Box>
-                <ASwitch label='顯示原始 unified diff patch' value={f_originalDiff} onChange={v => setOriginalDiff(v.value)} />
-                <br />
+            <H4>參數設定
+                <ASwitch value={f_setting} onChange={v => setSetting(v.value)} />
+            </H4>
+            <Collapse in={f_setting}>
+                <Paper sx={{ p: 2 }}>
+                    <ASwitch label='顯示原始 unified diff patch' value={f_originalDiff} onChange={v => setOriginalDiff(v.value)} />
 
-                <DiffPatchOptionPanel option={patchOption} onChange={setPatchOption} />
+                    <DiffPatchOptionPanel option={patchOption} onChange={setPatchOption} />
 
-                <HtmlOpitonPanel option={htmlOption} onChange={setHtmlOption} />
+                    <HtmlOpitonPanel option={htmlOption} onChange={setHtmlOption} />
 
-            </Box>
+                </Paper>
+            </Collapse>
 
             <Collapse in={f_originalDiff}>
                 <H4>原始 unified diff patch</H4>
