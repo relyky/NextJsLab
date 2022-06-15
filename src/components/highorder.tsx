@@ -72,12 +72,12 @@ export const AButton: FC<{
 }
 
 export const ASwitch: FC<{
-    name?: string
     value: boolean
-    label: string
+    name?: string
+    label?: string
     onChange: (v: { name: string, value: boolean }) => void
 }> = props => {
-    return (
+    return (props.label ?
         <FormControlLabel label={props.label} control={
             <Switch
                 name={props.name}
@@ -85,5 +85,11 @@ export const ASwitch: FC<{
                 onChange={(e, checked) => props.onChange({ name: props.name, value: checked })}
             />
         } />
+        :
+        <Switch
+            name={props.name}
+            value={props.value}
+            onChange={(e, checked) => props.onChange({ name: props.name, value: checked })}
+        />
     )
 }
