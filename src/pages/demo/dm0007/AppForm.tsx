@@ -20,7 +20,7 @@ export default function AppForm() {
         <Container>
             <H3>DM0007: react-spring Lab</H3>
 
-            <P1>第一個練習：進場動畫 fade in。可用 CSS animation 簡單實作出來。</P1>
+            <P1>第一個練習：進場動畫 fade in。</P1>
 
             <SpringBasic1_FadeIn>
                 <Paper sx={{ p: 3 }}>
@@ -29,7 +29,7 @@ export default function AppForm() {
             </SpringBasic1_FadeIn>
 
             <Divider sx={{ m: 1 }} />
-            <P1>第二個練習：固定輪播 filp text。可用 CSS animation 簡單實作出來。</P1>
+            <P1>第二個練習：翻動 filp text。</P1>
 
             <SpringBasic2_FlipText>
                 <H3>hello world</H3>
@@ -38,7 +38,7 @@ export default function AppForm() {
             {/* <ASwitch label="show animated" value={f_show} onChange={v => setShow(v.value)} /> */}
 
             <Divider sx={{ m: 1 }} />
-            <P1>第三個練習：固定輪播計數：0→1→0→1→...。</P1>
+            <P1>第三個練習: 透視變化過程: 0→1→0→1→...。</P1>
 
             <SpringBasic3_Number />
 
@@ -59,8 +59,8 @@ const SpringBasic1_FadeIn: FC = (props) => {
 //-----------------------------------------------------------------------------
 const SpringBasic2_FlipText: FC = (props) => {
     const [flip, setFlip] = useState(false)
-    const flipStyle = useSpring({
-        to: { opacity: 0 },
+    const aniStyle = useSpring({
+        opacity: 0,
         from: { opacity: 1 },
         reset: true,
         reverse: flip,
@@ -70,9 +70,9 @@ const SpringBasic2_FlipText: FC = (props) => {
     })
 
     return (
-        <animated.h1 style={flipStyle}>
+        <animated.div style={aniStyle}>
             {props.children}
-        </animated.h1>
+        </animated.div>
     )
 }
 
@@ -80,10 +80,10 @@ const SpringBasic2_FlipText: FC = (props) => {
 const SpringBasic3_Number: FC = (props) => {
     const [flip, setFlip] = useState(false)
     const { number } = useSpring({
+        number: 1,
+        from: { number: 0 },
         reset: true,
         reverse: flip,
-        from: { number: 0 },
-        to: { number: 1 },
         delay: 500,
         config: config.molasses,
         onRest: () => setFlip(f => !f),
