@@ -20,7 +20,6 @@ export default function AppForm() {
         <Container>
             <H3>DM0007: react-spring Lab</H3>
 
-            <H3>Basic 1</H3>
             <P1>第一個練習：進場動畫 fade in。可用 CSS animation 簡單實作出來。</P1>
 
             <SpringBasic1_FadeIn>
@@ -29,18 +28,19 @@ export default function AppForm() {
                 </Paper>
             </SpringBasic1_FadeIn>
 
-            <Divider />
-
-            <H3>Basic 2</H3>
+            <Divider sx={{ m: 1 }} />
             <P1>第二個練習：固定輪播 filp text。可用 CSS animation 簡單實作出來。</P1>
 
             <SpringBasic2_FlipText>
-                hello world
+                <H3>hello world</H3>
             </SpringBasic2_FlipText>
 
             {/* <ASwitch label="show animated" value={f_show} onChange={v => setShow(v.value)} /> */}
 
+            <Divider sx={{ m: 1 }} />
+            <P1>第三個練習：固定輪播計數：0→1→0→1→...。</P1>
 
+            <SpringBasic3_Number />
 
         </Container>
     )
@@ -58,23 +58,41 @@ const SpringBasic1_FadeIn: FC = (props) => {
 
 //-----------------------------------------------------------------------------
 const SpringBasic2_FlipText: FC = (props) => {
-    const [flip, set] = useState(false)
+    const [flip, setFlip] = useState(false)
     const flipStyle = useSpring({
-        to: { opacity: 1 },
-        from: { opacity: 0 },
+        to: { opacity: 0 },
+        from: { opacity: 1 },
         reset: true,
         reverse: flip,
         delay: 500,
         config: config.molasses,
-        onRest: () => set(!flip),
+        onRest: () => setFlip(f => !f),
     })
 
     return (
-        <div>
-            <P1>flip:{`${flip}`}</P1>
-            <animated.h1 style={flipStyle}>
-                {props.children}
-            </animated.h1>
-        </div>
+        <animated.h1 style={flipStyle}>
+            {props.children}
+        </animated.h1>
+    )
+}
+
+//-----------------------------------------------------------------------------
+const SpringBasic3_Number: FC = (props) => {
+    const [flip, setFlip] = useState(false)
+    const { number } = useSpring({
+        reset: true,
+        reverse: flip,
+        from: { number: 0 },
+        to: { number: 1 },
+        delay: 500,
+        config: config.molasses,
+        onRest: () => setFlip(f => !f),
+    })
+
+    return (
+        <animated.div>
+            {number.to(n => n.toFixed(3))}
+            {/* 三位小數 */}
+        </animated.div>
     )
 }
