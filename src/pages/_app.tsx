@@ -7,6 +7,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles'
 import { zhTW } from '@mui/material/locale'
 //import Navbar from 'components/navbar/Navbar'
 import Banner from 'components/Banner'
+import 'animate.css'
 
 const theme = createTheme(
   {
