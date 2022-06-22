@@ -2,21 +2,30 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 import { Button, Container } from '@mui/material'
 import Swal from 'sweetalert2'
-import { Message } from '@mui/icons-material'
 
 const MainPage: NextPage = () => {
 
   async function connSqlServerTest() {
 
     const response = await checkSqlConn(3)
+    const { message, err, dataList } = response
 
-    const message = `${response.data}`
+    console.log('connSqlServerTest', { message, err, dataList })
 
-    Swal.fire({ 
-      title: '測試 SQL Server 連線', 
-      text: message,
-      icon: 'info' 
-    })
+    if (err) {
+      Swal.fire({
+        title: '測試 SQL Server 連線失敗',
+        icon: 'error'
+      })
+    }
+    else {
+      Swal.fire({
+        title: '測試 SQL Server 連線',
+        text: message,
+        icon: 'info'
+      })
+    }
+
   }
 
   return (
