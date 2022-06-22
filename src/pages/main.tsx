@@ -7,8 +7,8 @@ const MainPage: NextPage = () => {
 
   async function connSqlServerTest() {
 
-    const response = await checkSqlConn(3)
-    const { message, err, dataList } = response
+    const result = await checkSqlConn(3)
+    const { message, err, dataList } = result
 
     console.log('connSqlServerTest', { message, err, dataList })
 
@@ -28,6 +28,17 @@ const MainPage: NextPage = () => {
 
   }
 
+  async function handleFormAction() {
+
+    const result = await getFormData('OP2022123')
+
+    Swal.fire({
+      title: '回應訊息',
+      text: JSON.stringify(result),
+      icon: 'info'
+    })
+  }
+
   return (
     <>
       <Head>
@@ -40,6 +51,11 @@ const MainPage: NextPage = () => {
         <Button variant="contained" color="primary" onClick={connSqlServerTest}>
           測試 SQL Server 連線
         </Button>
+
+        <Button variant="contained" color="primary" onClick={handleFormAction}>
+          測試 SQL Server 連線
+        </Button>
+
       </Container>
     </>
   )
@@ -48,8 +64,9 @@ const MainPage: NextPage = () => {
 export default MainPage
 
 //============================
+// apiClient
 async function checkSqlConn(amount = 1): Promise<any> {
-  const response = await fetch('/api/datahub', {
+  const res = await fetch('/api/datahub', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -57,7 +74,31 @@ async function checkSqlConn(amount = 1): Promise<any> {
     body: JSON.stringify({ amount }),
   })
 
-  const result = await response.json()
+  if (res.status !== 200) {
+    const { status, statusText } = res
+    return { status, statusText }
+  }
 
+  // success
+  const result = await res.json()
+  return result
+}
+
+async function getFormData(formNo: string): Promise<any> {
+  const res = await fetch('/api/form01/getFormData', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ formNo }),
+  })
+
+  if (res.status !== 200) {
+    const { status, statusText } = res
+    return { status, statusText }
+  }
+
+  // success
+  const result = await res.json()
   return result
 }
