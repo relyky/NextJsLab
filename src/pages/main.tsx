@@ -1,24 +1,54 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import { Button } from '@mui/material'
-import Counter from 'components/counter/Counter'
-import styles from 'styles/Home.module.css'
+import { Button, Container } from '@mui/material'
+import Swal from 'sweetalert2'
+import { Message } from '@mui/icons-material'
 
 const MainPage: NextPage = () => {
+
+  async function connSqlServerTest() {
+
+    const response = await checkSqlConn(3)
+
+    const message = `${response.data}`
+
+    Swal.fire({ 
+      title: '測試 SQL Server 連線', 
+      text: message,
+      icon: 'info' 
+    })
+  }
+
   return (
-    <div className={styles.container}>
+    <>
       <Head>
         <title>主頁</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <h1>Hello World</h1>
-      <h2>哈囉 世界好</h2>
-      <Button variant="contained" color="primary">
-        Hello World
-      </Button>
-      <Counter />
-    </div>
+      <Container>
+        <h1>Hello World</h1>
+        <h2>哈囉 世界好</h2>
+        <Button variant="contained" color="primary" onClick={connSqlServerTest}>
+          測試 SQL Server 連線
+        </Button>
+      </Container>
+    </>
   )
 }
 
 export default MainPage
+
+//============================
+async function checkSqlConn(amount = 1): Promise<any> {
+  const response = await fetch('/api/datahub', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ amount }),
+  })
+
+  const result = await response.json()
+
+  return result
+}
