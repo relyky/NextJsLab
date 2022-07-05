@@ -1,51 +1,48 @@
 import { createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
 import swal from 'sweetalert2'
 import * as act from './dm0009Slice'
-//import { blockUi, unblockUi } from 'metaDataSlice'
+import { blockUi, unblockUi } from 'store/metaDataSlice'
 
-// 進階應用：Thunk: logical layer
+// API Thunk
 export const qryDataList = createAsyncThunk(
     'dm0009API/qryDataList',
-    async (arg: { simsFail: boolean }, thunkAPI) => {
-        //thunkAPI.dispatch(blockUI())
+    async (arg: object, thunkAPI) => {
+        thunkAPI.dispatch(blockUi())
         try {
-            const resp = await fetch('/api/form09/qryDataList', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(arg),
-            })
-
-            if (resp.status === 299) {
-                const { errMsg } = await resp.json()
-                throw new Error(errMsg)
-            }
-
-            if (resp.status !== 200) {
-                const { status, statusText } = resp
-                throw new Error(`${status} ${statusText}`)
-            }
-
-            // success
-            const dataList = await resp.json()
+            const dataList = await postData('/api/form09/qryDataList', arg)
             thunkAPI.dispatch(act.updDataList(dataList))
         }
         catch (err) {
             swal.fire('出現錯誤', err.message, 'error')
         }
         finally {
-            //thunkAPI.dispatch(unblockUI())
+            thunkAPI.dispatch(unblockUi())
         }
     }
 )
 
-// // 進階應用：Thunk
-// export const qryDataList = createAsyncThunk(
-//     'dm0009API/qryDataList',
-//     async (args:object, thunkAPI) => {
-//         await postData('/api/form09/qryDataList', args, dataList => 
-//             thunkAPI.dispatch(api.updDataList(dataLisg))
-//         );        
-//     }
-// )
+///----------------------------------------------------------------------------
+/// 在此加入通用的參數
+async function postData(url: string, args: object): Promise<any> {
+    const resp = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(args),
+    })
+
+    if (resp.status === 299) {
+        const { errMsg } = await resp.json()
+        throw new Error(errMsg)
+    }
+
+    if (resp.status !== 200) {
+        const { status, statusText } = resp
+        throw new Error(`${status} ${statusText}`)
+    }
+
+    // success
+    const result = await resp.json()
+    return result
+}

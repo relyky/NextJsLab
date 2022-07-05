@@ -26,12 +26,15 @@ export default function (req: NextApiRequest, res: NextApiResponse) {
 }
 
 const actions = {
-    qryDataList: (req: NextApiRequest, resp: NextApiResponse) => {
+    qryDataList: async (req: NextApiRequest, resp: NextApiResponse) => {
         const { simsFail } = req.body
         //const { action } = req.query
 
+        // simulate IO latency
+        await new Promise((resolve) => setTimeout(resolve, 2000))
+
         // 模擬失敗
-        if(simsFail) {
+        if (simsFail) {
             resp.statusCode = 299
             resp.json({ errMsg: '模擬查詢失敗訊息！' })
             return
