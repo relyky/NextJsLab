@@ -22,7 +22,7 @@ export const qryDataList = createAsyncThunk(
 )
 
 ///----------------------------------------------------------------------------
-/// 在此加入通用的參數
+/// 可在此加入共用的通訊參數，如：Bearer Token 等等的。
 async function postData(url: string, args: object): Promise<any> {
     const resp = await fetch(url, {
         method: 'POST',
