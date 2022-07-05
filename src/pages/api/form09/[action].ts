@@ -1,4 +1,6 @@
+import { responsiveProperty } from '@mui/material/styles/cssUtils';
 import type { NextApiHandler, NextApiRequest, NextApiResponse } from 'next'
+import type { SecUnit } from './interfaces'
 
 export default function (req: NextApiRequest, res: NextApiResponse) {
     // 解析 request 封包
@@ -24,10 +26,22 @@ export default function (req: NextApiRequest, res: NextApiResponse) {
 }
 
 const actions = {
-    qryFormData: (req: NextApiRequest, res: NextApiResponse) => {
-        const { formNo } = req.body
-        const { action } = req.query
-        res.json({ message: '查詢表單資料', action, formNo })
+    qryDataList: (req: NextApiRequest, resp: NextApiResponse) => {
+        const { simsFail } = req.body
+        //const { action } = req.query
+
+        // 模擬失敗
+        if(simsFail) {
+            resp.statusCode = 299
+            resp.json({ errMsg: '模擬查詢失敗訊息！' })
+            return
+        }
+
+        // 模擬成功
+        const dataList: SecUnit[] = []
+        dataList.push({ unitId: 'ADM', unitName: '模擬系統管理部' })
+        dataList.push({ unitId: 'OWP', unitName: '離岸風電業者' })
+        resp.json(dataList)
     },
     getFormData: (req: NextApiRequest, res: NextApiResponse) => {
         const { formNo } = req.body
