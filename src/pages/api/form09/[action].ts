@@ -1,27 +1,33 @@
 import { responsiveProperty } from '@mui/material/styles/cssUtils';
 import type { NextApiHandler, NextApiRequest, NextApiResponse } from 'next'
-import { Request, Connection } from 'tedious'
+import { Request, Connection, TYPES, TediousType, ParameterOptions } from 'tedious'
 import type { SecUnit } from './interfaces'
 
 const config = {
-  "server": "192.168.0.71",
-  "authentication": {
-    "type": "default",
+    "server": "192.168.0.71",
+    "authentication": {
+        "type": "default",
+        "options": {
+            "userName": "sa",
+            "password": "1qaz@WSX"
+        }
+    },
     "options": {
-      "userName": "sa",
-      "password": "1qaz@WSX"
+        "port": 1433,
+        "database": "BOEOWDB",
+        "trustServerCertificate": true,
+        "rowCollectionOnRequestCompletion": true,
     }
-  },
-  "options": {
-    "port": 1433,
-    "database": "BOEOWDB",
-    "trustServerCertificate": true,
-    "rowCollectionOnRequestCompletion": true,
-  }
 }
 
+export interface SqlParameter {
+    name: string,
+    type: TediousType,
+    value: any,
+    options?: ParameterOptions,
+}
 
-export default async function (req: NextApiRequest, res: NextApiResponse) {
+export default function (req: NextApiRequest, res: NextApiResponse) {
     // 解析 request 封包
     const { method, query: { action } } = req
 
@@ -41,16 +47,16 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
     }
 
     // invoke action
-    await actionHandler(req, res)
+    actionHandler(req, res)
 }
 
 const actions = {
-    qryDataList: async (req: NextApiRequest, resp: NextApiResponse) => {
+    qryDataList: (req: NextApiRequest, resp: NextApiResponse) => {
         const { simsFail } = req.body
         //const { action } = req.query
 
         // simulate IO latency
-        await new Promise((resolve) => setTimeout(resolve, 2000))
+        //await new Promise((resolve) => setTimeout(resolve, 2000))
 
         // 模擬失敗
         if (simsFail) {
@@ -61,41 +67,42 @@ const actions = {
 
         // 連線
         const conn = new Connection(config);
-        conn.connect(async (err: Error) => {
-          if (err) {
-            // 連接 SQL Server 失敗！
-            resp.statusCode = 299
-            resp.json({ errMsg: 'Connect SQL Server failed!', err })
-            return;
-          }
-      
-          // If no error, then good to go...
-          await executeStatementAsync();
-        });
+        conn.connect((err: Error) => {
+            if (err) {
+                // 連接 SQL Server 失敗！
+                resp.statusCode = 299
+                resp.json({ errMsg: 'Connect SQL Server failed!', err })
+                return;
+            }
 
-        async function executeStatementAsync() {
+            // If no error, then good to go...
+            //executeStatement();
             const sql = "SELECT unitId, unitName FROM SecUnit ";
             const request = new Request(sql, (err, rowCount, rows) => {
-              if (err) {
-                // 執行 SQL 指令失敗！
-                resp.statusCode = 299
-                resp.json({ errMsg: 'Execute SQL statement failed!', err })
-                return
-              }
-        
-              // DONE:關閉連線
-              conn.close()
-        
-              // 轉換執行結果: convert rows as dataList
-              const dataList = rows.map(columns =>
-                Object.fromEntries(columns.map(column => ([column.metadata.colName, column.value]))))
-        
-              // SUCCESS & response
-              resp.json(dataList)
+                if (err) {
+                    // 執行 SQL 指令失敗！
+                    resp.statusCode = 299
+                    resp.json({ errMsg: 'Execute SQL statement failed!', err })
+                    return
+                }
+
+                // DONE:關閉連線
+                conn.close()
+
+                // 轉換執行結果: convert rows as dataList
+                const dataList = rows.map(columns =>
+                    Object.fromEntries(columns.map(column => ([column.metadata.colName, column.value]))))
+
+                // SUCCESS & response
+                resp.json(dataList)
             });
-        
+
+            //# 加入參數
+            request.addParameter('name', TYPES.VarChar, 'Fred');
+            request.addParameter('age', TYPES.Int, 42);
+
             conn.execSql(request);
-          }
+        });
 
         // // 模擬成功
         // const dataList: SecUnit[] = []
@@ -103,24 +110,35 @@ const actions = {
         // dataList.push({ unitId: 'OWP', unitName: '離岸風電業者' })
         // resp.json(dataList)
     },
-    getFormData: async (req: NextApiRequest, res: NextApiResponse) => {
+    getFormData: (req: NextApiRequest, res: NextApiResponse) => {
         const { formNo } = req.body
         const { action } = req.query
         res.json({ message: '取得表單資料', action, formNo })
     },
-    updFormData: async (req: NextApiRequest, res: NextApiResponse) => {
+    updFormData: (req: NextApiRequest, res: NextApiResponse) => {
         const { formNo } = req.body
         const { action } = req.query
         res.json({ message: '更新表單資料', action, formNo })
     },
-    delFormData: async (req: NextApiRequest, res: NextApiResponse) => {
+    delFormData: (req: NextApiRequest, res: NextApiResponse) => {
         const { formNo } = req.body
         const { action } = req.query
         res.json({ message: '刪除表單資料', action, formNo })
     },
-    addFormData: async (req: NextApiRequest, res: NextApiResponse) => {
+    addFormData: (req: NextApiRequest, res: NextApiResponse) => {
         const { formNo } = req.body
         const { action } = req.query
         res.json({ message: '新增表單資料', action, formNo })
     },
+}
+
+///----------------------------------------------------------------------------
+// helper funciton
+
+function execSqlStatement(sql: string, params?: SqlParameter[])
+{
+
+
+
+    
 }
