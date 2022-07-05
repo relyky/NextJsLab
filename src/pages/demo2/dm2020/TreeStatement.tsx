@@ -9,7 +9,7 @@ import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, C
 import { TreeView } from '@mui/lab'
 import TreeContent from './TreeContent'
 import TreeItem from './widgets/StyledTreeItem'
-import Swal from 'sweetalert2'
+import swal from 'sweetalert2'
 // hooks
 import { useContext } from 'react'
 import { isDcsAssignment, updCond, updAssimt, newStatement, rmvStatement, moveUpward, assimtAsTree, cloneStatement, pasteStatement } from './decisionTreeSlice'
@@ -134,7 +134,7 @@ const TreeCondItem: FC<{
                         <IconButton className={ss.command} color="primary" children={<ClearIcon />}
                             onClick={e => {
                                 e.stopPropagation()
-                                Swal.fire({
+                                swal.fire({
                                     title: '確定要移除嗎？',
                                     icon: 'question',
                                     showCancelButton: true,

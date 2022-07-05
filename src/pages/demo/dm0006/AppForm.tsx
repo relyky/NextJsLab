@@ -4,7 +4,7 @@ import { useAppSelector } from 'hooks/hooks'
 import { Container, Paper, Stack, Box, Collapse, Grid } from '@mui/material'
 import { FormControl, FormLabel, RadioGroup, Radio, FormControlLabel, FormGroup, Checkbox, TextField } from '@mui/material'
 import { H3, H4, H5, H6, P1, P2, AButton, ASwitch } from 'components/highorder'
-import Swal from 'sweetalert2'
+import swal from 'sweetalert2'
 
 // diff & diff2html
 import type { PatchOptions } from 'diff'

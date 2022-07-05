@@ -1,7 +1,7 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import { Button, Container } from '@mui/material'
-import Swal from 'sweetalert2'
+import swal from 'sweetalert2'
 
 const MainPage: NextPage = () => {
 
@@ -13,13 +13,13 @@ const MainPage: NextPage = () => {
     console.log('connSqlServerTest', { message, err, dataList })
 
     if (err) {
-      Swal.fire({
+      swal.fire({
         title: '測試 SQL Server 連線失敗',
         icon: 'error'
       })
     }
     else {
-      Swal.fire({
+      swal.fire({
         title: '測試 SQL Server 連線',
         text: message,
         icon: 'info'
@@ -32,7 +32,7 @@ const MainPage: NextPage = () => {
 
     const result = await getFormData('OP2022123')
 
-    Swal.fire({
+    swal.fire({
       title: '回應訊息',
       text: JSON.stringify(result),
       icon: 'info'

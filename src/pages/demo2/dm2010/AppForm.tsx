@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { useAppSelector } from 'hooks/hooks'
 import { Container, Paper } from '@mui/material'
 import { H3, H4, AButton } from 'components/highorder'
-import Swal from 'sweetalert2'
+import swal from 'sweetalert2'
 
 import { html } from "diff2html"
 import { createTwoFilesPatch } from 'diff'

@@ -23,28 +23,30 @@ export default async (req: NextApiRequest, res: NextApiResponse<any>) => {
   const { amount = 1 } = req.body
 
   // file.js
-  const connection = new Connection(config);
-  connection.connect((err: Error) => {
+  const conn = new Connection(config);
+  conn.connect(async (err: Error) => {
     if (err) {
+      // 連接 SQL Server 失敗！
       res.json({ message: 'Connect SQL Server failed!', err })
-      //throw err;
+      return;
     }
 
     // If no error, then good to go...
-    executeStatement();
+    await executeStatementAsync();
   });
 
-  function executeStatement() {
+  async function executeStatementAsync() {
     const request = new Request("select sn = 42, text = 'hello world'", (err, rowCount, rows) => {
       if (err) {
+        // 執行 SQL 指令失敗！
         res.json({ message: 'Execute SQL statement failed!', err })
-        //throw err;
+        return
       }
 
-      // DONE
-      connection.close()
+      // DONE:關閉連線
+      conn.close()
 
-      // convert rows as dataList
+      // 轉換執行結果: convert rows as dataList
       const dataList = rows.map(columns =>
         Object.fromEntries(columns.map(column => ([column.metadata.colName, column.value]))))
 
@@ -52,6 +54,6 @@ export default async (req: NextApiRequest, res: NextApiResponse<any>) => {
       res.json({ message: 'Execute SQL statement success.', rowCount, dataList })
     });
 
-    connection.execSql(request);
+    conn.execSql(request);
   }
 }

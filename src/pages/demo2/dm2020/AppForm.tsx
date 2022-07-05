@@ -3,7 +3,7 @@ import { Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material
 import { Container, Checkbox, Switch, FormControlLabel } from '@mui/material'
 import { H3, AButton, ASwitch } from 'components/highorder'
 import TreeContainer from './TreeContainer'
-import Swal from 'sweetalert2'
+import swal from 'sweetalert2'
 // hooks
 import { useState, createContext } from 'react'
 import { useAppSelector } from 'hooks/hooks'
@@ -18,7 +18,7 @@ export default (props) => {
     const [appFormEnv, setAppFormEnv] = useState({ showNodeId: false })
 
     function handleClick() {
-        Swal.fire('未實作')
+        swal.fire('未實作')
     }
 
     function handleShowData() {
