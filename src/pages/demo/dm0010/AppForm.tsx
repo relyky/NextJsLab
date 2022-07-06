@@ -12,7 +12,7 @@ export default (props: {
             <ul>
                 {Array.isArray(props.commodityList) && props.commodityList.map((item, index) => (
                     <li key={index}>
-                        {`${item.cid}-${item.cname} 數量 ${item.amount}`}
+                        {`${item.cid}-${item.cname} 數量 ${item.amount} | ${item.category}`}
                     </li>
                 ))}
             </ul>
