@@ -1,17 +1,32 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import AppForm from './AppForm'
+import type { Commodity } from './interfaces'
+import { qryCommodityList } from './bizLogic'
 
-const DM0010Page: NextPage = () => {
+const DM0010Page: NextPage<{
+  commodityList: Commodity[]
+}> = (props) => {
   return (
     <>
       <Head>
-        <title>DM0001</title>
+        <title>DM0010</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <AppForm />
+      <AppForm {...props}/>
     </>
   )
 }
 
 export default DM0010Page
+
+///----------------------------------------------------------------------------
+/// SSR mode
+export async function getServerSideProps() {
+  const commodityList = qryCommodityList()
+  return {
+    props: {
+      commodityList
+    }
+  }
+}
