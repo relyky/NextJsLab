@@ -42,7 +42,7 @@ export const BoxDraggable: FC<BoxDraggableProps> = memo((props) => {
   useEffect(() => {
     // 效果：等同把預設 preview 移除，之後再用 BoxDragPreview 物件補上。
     preview(getEmptyImage(), { captureDraggingState: true })
-  }, [])
+  }, [preview])
 
   return (
     <div

@@ -1,4 +1,5 @@
 import type { NextPage } from 'next'
+import Image from 'next/image'
 import Head from 'next/head'
 
 import Counter from 'components/counter/Counter'

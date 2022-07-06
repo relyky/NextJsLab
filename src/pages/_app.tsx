@@ -18,21 +18,20 @@ const theme = createTheme(
   zhTW, // Locale text:Use the theme to configure the locale text globally.
 );
 
-
 export default function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <Provider store={store}>
-      <ThemeProvider theme={theme}>
-        <Head>
-          <meta name="viewport" content="initial-scale=1, width=device-width" />
-          <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
-          <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
-        </Head>
-        <Banner />
-        <main>
-          <Component {...pageProps} />
-        </main>
-      </ThemeProvider>
-    </Provider>
+    <>
+      <Head>
+        <meta name="viewport" content="initial-scale=1, width=device-width" />
+      </Head>
+      <Provider store={store}>
+        <ThemeProvider theme={theme}>
+          <Banner />
+          <main>
+            <Component {...pageProps} />
+          </main>
+        </ThemeProvider>
+      </Provider>
+    </>
   )
 }

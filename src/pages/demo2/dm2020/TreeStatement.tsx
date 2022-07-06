@@ -113,7 +113,7 @@ const TreeCondItem: FC<{
                         </Typography>
 
                         {(props.pos > 0) &&
-                            <IconButton className={ss.command} color={'primary'} children={<UpwardIcon />}
+                            <IconButton className={ss.command} color={'primary'}
                                 onClick={e => {
                                     e.stopPropagation()
                                     dispatch(moveUpward({
@@ -121,17 +121,17 @@ const TreeCondItem: FC<{
                                         index: props.pos
                                     }))
                                 }}
-                            />
+                            ><UpwardIcon /></IconButton>
                         }
 
-                        <IconButton className={ss.command} color="primary" children={<EditIcon />}
+                        <IconButton className={ss.command} color="primary"
                             onClick={e => {
                                 e.stopPropagation()
                                 setShowCond(true)
                             }}
-                        />
+                        ><EditIcon /></IconButton>
 
-                        <IconButton className={ss.command} color="primary" children={<ClearIcon />}
+                        <IconButton className={ss.command} color="primary"
                             onClick={e => {
                                 e.stopPropagation()
                                 swal.fire({
@@ -149,10 +149,10 @@ const TreeCondItem: FC<{
                                     }
                                 })
                             }}
-                        />
+                        ><ClearIcon /></IconButton>
 
                         {(isSelected) &&
-                            <IconButton className={ss.command} color="primary" children={<CopyIcon />}
+                            <IconButton className={ss.command} color="primary"
                                 onClick={e => {
                                     e.stopPropagation()
                                     dispatch(cloneStatement({
@@ -160,11 +160,11 @@ const TreeCondItem: FC<{
                                         index: props.pos
                                     }))
                                 }}
-                            />
+                            ><CopyIcon /></IconButton>
                         }
 
                         {(isSelected && hasCloned) &&
-                            <IconButton className={ss.command} color="primary" children={<PasteIcon />}
+                            <IconButton className={ss.command} color="primary"
                                 onClick={e => {
                                     e.stopPropagation()
                                     dispatch(pasteStatement({
@@ -172,7 +172,7 @@ const TreeCondItem: FC<{
                                         index: props.pos
                                     }))
                                 }}
-                            />
+                            ><PasteIcon /></IconButton>
                         }
 
 
@@ -226,14 +226,14 @@ const TreeElseItem: FC<{
                     {/* {appEnv.showNodeId && <Chip label={item.nodeId} variant="outlined" size="small" color="info" sx={{ mx: 1 }} />} */}
                 </Typography>
 
-                <IconButton className={ss.command} color="primary" children={<NewIcon />}
+                <IconButton className={ss.command} color="primary"
                     onClick={e => {
                         e.stopPropagation()
                         dispatch(newStatement({
                             path: props.path
                         }))
                     }}
-                />
+                ><NewIcon /></IconButton>
             </Stack>
         }>
             {props.children}
@@ -261,14 +261,14 @@ const TreeAssimtItem: FC<{
                         {/* {appEnv.showNodeId && <Chip label={assimt.nodeId} variant="outlined" size="small" color="info" sx={{ mx: 1 }} />} */}
                     </Typography>
 
-                    <IconButton className={ss.command} color="primary" children={<EditIcon />}
+                    <IconButton className={ss.command} color="primary"
                         onClick={e => {
                             e.stopPropagation()
                             setShowAssimt(true)
                         }}
-                    />
+                    ><EditIcon /></IconButton>
 
-                    <IconButton className={ss.command} color="primary" children={<ForkIcon />}
+                    <IconButton className={ss.command} color="primary"
                         onClick={e => {
                             e.stopPropagation()
                             dispatch(assimtAsTree({
@@ -276,7 +276,7 @@ const TreeAssimtItem: FC<{
                                 index: props.pos
                             }))
                         }}
-                    />
+                    ><ForkIcon /></IconButton>
                 </Stack>
             } />
 
