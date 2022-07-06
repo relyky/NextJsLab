@@ -1,7 +1,7 @@
 import type { NextPage } from 'next'
+import type { Commodity } from './interfaces'
 import Head from 'next/head'
 import AppForm from './AppForm'
-import type { Commodity } from './interfaces'
 import { qryCommodityList } from './bizLogic'
 
 const DM0010Page: NextPage<{
