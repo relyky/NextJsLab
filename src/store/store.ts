@@ -1,7 +1,7 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit'
 // customized reducers
 import counter from 'components/counter/counterSlice'
-import decisionTree from 'pages/demo2/dm2020/decisionTreeSlice'
+import decisionTree from 'views/demo2/dm2020/decisionTreeSlice'
 import buffer from './bufferSlice'
 import metaData from './metaDataSlice'
 import dm0009 from 'pages/demo/dm0009/dm0009Slice'
