@@ -1,12 +1,14 @@
-import '../styles/globals.css'
-import { Provider } from 'react-redux'
 import type { AppProps } from 'next/app'
+import { Provider } from 'react-redux'
 import Head from 'next/head'
 import store from 'store/store'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import { zhTW } from '@mui/material/locale'
 //import Navbar from 'components/navbar/Navbar'
 import Banner from 'components/Banner'
+import Overlay from 'views/Overlay'
+// CSS
+import 'styles/globals.css'
 import 'animate.css'
 
 const theme = createTheme(
@@ -30,6 +32,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
           <main>
             <Component {...pageProps} />
           </main>
+          <Overlay />
         </ThemeProvider>
       </Provider>
     </>
