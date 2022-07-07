@@ -34,7 +34,7 @@ import PlusIcon from '@mui/icons-material/AddBoxOutlined'
 import MinusIcon from '@mui/icons-material/IndeterminateCheckBoxOutlined'
 import EndIcon from '@mui/icons-material/DisabledByDefaultOutlined'
 import ForwardIcon from '@mui/icons-material/ForwardTwoTone';
-import ItemTypes from 'pages/demo/dm0003/ItemTypes'
+import ItemTypes from 'views/demo/dm0003/ItemTypes'
 import CopyIcon from '@mui/icons-material/ContentCopy'
 import PasteIcon from '@mui/icons-material/CopyAll'
 
