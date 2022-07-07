@@ -1,6 +1,6 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import AppForm from './AppForm'
+import AppForm from 'views/demo/dm0009/AppForm'
 import { Backdrop, CircularProgress } from '@mui/material'
 import { useAppSelector, useAppDispatch } from 'hooks/hooks'
 

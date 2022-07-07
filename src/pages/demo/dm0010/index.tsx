@@ -1,8 +1,8 @@
 import type { NextPage } from 'next'
-import type { Commodity } from './interfaces'
+import type { Commodity } from 'views/demo/dm0010/interfaces'
 import Head from 'next/head'
-import AppForm from './AppForm'
-import { qryCommodityList } from './bizLogic'
+import AppForm from 'views/demo/dm0010/AppForm'
+import { qryCommodityList } from 'views/demo/dm0010/bizLogic'
 
 const DM0010Page: NextPage<{
   commodityList: Commodity[]

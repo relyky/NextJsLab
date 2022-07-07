@@ -1,6 +1,6 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import AppForm from './AppForm'
+import AppForm from 'views/demo/dm0007/AppForm'
 
 const DM0007Page: NextPage = () => {
   return (

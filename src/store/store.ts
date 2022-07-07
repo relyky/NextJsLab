@@ -4,7 +4,7 @@ import counter from 'components/counter/counterSlice'
 import decisionTree from 'views/demo2/dm2020/decisionTreeSlice'
 import buffer from './bufferSlice'
 import metaData from './metaDataSlice'
-import dm0009 from 'pages/demo/dm0009/dm0009Slice'
+import dm0009 from 'views/demo/dm0009/dm0009Slice'
 
 export function makeStore() {
   return configureStore({
