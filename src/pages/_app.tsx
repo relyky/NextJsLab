@@ -5,7 +5,7 @@ import store from 'store/store'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import { zhTW } from '@mui/material/locale'
 //import Navbar from 'components/navbar/Navbar'
-import Banner from 'components/Banner'
+import Banner from 'views/Banner'
 import Overlay from 'views/Overlay'
 // CSS
 import 'styles/globals.css'
