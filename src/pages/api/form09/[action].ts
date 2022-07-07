@@ -27,7 +27,7 @@ export interface SqlParameter {
     options?: ParameterOptions,
 }
 
-export default function (req: NextApiRequest, res: NextApiResponse) {
+export default async function (req: NextApiRequest, res: NextApiResponse) {
     // 解析 request 封包
     const { method, query: { action } } = req
 
@@ -47,16 +47,16 @@ export default function (req: NextApiRequest, res: NextApiResponse) {
     }
 
     // invoke action
-    actionHandler(req, res)
+    await actionHandler(req, res)
 }
 
 const actions = {
-    qryDataList: (req: NextApiRequest, resp: NextApiResponse) => {
+    qryDataList: async (req: NextApiRequest, resp: NextApiResponse) => {
         const { simsFail } = req.body
         //const { action } = req.query
 
         // simulate IO latency
-        //await new Promise((resolve) => setTimeout(resolve, 2000))
+        await new Promise((resolve) => setTimeout(resolve, 2000))
 
         // 模擬失敗
         if (simsFail) {

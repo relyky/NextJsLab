@@ -1,5 +1,5 @@
 import type { NextPage } from 'next'
-import type { Commodity } from 'views/demo/dm0010/interfaces'
+import type { Commodity } from 'interfaces'
 import Head from 'next/head'
 import AppForm from 'views/demo/dm0010/AppForm'
 import { qryCommodityList } from 'views/demo/dm0010/bizLogic'

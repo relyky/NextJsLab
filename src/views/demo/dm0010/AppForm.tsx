@@ -1,4 +1,4 @@
-import type { Commodity } from './interfaces'
+import type { Commodity } from '../../../interfaces'
 import { useState } from 'react'
 import { qryCommodityList } from './bizLogic'
 
