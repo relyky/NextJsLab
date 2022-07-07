@@ -25,6 +25,8 @@ export default function MyApp({ Component, pageProps }: AppProps) {
     <>
       <Head>
         <meta name="viewport" content="initial-scale=1, width=device-width" />
+        <title>My First Next.js App</title>
+        <link rel="icon" href="/favicon.ico" />
       </Head>
       <Provider store={store}>
         <ThemeProvider theme={theme}>

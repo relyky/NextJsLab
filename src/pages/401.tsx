@@ -2,15 +2,15 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 import { Typography, Container, colors } from '@mui/material'
 
-const PageNotFound: NextPage = () => (
+const Unauthorized: NextPage = () => (
     <>
         <Head>
-            <title>404</title>
+            <title>401</title>
         </Head>
         <Container>
-            <Typography variant='h2' color='error'>404 Your Princess Is In Another Castle!</Typography>
+            <Typography variant='h2' color='error'>401 Unauthorized!</Typography>
         </Container>
     </>
 )
 
-export default PageNotFound
+export default Unauthorized

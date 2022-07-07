@@ -45,7 +45,6 @@ const MainPage: NextPage<{
     <>
       <Head>
         <title>主頁</title>
-        <link rel="icon" href="/favicon.ico" />
       </Head>
       <Container>
         <h1>Hello World <small>哈囉 世界好</small></h1>

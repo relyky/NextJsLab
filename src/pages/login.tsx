@@ -5,9 +5,10 @@ export default function(props) {
   return (
     <>
       <Head>
-        <title>DM0001</title>
+        <title>Login Page</title>
       </Head>
-      <AppForm {...props} />
+      <h1>Login Page</h1>
+      <p>未實作</p>
     </>
   )
 }

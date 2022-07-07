@@ -11,10 +11,11 @@ class MyDocument extends Document {
     return (
       <Html lang="zh-Hant">
         <Head>
+          {/* 必需在 _document 指定預設字體 */}
           <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
           <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
         </Head>
-        <body style={{ backgroundColor: '#f8f8f8' }}>
+        <body>
 
           {/* § Server-side rendering 
           To prevent the dark-mode SSR flickering during the hydration phase, 
