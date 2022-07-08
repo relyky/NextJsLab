@@ -3,7 +3,8 @@
   "scripts": {
     "dev": "next",
     "build": "next build", 
-    "start": "next start -p 8080",
+    "server": "next start -p 8080",
+    "start": "NODE_ENV=production node server.js",
     "lint": "next lint",
     "type-check": "tsc",
     "test": "jest"
