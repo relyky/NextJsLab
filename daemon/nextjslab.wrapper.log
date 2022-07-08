@@ -1,0 +1,42 @@
+2022-07-08 10:38:57 - Starting C:\Program Files\nodejs\node.exe  --harmony C:\Users\RelyK\AppData\Roaming\npm\node_modules\qckwinsvc\node_modules\node-windows\lib\wrapper.js --file C:\GitHubRepos\NextJsLab\server.js --log "NextJsLab wrapper" --grow 0.25 --wait 1 --maxrestarts 3 --abortonerror n --stopparentfirst undefined
+2022-07-08 10:38:57 - Started 8856
+2022-07-08 10:44:18 - Stopping nextjslab.exe
+2022-07-08 10:44:18 - ProcessKill 8856
+2022-07-08 10:44:18 - Found child process: 2564 Name: conhost.exe
+2022-07-08 10:44:18 - Found child process: 6932 Name: node.exe
+2022-07-08 10:44:18 - Stopping process 2564
+2022-07-08 10:44:18 - Send SIGINT 2564
+2022-07-08 10:44:18 - SIGINT to 2564 failed - Killing as fallback
+2022-07-08 10:44:18 - Stopping process 6932
+2022-07-08 10:44:18 - Send SIGINT 6932
+2022-07-08 10:44:18 - SIGINT to 6932 failed - Killing as fallback
+2022-07-08 10:44:18 - Stopping process 8856
+2022-07-08 10:44:18 - Send SIGINT 8856
+2022-07-08 10:44:18 - SIGINT to 8856 failed - Killing as fallback
+2022-07-08 10:44:18 - Finished nextjslab.exe
+2022-07-08 10:51:55 - Starting C:\Program Files\nodejs\node.exe  --harmony C:\Users\RelyK\AppData\Roaming\npm\node_modules\qckwinsvc\node_modules\node-windows\lib\wrapper.js --file C:\GitHubRepos\NextJsLab\server.js --log "NextJsLab wrapper" --grow 0.25 --wait 1 --maxrestarts 3 --abortonerror n --stopparentfirst undefined
+2022-07-08 10:51:55 - Started 9140
+2022-07-08 10:53:18 - Starting C:\Program Files\nodejs\node.exe  --harmony C:\Users\RelyK\AppData\Roaming\npm\node_modules\qckwinsvc\node_modules\node-windows\lib\wrapper.js --file C:\GitHubRepos\NextJsLab\server.js --log "NextJsLab wrapper" --grow 0.25 --wait 1 --maxrestarts 3 --abortonerror n --stopparentfirst undefined
+2022-07-08 10:53:18 - Started 11300
+2022-07-08 10:53:41 - Starting C:\Program Files\nodejs\node.exe  --harmony C:\Users\RelyK\AppData\Roaming\npm\node_modules\qckwinsvc\node_modules\node-windows\lib\wrapper.js --file C:\GitHubRepos\NextJsLab\server.js --log "NextJsLab wrapper" --grow 0.25 --wait 1 --maxrestarts 3 --abortonerror n --stopparentfirst undefined
+2022-07-08 10:53:41 - Started 14264
+2022-07-08 10:54:16 - Starting C:\Program Files\nodejs\node.exe  --harmony C:\Users\RelyK\AppData\Roaming\npm\node_modules\qckwinsvc\node_modules\node-windows\lib\wrapper.js --file C:\GitHubRepos\NextJsLab\server.js --log "NextJsLab wrapper" --grow 0.25 --wait 1 --maxrestarts 3 --abortonerror n --stopparentfirst undefined
+2022-07-08 10:54:16 - Started 4232
+2022-07-08 10:56:45 - Starting C:\Program Files\nodejs\node.exe  --harmony C:\Users\RelyK\AppData\Roaming\npm\node_modules\qckwinsvc\node_modules\node-windows\lib\wrapper.js --file C:\GitHubRepos\NextJsLab\server.js --log "NextJsLab wrapper" --grow 0.25 --wait 1 --maxrestarts 3 --abortonerror n --stopparentfirst undefined
+2022-07-08 10:56:45 - Started 2952
+2022-07-08 11:49:25 - Stopping nextjslab.exe
+2022-07-08 11:49:25 - ProcessKill 2952
+2022-07-08 11:49:25 - Found child process: 6360 Name: conhost.exe
+2022-07-08 11:49:25 - Found child process: 4932 Name: node.exe
+2022-07-08 11:49:25 - Stopping process 6360
+2022-07-08 11:49:25 - Send SIGINT 6360
+2022-07-08 11:49:25 - SIGINT to 6360 failed - Killing as fallback
+2022-07-08 11:49:25 - Stopping process 4932
+2022-07-08 11:49:25 - Send SIGINT 4932
+2022-07-08 11:49:25 - SIGINT to 4932 failed - Killing as fallback
+2022-07-08 11:49:25 - Stopping process 2952
+2022-07-08 11:49:25 - Send SIGINT 2952
+2022-07-08 11:49:25 - SIGINT to 2952 failed - Killing as fallback
+2022-07-08 11:49:25 - Finished nextjslab.exe
+2022-07-08 12:05:49 - Starting C:\Program Files\nodejs\node.exe  --harmony C:\Users\RelyK\AppData\Roaming\npm\node_modules\qckwinsvc\node_modules\node-windows\lib\wrapper.js --file C:\GitHubRepos\NextJsLab\server.js --log "NextJsLab wrapper" --grow 0.25 --wait 1 --maxrestarts 3 --abortonerror n --stopparentfirst undefined
+2022-07-08 12:05:49 - Started 12644

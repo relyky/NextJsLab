@@ -1,4 +1,5 @@
 // server.js
+// ref→[Custom Server](https://nextjs.org/docs/advanced-features/custom-server)
 const { createServer } = require('http')
 const { parse } = require('url')
 const next = require('next')
