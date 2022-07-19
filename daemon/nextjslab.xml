@@ -1,7 +1,7 @@
 <service>
 	<id>nextjslab.exe</id>
 	<name>NextJsLab</name>
-	<description>Next.js service practice</description>
+	<description>Next.js service 練習</description>
 	<executable>C:\Program Files\nodejs\node.exe</executable>
 	<logmode>rotate</logmode>
 	<argument>--harmony</argument>
