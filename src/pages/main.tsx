@@ -83,6 +83,7 @@ export async function getServerSideProps(context) {
         DB_USER: process.env.DB_USER,
         DB_PASS: process.env.DB_PASS,
         DB_NAME: process.env.DB_NAME,
+        PORT: process.env.PORT,
         NEXT_PUBLIC_APP_NAME: process.env.NEXT_PUBLIC_APP_NAME
       }
     }
