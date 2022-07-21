@@ -19,10 +19,13 @@ Builds the app for production.
 	> npm start
 Runs the built app in production mode.
 
-## 手札 
+# 手札 
 
 Next.js 是SSR。   
 建構步驟
 1. npx create-next-app --example with-redux
 2. 加入 routing 並調整骨架
 
+# 參考
+* [Running Next.js as Windows Service](https://app.gitbook.com/s/TcGSU3zrSsgSHyCjRHOM/running-next.js-as-windows-service)
+* [Deploy Next.js app on IIS](https://app.gitbook.com/s/TcGSU3zrSsgSHyCjRHOM/deploy-next.js-app-on-iis)
