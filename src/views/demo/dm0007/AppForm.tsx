@@ -70,7 +70,7 @@ const SpringBasic2_FlipText: FC = (props) => {
                 {props.children}
             </animated.div>
 
-            {/* React components 結合 srping 方式 */}
+            {/* React components 結合 spring 方式 */}
             <AniH3 style={aniStyle}>
                 {props.children}
             </AniH3>
