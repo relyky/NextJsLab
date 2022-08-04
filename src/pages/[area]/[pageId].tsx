@@ -1,8 +1,8 @@
-import { useScrollTrigger } from '@mui/material'
 import Head from 'next/head'
 // 註冊頁面
 import DM2010Page from 'views/demo2/dm2010/AppForm'
 import DM2020Page from 'views/demo2/dm2020/AppForm'
+import DM2030Page from 'views/demo2/dm2030/AppForm'
 
 /// 參考：[Dynamic Routes](https://nextjs.org/docs/routing/dynamic-routes)
 export default function DynamicRoutes(props) {
@@ -12,6 +12,7 @@ export default function DynamicRoutes(props) {
   const TargetPage 
     = (area === 'demo2' && pageId === 'dm2010') ? DM2010Page
     : (area === 'demo2' && pageId === 'dm2020') ? DM2020Page
+    : (area === 'demo2' && pageId === 'dm2030') ? DM2030Page
     : ()=>(<p>the target page is not registered.</p>);
 
   return (
