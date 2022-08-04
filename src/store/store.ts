@@ -5,6 +5,7 @@ import decisionTree from 'views/demo2/dm2020/decisionTreeSlice'
 import buffer from './bufferSlice'
 import metaData from './metaDataSlice'
 import dm0009 from 'views/demo/dm0009/dm0009Slice'
+import todoList from 'views/demo2/dm2030/todoListSlice'
 
 export function makeStore() {
   return configureStore({
@@ -14,6 +15,7 @@ export function makeStore() {
       buffer,
       metaData,
       dm0009,
+      todoList
     },
   })
 }
