@@ -10,14 +10,14 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import ss from './AppForm.module.css'
 
 export default (props) => {
-    const [show, setShow] = useState(true);  
+    const [show, setShow] = useState(true);
+    const [itemList, setItemList] = useState(['項目一號', '項目二號', '項目三號'])
 
     return (
         <Container>
             <H3>DM0008: Animate.css Lab</H3>
 
-            <AButton mutant='primary' label='Show' onClick={() => setShow(f => !f)} />
-            <pre>{`show:${show}`}</pre>
+            <AButton mutant='primary' label={`show:${show}`} onClick={() => setShow(f => !f)} />
 
             <H4>bounce</H4>
             <div>
@@ -26,15 +26,12 @@ export default (props) => {
                 </h1>
             </div>
 
-            <H4>fadeInLeft</H4>
-            <Paper sx={{ p: 4, display: (!show ? 'block' : 'none') }} className={clsx("animate__animated", !show && "animate__fadeInLeft")}>
+            <H4>fadeInLeft/OutRight</H4>
+            <Paper sx={{ p: 4 }}
+                className={clsx(["animate__animated", { "animate__fadeInLeft": show, "animate__fadeOutRight": !show }])}>
                 <H3>
+                    一個動畫元素<br />
                     An animated element
-                </H3>
-            </Paper>
-            <Paper sx={{ p: 4, display: (show ? 'block' : 'none') }} className={clsx("animate__animated", show && "animate__fadeInLeft")}>
-                <H3>
-                    一個動畫元素
                 </H3>
             </Paper>
 
