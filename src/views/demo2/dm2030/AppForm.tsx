@@ -53,42 +53,44 @@ export default (props) => {
                 />
                 <List>
                     <TransitionGroup>
-                        {todoList.filter(filterHandler).map((todo) => (
-                            <CSSTransition
-                                key={todo.id}
-                                timeout={400}
-                                classNames={{
-                                    enter: "animate__animated",
-                                    enterActive: "animate__fadeInUp",
-                                    exit: "animate__animated",
-                                    exitActive: "animate__backOutDown"
-                                }}
-                            >
-                                <ListItem
-                                    secondaryAction={
-                                        <IconButton edge="end" onClick={() => dispatch(rmvItem(todo.id))}>
-                                            <ClearIcon />
-                                        </IconButton>
-                                    }
-                                    sx={{
-                                        // stripe, 產生條紋
-                                        '&:nth-of-type(odd)': {
-                                            backgroundColor: palette.grey[100],
-                                        },
-                                        '&:hover': {
-                                            backgroundColor: palette.action.focus
-                                        },
+                        {todoList.filter(filterHandler)
+                            .filter(c => c.text && c.text.includes(newText))
+                            .map((todo) => (
+                                <CSSTransition
+                                    key={todo.id}
+                                    timeout={400}
+                                    classNames={{
+                                        enter: "animate__animated",
+                                        enterActive: "animate__fadeInUp",
+                                        exit: "animate__animated",
+                                        exitActive: "animate__backOutDown"
                                     }}
                                 >
-                                    <ListItemIcon onClick={() => dispatch(toggleItem(todo.id))}>
-                                        {todo.completed ? <DoneIcon color="success" /> : <UndoIcon />}
-                                    </ListItemIcon>
-                                    <ListItemText sx={{ color: todo.completed ? palette.grey[500] : 'inherit' }}>
-                                        {todo.text}
-                                    </ListItemText>
-                                </ListItem>
-                            </CSSTransition>
-                        ))}
+                                    <ListItem
+                                        secondaryAction={
+                                            <IconButton edge="end" onClick={() => dispatch(rmvItem(todo.id))}>
+                                                <ClearIcon />
+                                            </IconButton>
+                                        }
+                                        sx={{
+                                            // stripe, 產生條紋
+                                            '&:nth-of-type(odd)': {
+                                                backgroundColor: palette.grey[100],
+                                            },
+                                            '&:hover': {
+                                                backgroundColor: palette.action.focus
+                                            },
+                                        }}
+                                    >
+                                        <ListItemIcon onClick={() => dispatch(toggleItem(todo.id))}>
+                                            {todo.completed ? <DoneIcon color="success" /> : <UndoIcon />}
+                                        </ListItemIcon>
+                                        <ListItemText sx={{ color: todo.completed ? palette.grey[500] : 'inherit' }}>
+                                            {todo.text}
+                                        </ListItemText>
+                                    </ListItem>
+                                </CSSTransition>
+                            ))}
                     </TransitionGroup>
                 </List>
 
@@ -103,12 +105,12 @@ export default (props) => {
 }
 
 //=============================================================================
-const StyledListItem = styled(ListItem)(({ theme }) => ({
-    // stripe, 產生條紋
-    '&:nth-of-type(odd)': {
-        backgroundColor: theme.palette.grey[100],
-    },
-    '&:hover': {
-        backgroundColor: theme.palette.action.focus
-    },
-}));
+// const StyledListItem = styled(ListItem)(({ theme }) => ({
+//     // stripe, 產生條紋
+//     '&:nth-of-type(odd)': {
+//         backgroundColor: theme.palette.grey[100],
+//     },
+//     '&:hover': {
+//         backgroundColor: theme.palette.action.focus
+//     },
+// }));

@@ -6,12 +6,16 @@ export default (props: {
 }) => {
   return (
     <ButtonGroup variant="outlined">
-      <Button variant={props.value === 'all' ? 'contained' : 'outlined'} 
-        onClick={()=>props.onChange('all')}>All</Button>
-      <Button variant={props.value === 'active' ? 'contained' : 'outlined'}
-        onClick={()=>props.onChange('active')}>Active</Button>
-      <Button variant={props.value === 'completed' ? 'contained' : 'outlined'}
-        onClick={()=>props.onChange('completed')}>Completed</Button>
+      <Button {...calcProps(props.value, 'all')}
+        onClick={() => props.onChange('all')}>All</Button>
+      <Button {...calcProps(props.value, 'active')}
+        onClick={() => props.onChange('active')}>Active</Button>
+      <Button {...calcProps(props.value, 'completed')}
+        onClick={() => props.onChange('completed')}>Completed</Button>
     </ButtonGroup>
   );
+}
+
+function calcProps(value: string, target: string): object {
+  return target === value ? { variant: 'contained' } : null;
 }
