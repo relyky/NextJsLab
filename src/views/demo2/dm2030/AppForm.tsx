@@ -1,4 +1,4 @@
-import { Container, Box, Divider, Paper, IconButton } from '@mui/material'
+import { Container, Box, Divider, Paper, IconButton, ListItemButton } from '@mui/material'
 import { List, ListItem, ListItemText, ListItemIcon } from '@mui/material'
 import { OutlinedInput } from '@mui/material'
 import { H3, P1 } from 'components/highorder'
@@ -12,17 +12,19 @@ import UndoIcon from '@mui/icons-material/RadioButtonUnchecked';
 import ClearIcon from '@mui/icons-material/Clear'
 // CSS
 import clsx from 'clsx'
+import { styled, useTheme } from '@mui/material/styles'
 import { TransitionGroup, CSSTransition } from 'react-transition-group'
 
 export default (props) => {
-    const [newText, setNewText] = useState('');
+    const { palette } = useTheme()
+    const [newText, setNewText] = useState('')
     const todoList = useAppSelector(store => store.todoList)
     const dispatch = useAppDispatch()
 
     return (
         <Container>
             <H3>Todos</H3>
-            <P1>新增(mount)與移除(unmount)有加入過場動畫。</P1>
+            <P1>新增(mount)與移除(unmount)加入過場動畫。<br />並條紋化與hover。</P1>
 
             <Paper sx={{ p: 2 }}>
                 <OutlinedInput placeholder="What needs to bo done?"
@@ -49,25 +51,39 @@ export default (props) => {
                                     exitActive: "animate__backOutDown"
                                 }}
                             >
-                                <ListItem sx={{ p: 2, mb: 1 }}
+                                <StyledListItem
                                     secondaryAction={
                                         <IconButton edge="end" onClick={() => dispatch(rmvItem(todo.id))}>
                                             <ClearIcon />
                                         </IconButton>
                                     }
                                 >
-                                    <ListItemIcon onClick={() => dispatch(toggleItem(todo.id))} >
+                                    <ListItemIcon onClick={() => dispatch(toggleItem(todo.id))}>
                                         {todo.completed ? <DoneIcon color="success" /> : <UndoIcon />}
                                     </ListItemIcon>
-                                    <ListItemText>
+                                    <ListItemText sx={{ color: todo.completed ? palette.grey[500] : 'inherit' }}>
                                         {todo.text}
                                     </ListItemText>
-                                </ListItem>
+                                </StyledListItem>
                             </CSSTransition>
                         ))}
                     </TransitionGroup>
                 </List>
+
+
+                
             </Paper>
         </Container >
     )
 }
+
+//=============================================================================
+const StyledListItem = styled(ListItem)(({ theme }) => ({
+    // stripe, 產生條紋
+    '&:nth-of-type(odd)': {
+        backgroundColor: theme.palette.grey[100],
+    },
+    '&:hover': {
+        backgroundColor: theme.palette.action.focus
+    },
+}));
