@@ -43,6 +43,13 @@ export const todoListSlice = createSlice({
         if(cur.id === itemId) cur.completed = !cur.completed;
         return cur
       })
+    },
+    checkAllItem: (todoList /* state */) => {
+      const isAllChecked = todoList.reduce((chk,cur)=> (chk && cur.completed ? true : false), true);
+      todoList.map(cur => {
+        cur.completed = !isAllChecked;
+        return cur
+      })
     }
   },
 })
@@ -52,6 +59,7 @@ export const {
   rmvItem,
   toggleItem,
   clearCompleted,
+  checkAllItem,
 } = todoListSlice.actions
 
 export default todoListSlice.reducer
