@@ -2,6 +2,8 @@ import type { AppProps } from 'next/app'
 import { Provider } from 'react-redux'
 import Head from 'next/head'
 import store from 'store/store'
+import { CacheProvider } from '@emotion/react'
+import createCache from '@emotion/cache'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import { zhTW } from '@mui/material/locale'
 //import Navbar from 'components/navbar/Navbar'
@@ -20,6 +22,11 @@ const theme = createTheme(
   zhTW, // Locale text:Use the theme to configure the locale text globally.
 );
 
+export const muiCache = createCache({
+  key: 'mui',
+  prepend: true,
+});
+
 export default function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
@@ -29,13 +36,15 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Provider store={store}>
-        <ThemeProvider theme={theme}>
-          <Banner />
-          <main>
-            <Component {...pageProps} />
-          </main>
-          <Overlay />
-        </ThemeProvider>
+        <CacheProvider value={muiCache}>
+          <ThemeProvider theme={theme}>
+            <Banner />
+            <main>
+              <Component {...pageProps} />
+            </main>
+            <Overlay />
+          </ThemeProvider>
+        </CacheProvider>
       </Provider>
     </>
   )

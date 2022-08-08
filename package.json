@@ -36,7 +36,8 @@
     "react-transition-group": "^4.4.5",
     "sweetalert2": "^11.4.17",
     "sweetalert2-react-content": "^4.2.0",
-    "tedious": "^14.6.0"
+    "tedious": "^14.6.0",
+    "tss-react": "^3.7.1"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.0.0",

@@ -1,21 +1,28 @@
-.item {
-    /* display: flex;
-    align-items: center;
-    background: lightgrey; */
-    padding: 0;
+/* .root {
+
 }
 
-.item:hover {
-    background: lightyellow;
-    padding: unset;
+.todoItem {
+
+} */
+
+.todoItem:nth-of-type(odd) {
+    background-color: lightgrey;
 }
 
-.item .command {
-    /* padding: .25em 1em;
-    margin: .25em 0 .25em 1em; */
-    display: none;
+.todoItem:hover {
+    background-color: darkgrey;
 }
 
-.item:hover .command {
-    display: block;
+.todoItem button {
+    color: transparent;
+}
+
+.todoItem:hover button {
+    color: 'red';
+}
+
+.todoItem.completed span {
+    color: grey;
+    text-decoration: line-through;
 }
