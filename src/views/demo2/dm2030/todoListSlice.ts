@@ -45,7 +45,7 @@ export const todoListSlice = createSlice({
       })
     },
     checkAllItem: (todoList /* state */) => {
-      const isAllChecked = todoList.reduce((chk,cur)=> (chk && cur.completed ? true : false), true);
+      const isAllChecked = todoList.reduce((chk,cur)=> chk && cur.completed, true);
       todoList.map(cur => {
         cur.completed = !isAllChecked;
         return cur
