@@ -1,11 +1,11 @@
 import { useState } from 'react'
-import { Box, Divider } from '@mui/material'
+import { Container, Box, Divider } from '@mui/material'
 import ss from './AppForm.module.css'
 
 export default (props) => {
     return (
-        <Box>
+        <Container>
             <h1>I am AppForm</h1>
-        </Box>
+        </Container>
     )
 }

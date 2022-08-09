@@ -32,6 +32,7 @@ function Banner() {
             <MenuItem><Link href="/demo/dm0008" underline="none">animate.css Lab</Link></MenuItem>
             <MenuItem><Link href="/demo/dm0009" underline="none">存取 SQL Server</Link></MenuItem>
             <MenuItem><Link href="/demo/dm0010" underline="none">SSR 練習</Link></MenuItem>
+            <MenuItem><Link href="/demo/dm0011" underline="none">styled CSS 練習</Link></MenuItem>
           </MenuGroup>
 
           <MenuGroup label="介面試作">
