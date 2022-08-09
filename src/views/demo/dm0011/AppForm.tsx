@@ -1,18 +1,22 @@
-import { useState, useReducer } from 'react'
-import { Container, Divider, FormControlLabel, Switch } from '@mui/material'
-import { H1, P1 } from './widgets/StyledWidgets'
+import { useReducer } from 'react'
+import { Container } from '@mui/material'
+import { H1, P1, ASwitch2, ASwitch, ANote } from './widgets/StyledWidgets'
 
 export default (props) => {
-    const [blob, toggleBlob] = useReducer((f) => !f, false)
+    const [bold, toggleBold] = useReducer((f) => !f, false)
     return (
         <Container>
             <H1>I am AppForm 0011</H1>
 
-            <FormControlLabel label="blob" 
-                control={<Switch checked={blob} onChange={toggleBlob} />} 
-            />
+            <ASwitch label="blob" checked={bold} onChange={toggleBold} />
+            <ASwitch2 label="blob2" checked={bold} onChange={toggleBold} />
 
-            <P1 blob={blob}>Show me tne moeny.</P1>
+            <ANote primary={bold}>
+                this is foo.<br/>
+                that is bar.
+            </ANote> 
+
+            <P1 bold={bold.toString()}>Show me the moeny. 111</P1>
         </Container>
     )
 }

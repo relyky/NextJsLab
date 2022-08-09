@@ -1,7 +1,7 @@
 import type { Theme } from "@mui/material";
 import { makeStyles } from 'tss-react/mui';
 
-export const useStyles = makeStyles<{}>()(
+export const useStyles = makeStyles<{ param0: boolean }>()(
   (theme: Theme, params) => {
     const { palette } = theme
     return {

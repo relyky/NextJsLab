@@ -1,7 +1,7 @@
 // type
 import type { TodoItem } from 'views/demo2/dm2030/todoListSlice'
 //
-import { Container, Stack, Box, Divider, Paper, IconButton, Button, InputAdornment } from '@mui/material'
+import { Container, Stack, Paper, IconButton, Button, InputAdornment } from '@mui/material'
 import { List, ListItem, ListItemText, ListItemIcon } from '@mui/material'
 import { OutlinedInput } from '@mui/material'
 import { H3, P1 } from 'components/highorder'
@@ -18,20 +18,17 @@ import ClearIcon from '@mui/icons-material/Clear'
 import CheckIcon from '@mui/icons-material/Check'
 // CSS
 import clsx from 'clsx'
-import { styled, useTheme } from '@mui/material/styles'
 import { TransitionGroup, CSSTransition } from 'react-transition-group'
-
 import { useStyles } from './AppForm.styles'
 
 export default (props) => {
     const todoList = useAppSelector(store => store.todoList)
     const todoActiveCount = useAppSelector(act.activeCount)
     const dispatch = useAppDispatch()
-    const { palette } = useTheme()
     const [newText, setNewText] = useState('')
     const [filterCond, setFilterCond] = useState('all')
 
-    const { classes: ss } = useStyles();
+    const { classes: ss } = useStyles({ param0: false })
 
     const filterHandler = (todo: TodoItem) => (
         filterCond === 'all' ||
@@ -80,30 +77,30 @@ export default (props) => {
                                     }}
                                 >
                                     <ListItem className={clsx(ss.todoItem, todo.completed && 'completed')}
-                                    secondaryAction={
-                                        <IconButton edge="end" onClick={() => dispatch(act.rmvItem(todo.id))}>
-                                            <ClearIcon />
-                                        </IconButton>
-                                    }
+                                        secondaryAction={
+                                            <IconButton edge="end" onClick={() => dispatch(act.rmvItem(todo.id))}>
+                                                <ClearIcon />
+                                            </IconButton>
+                                        }
                                     >
-                                    <ListItemIcon onClick={() => dispatch(act.toggleItem(todo.id))}>
-                                        {todo.completed ? <DoneIcon color="success" /> : <UndoIcon />}
-                                    </ListItemIcon>
-                                    <ListItemText>
-                                        {todo.text}
-                                    </ListItemText>
-                                </ListItem>
+                                        <ListItemIcon onClick={() => dispatch(act.toggleItem(todo.id))}>
+                                            {todo.completed ? <DoneIcon color="success" /> : <UndoIcon />}
+                                        </ListItemIcon>
+                                        <ListItemText>
+                                            {todo.text}
+                                        </ListItemText>
+                                    </ListItem>
                                 </CSSTransition>
                             ))}
-                </TransitionGroup>
-            </List>
+                    </TransitionGroup>
+                </List>
 
-            <Stack direction="row" justifyContent="space-between" alignItems="baseline">
-                <P1>{todoActiveCount} items left</P1>
-                <RadioField value={filterCond} onChange={setFilterCond} />
-                <Button variant="text" onClick={() => dispatch(act.clearCompleted())}>Clear completed</Button>
-            </Stack>
-        </Paper>
+                <Stack direction="row" justifyContent="space-between" alignItems="baseline">
+                    <P1>{todoActiveCount} items left</P1>
+                    <RadioField value={filterCond} onChange={setFilterCond} />
+                    <Button variant="text" onClick={() => dispatch(act.clearCompleted())}>Clear completed</Button>
+                </Stack>
+            </Paper>
         </Container >
     )
 }
