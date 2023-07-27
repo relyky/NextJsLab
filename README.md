@@ -9,6 +9,7 @@
 
 ## Command
 Inside that directory, you can run several commands:   
+
 	> npm install
 安裝相依 npm 套件。
 
